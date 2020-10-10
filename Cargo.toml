@@ -4,7 +4,7 @@ description = "Simple CLI to manage data"
 keywords = ["data", "cli", "profiling", "api"]
 license = "Apache-2.0/MIT"
 repository = "https://github.com/fgadaleta/xtract"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Francesco Gadaleta <francesco@amethix.com>"]
 edition = "2018"
 
