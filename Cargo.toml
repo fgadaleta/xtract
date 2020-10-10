@@ -1,8 +1,13 @@
 [package]
 name = "xtract"
-version = "0.1.0"
+description = "Simple CLI to manage data"
+keywords = ["label", "encoder", "machinelearning"]
+license = "Apache-2.0/MIT"
+repository = "https://github.com/fgadaleta/xtract"
+version = "0.0.1"
 authors = ["Francesco Gadaleta <francesco@amethix.com>"]
 edition = "2018"
+
 
 
 [dependencies]
