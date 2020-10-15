@@ -1,22 +1,61 @@
+// Run as:
+// cargo run -- info README.md --output result.txt --verbose
+//
+
 mod cli;
+mod client;
+mod configuration;
 
 use clap::Clap;
-use std::io::{self, BufReader, Write};
-use log::{info};
+// use std::io::{self, BufReader, Write};
+use anyhow::Result;
 
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<()> {
+
     let args: cli::Args = cli::Args::parse();
+    let client = client::Frontend::new(args);
+    client.run()
 
-    const BASE_URL: &str = "http://localhost:5000";
+
+
 
 
     // prepare stdout entity to print messages to
-    let stdout = io:: stdout();
-    let mut handle = io::BufWriter::new(stdout);  // wrap handle in a buffer
-    // initialize logger
-    env_logger::init();
-    info!("starting up");
+    // let stdout = io:: stdout();
+    // let mut handle = io::BufWriter::new(stdout);  // wrap handle in a buffer
+    // // initialize logger
+    // env_logger::init();
+    // info!("starting up");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /*
@@ -54,7 +93,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // }
     */
 
-    Ok(())
 }
 
 
