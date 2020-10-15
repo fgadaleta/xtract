@@ -11,9 +11,13 @@ edition = "2018"
 
 [dependencies]
 clap = "3.0.0-beta.2"
-structopt = "0.3.18"
+# structopt = "0.3.18"
 clap-verbosity-flag = "0.3.1"
-anyhow = "1.0.32"
+anyhow = "1.0.33"
 indicatif = "0.15.0"
 log = "0.4.11"
 env_logger = "0.7.1"
+serde = "1.0.116"
+serde_derive = "1.0.116"
+serde_json = "1.0.59"
+reqwest = { version = "0.10.8", features = ["blocking"] }
