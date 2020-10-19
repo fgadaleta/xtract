@@ -1,0 +1,11 @@
+[api]
+server = "localhost"
+port = 5000
+max-age = 5400
+
+[credentials]
+username = "frag"
+password = "1234"
+
+[settings]
+tokenfile = "./token.dat"
