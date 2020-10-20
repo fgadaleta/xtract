@@ -5,6 +5,15 @@ use anyhow::Result;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::prelude::*;
+// use std::str;
+use crate::loaders::s3_connector::Storage;
+use tokio::runtime::Runtime;
+use once_cell::sync::Lazy;
+
+
+static RT: Lazy<Runtime> = Lazy::new(|| {
+    Runtime::new().unwrap()
+});
 
 
 pub struct Frontend {
@@ -19,6 +28,31 @@ impl Frontend {
     pub fn run(&self) -> Result<()> {
         // get configuration
         let config = get_configuration_from_file("./configuration.toml")?;
+
+        // create S3 connector
+        let storage = Storage::new();
+        // let (data,code)  =
+
+        // RT.handle().block_on(run());
+
+        // let fut = storage.get_object("synthetic_demo_data.csv".to_string());
+        // let data = Runtime.block_on(fut);
+        // let rt = Runtime::new().unwrap();
+        // let data = rt.block_on(async { storage.get_object("synthetic_demo_data.csv".to_string()).await  } ) ;
+        let fut = async { storage.get_object("synthetic_demo_data.csv".to_string()).await  };
+        let data = RT.handle().block_on(fut);
+
+
+        // dbg!("")
+
+        // rt.enter(|| fut);
+        // RT.handle().block_on(fut);
+
+        // let data_str = str::from_utf8(&data).unwrap();
+        // dbg!("S3 data: ", &data_str);
+        // dbg!("S3 status: ", &code);
+
+
         // get API url
         let url = format!("http://{}:{}", config.api.server, config.api.port);
         let tokenfile = config.settings.tokenfile;
@@ -149,6 +183,32 @@ impl Frontend {
 
         Ok(())
     }
+
+    // async fn get_remote_object(&self) {
+    //     // connect to S3 bucket
+    //     // TODO get this from config
+    //     let endpoint = String::from("http://minio:9000");
+    //     let bucket_name = String::from("frankiebucket");
+    //     let filename: &str = "uk_cities_with_headers.csv";
+    //
+    //     // {
+    //     // "s3":
+    //     // {
+    //     //     "endpoint_url": "http://minio:9000",
+    //     //     "aws_access_key_id": "frag",
+    //     //     "aws_secret_access_key": "supersecretkey",
+    //     //     "bucket": "frankiebucket",
+    //     //     "key": "uk_cities_with_headers.csv"
+    //     // }
+    //     // }
+    //     let s3_connector = S3CustomClient::new(endpoint, bucket_name);
+    //     println!("{}", s3_connector);
+    //     // let result = s3_connector::get_object(filename)
+    //     //         .await
+    //     //         .expect("Couldn't GET remote object");
+    //     // println!("{:#?}", result);
+    // }
+
 
 }
 
