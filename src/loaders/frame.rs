@@ -218,7 +218,10 @@ impl Column {
         }
     }
 
-
+    pub fn is_categorical(&self, threshold: f64) -> bool {
+        let ratio: f64 = self.nunique() as f64 / self.num_rows() as f64;
+        ratio < threshold
+    }
 }
 
 pub struct DataFrame {
