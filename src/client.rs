@@ -107,7 +107,8 @@ impl Frontend {
                 let filename = String::from("synthetic_demo_data.csv");
 
                 let df = self.csv_reader_helper(storage, filename);
-                let _profile = df.profile();
+                let profile = df.profile();
+                println!("Dataset profile: {}", profile);
 
                 Ok(())
             },

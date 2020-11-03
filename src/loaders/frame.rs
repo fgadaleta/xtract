@@ -5,6 +5,9 @@ use arrow::array::*;
 use arrow::record_batch::RecordBatch;
 use histo_fp::Histogram;
 use noisy_float::prelude::*;
+use serde_json;
+use serde_json::Value;
+use serde::{Deserialize, Serialize};
 use crate::loaders::error::*;
 
 
@@ -17,7 +20,6 @@ pub enum GenericVector {
     S(Vec<String>),
 }
 
-
 impl GenericVector {
     fn len(&self) -> usize {
             match self {
@@ -28,7 +30,6 @@ impl GenericVector {
         }
 
 }
-
 
 #[derive(Clone)]
 pub struct ChunkedArray {
@@ -80,7 +81,6 @@ pub struct Column {
     data: ChunkedArray,
     field: Field,
 }
-
 
 impl Column {
 
@@ -224,6 +224,29 @@ impl Column {
     }
 }
 
+
+#[derive(Serialize, Deserialize)]
+pub struct DataFrameMeta {
+    datasource: String,
+    hash: String,
+    profile: ProfileMeta
+}
+#[derive(Serialize, Deserialize)]
+pub struct ProfileMeta {
+    nrows: usize,
+    ncols: usize,
+    columns: Vec<ColumnMeta>
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct ColumnMeta {
+    hash: Vec<u8>,
+    nunique: usize,
+    count: usize,
+    categorical: bool,
+    types: Vec<DataType>,
+}
+
 pub struct DataFrame {
     schema: Arc<Schema>,
     columns: Vec<Column>,
@@ -306,26 +329,47 @@ impl DataFrame {
     /// profile dataframe
     /// Return json of metadata
     ///
-    pub fn profile(&self) {
-        let ncols = self.num_columns();
+    pub fn profile(&self) -> String {
+        // let ncols = self.num_columns();
         let nrows = self.num_rows();
         let colnames = self.columns();
         let coltypes: Vec<DataType> = self.column_types();
+        // meta data for single column
+        let mut columns_meta: Vec<ColumnMeta> = vec![];
 
-        println!("dataframe numcols: {}", ncols);
-        println!("dataframe numrows: {}", nrows);
-        println!("dataframe colnames: {:?}", colnames);
-        println!("dataframe coltypes: {:?}", coltypes);
+        // extract profile of each column
+        for name in colnames.iter() {
+            let colidx = self.column_index(name);
+            let singlecol = self.column(colidx);
+            let nunique = singlecol.nunique();
+            let coltype: DataType = singlecol.data_type().clone();
+            let categorical = singlecol.is_categorical(0.2);
 
-        let colidx = self.column_index("cat3");
-        let singlecol = self.column(colidx);
-        // let colhist = singlecol.hist(25, false);
-        // println!("colhist: {}", colhist);
-        // let uniques = singlecol.uniques().unwrap();
-        // println!("singlecol uniques: {:?}", uniques);
-        let nunique = singlecol.nunique();
-        println!("nunique: {}", nunique);
+            let colmeta = ColumnMeta{
+                hash: vec![],
+                nunique,
+                count: nrows,
+                categorical,
+                types: vec![coltype]
+            };
 
+            columns_meta.push(colmeta);
+        }
+
+        let profilemeta = ProfileMeta {
+            nrows,
+            ncols: colnames.len(),
+            columns: columns_meta
+        };
+
+        let dfmeta = DataFrameMeta{
+            datasource: String::from(""),
+            hash: String::from(""),
+            profile: profilemeta
+        };
+
+        let profile_str = serde_json::to_string(&dfmeta).unwrap();
+        profile_str
     }
 
 }
