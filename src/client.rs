@@ -5,11 +5,20 @@ use anyhow::Result;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::prelude::*;
-// use std::str;
 use crate::loaders::s3_connector::Storage;
 use tokio::runtime::Runtime;
 use once_cell::sync::Lazy;
+use crate::loaders::csv_format::{ CsvReader };
+use std::io::Cursor;
+use arrow::record_batch::RecordBatch;
+use crate::loaders::frame::DataFrame;
+use arrow::datatypes::DataType;
+// use arrow::csv::ReaderBuilder as ArrowReaderBuilder;
+// use crate::loaders::csv_format::Loader;
 
+
+// #[cfg(feature = "prettyprint")]
+// use arrow::util::print_batches;
 
 static RT: Lazy<Runtime> = Lazy::new(|| {
     Runtime::new().unwrap()
@@ -29,29 +38,7 @@ impl Frontend {
         // get configuration
         let config = get_configuration_from_file("./configuration.toml")?;
 
-        // create S3 connector
-        let storage = Storage::new();
-        // let (data,code)  =
-
-        // RT.handle().block_on(run());
-
-        // let fut = storage.get_object("synthetic_demo_data.csv".to_string());
-        // let data = Runtime.block_on(fut);
-        // let rt = Runtime::new().unwrap();
-        // let data = rt.block_on(async { storage.get_object("synthetic_demo_data.csv".to_string()).await  } ) ;
-        let fut = async { storage.get_object("synthetic_demo_data.csv".to_string()).await  };
-        let data = RT.handle().block_on(fut);
-
-
-        // dbg!("")
-
-        // rt.enter(|| fut);
-        // RT.handle().block_on(fut);
-
-        // let data_str = str::from_utf8(&data).unwrap();
-        // dbg!("S3 data: ", &data_str);
-        // dbg!("S3 status: ", &code);
-
+        // TODO different type dispatcher
 
         // get API url
         let url = format!("http://{}:{}", config.api.server, config.api.port);
@@ -81,7 +68,6 @@ impl Frontend {
                     None => false
                 };
 
-
                 if get_all {
                     let endpoint = format!("{}/data", url);
                     self.get_helper(endpoint, tokenfile)?;
@@ -93,7 +79,6 @@ impl Frontend {
                         Some(id) => String::from(id),
                         None => String::from("")
                     };
-
 
                     let endpoint = format!("{}/data/{}", url, id_to_fetch);
                     self.get_helper(endpoint, tokenfile)?;
@@ -109,7 +94,62 @@ impl Frontend {
             SubCommand::Publish => {
                 unimplemented!()
             },
+
+            SubCommand::Profile(t) => {
+                let input_to_fetch = match t.input.as_ref() {
+                    Some(input) => String::from(input),
+                    None => String::from("")
+                };
+                println!("input_to_fetch: {}", input_to_fetch);
+                let storage = Storage::new();
+
+                // TODO get this from input_to_fetch
+                let filename = String::from("synthetic_demo_data.csv");
+
+                let df = self.csv_reader_helper(storage, filename);
+                let _profile = df.profile();
+
+                Ok(())
+            },
+
+
         }
+    }
+
+    fn csv_reader_helper(&self, storage: Storage, filename: String) -> DataFrame {
+        let fut = async { storage.get_object(filename).await  };
+        let (data, data_type) = RT.handle().block_on(fut);
+        println!("content type: {}", data_type);
+
+        let data_str = String::from_utf8(data).unwrap();
+        let file = Cursor::new(&data_str[..]);
+        // from here on it's like a regular file descriptor
+        let mut reader = CsvReader::new(file)
+            .infer_schema(100)
+            .has_header(true)
+            .with_batch_size(128)
+            .finish();
+
+        let mut batches: Vec<RecordBatch> = vec![];
+        let mut has_next = true;
+        while has_next {
+            match reader.next().transpose() {
+                Ok(batch) => match batch {
+                    Some(batch) => batches.push(batch),
+                    None => { has_next = false; }
+                },
+
+                Err(_) => {
+                    has_next = false;
+                }
+            }
+        }
+        // println!("batches {:?}", batches);
+        let schema = batches[0].schema();
+        // println!("single batch schema: {} ", schema);
+        // println!("num batches: {}", batches.len());
+        let df = DataFrame::from_record_batches(schema, batches);
+        df
     }
 
     fn login_helper(&self, url: String, payload: serde_json::Value) -> Result<String, reqwest::Error> {
@@ -183,32 +223,6 @@ impl Frontend {
 
         Ok(())
     }
-
-    // async fn get_remote_object(&self) {
-    //     // connect to S3 bucket
-    //     // TODO get this from config
-    //     let endpoint = String::from("http://minio:9000");
-    //     let bucket_name = String::from("frankiebucket");
-    //     let filename: &str = "uk_cities_with_headers.csv";
-    //
-    //     // {
-    //     // "s3":
-    //     // {
-    //     //     "endpoint_url": "http://minio:9000",
-    //     //     "aws_access_key_id": "frag",
-    //     //     "aws_secret_access_key": "supersecretkey",
-    //     //     "bucket": "frankiebucket",
-    //     //     "key": "uk_cities_with_headers.csv"
-    //     // }
-    //     // }
-    //     let s3_connector = S3CustomClient::new(endpoint, bucket_name);
-    //     println!("{}", s3_connector);
-    //     // let result = s3_connector::get_object(filename)
-    //     //         .await
-    //     //         .expect("Couldn't GET remote object");
-    //     // println!("{:#?}", result);
-    // }
-
 
 }
 

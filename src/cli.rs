@@ -5,10 +5,12 @@ use clap::Clap;
 // get
 // set
 // publish
+// profile
 
 // cargo run -- get --id 0x8877
 // cargo run -- get --all
 
+// cargo run -- profile --input filename.csv
 
 // xtract --input=mydata.csv --output=meta.txt --publish=true
 // xtract --input=s3://mydata.csv --output=meta.txt --publish=true
@@ -23,6 +25,15 @@ pub struct Get {
     pub all: Option<bool>,
 }
 
+#[derive(Clap, Clone)]
+pub struct Profile {
+    #[clap(long)]
+    pub input: Option<String>,
+
+    // #[clap(long, conflicts_with="id", takes_value=false)]
+    // pub all: Option<bool>,
+}
+
 #[derive(Clap)]
 pub enum SubCommand {
     #[clap(version = "0.0.1", author = "francesco@amethix.com")]
@@ -33,7 +44,9 @@ pub enum SubCommand {
     /// Set metadata of remote assets
     Set,
     /// Publish metadata to remote service
-    Publish
+    Publish,
+    /// Profile of data passed as argument
+    Profile(Profile)
 }
 
 #[derive(Clap)]
