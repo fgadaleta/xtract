@@ -235,7 +235,7 @@ pub struct DataFrameMeta {
 pub struct ProfileMeta {
     nrows: usize,
     ncols: usize,
-    columns: Vec<ColumnMeta>
+    columns: HashMap<String, ColumnMeta>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -325,7 +325,6 @@ impl DataFrame {
         }
     }
 
-    /// TODO
     /// profile dataframe
     /// Return json of metadata
     ///
@@ -335,7 +334,7 @@ impl DataFrame {
         let colnames = self.columns();
         let coltypes: Vec<DataType> = self.column_types();
         // meta data for single column
-        let mut columns_meta: Vec<ColumnMeta> = vec![];
+        let mut columns_meta: HashMap<String, ColumnMeta> = HashMap::new();
 
         // extract profile of each column
         for name in colnames.iter() {
@@ -352,8 +351,7 @@ impl DataFrame {
                 categorical,
                 types: vec![coltype]
             };
-
-            columns_meta.push(colmeta);
+            columns_meta.insert(name.to_string(), colmeta);
         }
 
         let profilemeta = ProfileMeta {

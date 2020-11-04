@@ -9,3 +9,8 @@ password = "1234"
 
 [settings]
 tokenfile = "./token.dat"
+
+[storage]
+url = "http://localhost:9000"
+access_key = "frag"
+secret_access_key = ""
