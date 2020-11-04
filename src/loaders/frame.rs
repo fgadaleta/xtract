@@ -9,7 +9,7 @@ use serde_json;
 use serde_json::Value;
 use serde::{Deserialize, Serialize};
 use crate::loaders::error::*;
-
+use std::hash::{Hash, Hasher};
 
 
 /// Generic type that encapsulates vecs of primitive types
@@ -31,7 +31,7 @@ impl GenericVector {
 
 }
 
-#[derive(Clone)]
+#[derive(Clone, Hash)]
 pub struct ChunkedArray {
     chunks: Vec<Arc<dyn Array>>,
     num_rows: usize,
