@@ -100,23 +100,42 @@ impl Frontend {
                     Some(input) => String::from(input),
                     None => String::from("")
                 };
-                println!("input_to_fetch: {}", input_to_fetch);
-                let storage = Storage::new();
 
-                // TODO get this from input_to_fetch
-                let filename = String::from("synthetic_demo_data.csv");
+                let input_location: String = input_to_fetch
+                                                            .chars()
+                                                            .skip(0)
+                                                            .take(5)
+                                                            .collect();
 
-                let df = self.csv_reader_helper(storage, filename);
-                let profile = df.profile();
-                println!("Dataset profile: {}", profile);
+                match input_location.as_ref() {
+                    // try s3 bucket
+                    "s3://" => {
+                            let filename: String = input_to_fetch.chars().skip(5).collect();
+                            println!("filename input_to_fetch: {}", filename);
+                            let storage = Storage::new();
+                            // TODO get this from input_to_fetch
+                            // let filename = String::from("synthetic_demo_data.csv");
+                            let df = self.csv_reader_helper(storage, filename);
+                            let profile = df.profile();
+                            println!("Dataset profile: {}", profile);
+                    },
 
+                    // try local file
+                    _ => {
+
+                            unimplemented!()
+                    }
+
+                }
                 Ok(())
             },
-
-
         }
     }
 
+
+    // TODO rename this to csv_reader_from_s3
+    /// Get filename from S3 bucket (storage) before profiling
+    ///
     fn csv_reader_helper(&self, storage: Storage, filename: String) -> DataFrame {
         let fut = async { storage.get_object(filename).await  };
         let (data, data_type) = RT.handle().block_on(fut);
