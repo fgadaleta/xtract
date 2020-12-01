@@ -13,8 +13,8 @@ use clap::Clap;
 // cargo run -- profile --input filename.csv
 // cargo run -- profile -i filename.csv
 
-// xtract --input=mydata.csv --output=meta.txt --publish=true
-// xtract --input=s3://mydata.csv --output=meta.txt --publish=true
+// xtract profile --input=mydata.csv --output=meta.txt --publish=true
+// xtract profile --input=s3://mydata.csv --output=meta.txt --publish=true
 
 
 #[derive(Clap, Clone)]

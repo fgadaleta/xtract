@@ -1,6 +1,6 @@
 use std::sync::{Arc, Mutex};
 use std::collections::{HashMap, HashSet};
-use arrow::datatypes::{Field, Schema, DataType };
+use arrow::datatypes::{Field, Schema, DataType, ArrowPrimitiveType };
 use arrow::array::*;
 use arrow::record_batch::RecordBatch;
 use histo_fp::Histogram;
@@ -31,7 +31,7 @@ impl GenericVector {
 
 }
 
-#[derive(Clone, Hash)]
+#[derive(Clone)]
 pub struct ChunkedArray {
     chunks: Vec<Arc<dyn Array>>,
     num_rows: usize,
@@ -224,6 +224,40 @@ impl Column {
     }
 }
 
+// pub fn col_to_string_arrays(column: &Column) -> Result<Vec<&StringArray>> {
+//     let mut arrays = vec![];
+//     for chunk in column.data().chunks() {
+//         arrays.push(chunk.as_any().downcast_ref::<StringArray>()) // .unwrap())
+//     }
+//     Ok(arrays)
+// }
+
+
+// pub fn col_to_prim_arrays<T>(column: &Column) -> Vec<&PrimitiveArray<T>>
+// where
+//     T: ArrowPrimitiveType,
+// {
+//     match column.data_type() {
+//         DataType::Int64 => {},
+//         DataType::Float64 => {
+//             // let mut arrays: Vec<&PrimitiveArray<R64>> = vec![];
+//             for chunk in column.data().chunks() {
+//                 let some = chunk.as_any().downcast_ref::<PrimitiveArray<Float64Array>>().unwrap();
+//             }
+
+//         },
+
+//         // DataType::Utf8 => {},
+//         _ => panic!("Unsupported datatype"),
+//     }
+
+//     let mut arrays: Vec<&PrimitiveArray<T>> = vec![];
+//     for chunk in column.data().chunks() {
+//         arrays.push(chunk.as_any().downcast_ref::<PrimitiveArray<T>>().unwrap())
+//     }
+//     arrays
+// }
+
 
 #[derive(Serialize, Deserialize)]
 pub struct DataFrameMeta {
@@ -352,6 +386,10 @@ impl DataFrame {
                 types: vec![coltype]
             };
             columns_meta.insert(name.to_string(), colmeta);
+            // let som = col_to_string_arrays(singlecol);
+            // let arr:Vec<&arrow::array::PrimitiveArray<f64> = col_to_prim_arrays(singlecol);
+            // println!("{:?}", som);
+
         }
 
         let profilemeta = ProfileMeta {

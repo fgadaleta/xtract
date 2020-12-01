@@ -92,56 +92,102 @@ impl NcodeDataFrame {
 
             match coltype {
                 DataType::Int64 => {
-                    let _something: Series = colvalues
-                        .sort(false).i64()
-                        .expect("series was not an i64 dtype")
-                        .into_iter()
-                        .map(|opt_angle| opt_angle.map(|angle|
-                            {
-                                let num_str = angle.to_ne_bytes();
+                    let coliter = colvalues
+                                        .i64()
+                                        .expect("something")
+                                        .into_iter();
+
+                    for element in coliter {
+                        match element {
+                            Some(el) => {
+                                let num_str = el.to_ne_bytes();
                                 hasher.write(&num_str);
-                                angle
-                            }
-                        ))
-                        .collect();
+                            },
+                            _ => panic!("Some element is wrong")
+                        }
+                    }
+
+                    // let _something: Series = colvalues
+                    //     .sort(false).i64()
+                    //     .expect("series was not an i64 dtype")
+                    //     .into_iter()
+                    //     .map(|opt_angle| opt_angle.map(|angle|
+                    //         {
+                    //             let num_str = angle.to_ne_bytes();
+                    //             hasher.write(&num_str);
+                    //             angle
+                    //         }
+                    //     ))
+                    //     .collect();
 
                 },
                 DataType::Float64 => {
-                    let _something: Series = colvalues
-                    .sort(false).f64()
-                    .expect("series was not an f64 dtype")
-                    .into_iter()
-                    .map(|opt_elem| opt_elem.map(|elem|
-                        {
-                            let num_str = elem.to_ne_bytes();
-                            hasher.write(&num_str);
-                            elem
+                    let coliter = colvalues
+                    .f64()
+                    .expect("something")
+                    .into_iter();
+
+                    for element in coliter {
+                        match element {
+                            Some(el) => {
+                                let num_str = el.to_ne_bytes();
+                                hasher.write(&num_str);
+                            },
+                            _ => panic!("Some element is wrong")
                         }
-                    ))
-                    .collect();
+                    }
+
+                    // let _something: Series = colvalues
+                    // .sort(false).f64()
+                    // .expect("series was not an f64 dtype")
+                    // .into_iter()
+                    // .map(|opt_elem| opt_elem.map(|elem|
+                    //     {
+                    //         let num_str = elem.to_ne_bytes();
+                    //         hasher.write(&num_str);
+                    //         elem
+                    //     }
+                    // ))
+                    // .collect();
                 },
 
                 // generic string
                 DataType::Utf8 => {
-                    let _something: Series = colvalues
-                    .sort(false).utf8()
-                    .expect("series was not an utf8 dtype")
-                    .into_iter()
-                    .map(|opt_angle| opt_angle.map(|angle|
-                        {
-                            // let num_str = angle.to_ne_bytes();
-                            let elem_str = angle.as_bytes();
-                            hasher.write(&elem_str);
-                            elem_str
+                    let coliter = colvalues
+                    .utf8()
+                    .expect("something")
+                    .into_iter();
+
+                    for element in coliter {
+                        match element {
+                            Some(el) => {
+                                let elem_str = el.as_bytes();
+                                hasher.write(&elem_str);
+                            },
+                            _ => panic!("Some element is wrong")
                         }
-                    ))
-                    .collect();
+                    }
+
+                    // let _something: Series = colvalues
+                    // .sort(false).utf8()
+                    // .expect("series was not an utf8 dtype")
+                    // .into_iter()
+                    // .map(|opt_angle| opt_angle.map(|angle|
+                    //     {
+                    //         let elem_str = angle.as_bytes();
+                    //         hasher.write(&elem_str);
+                    //         // let ret = elem_str.to_string();
+                    //         0
+                    //     }
+                    // ))
+                    // .collect();
+
                 },
                 _ => unimplemented!()
             }
 
-            let hash = hasher.finish().to_string();
-            println!("column hash: {:x}", hasher.finish());
+            let colhash = hasher.finish().to_string();
+            println!("column hash: {}", colhash);
 
 
             let null_count = colvalues.null_count();
@@ -150,11 +196,6 @@ impl NcodeDataFrame {
 
             // TODO calculate hash of colvalues after sorting
             // let sorted_colvalues: Vec<_> = colvalues.sort(false).into();
-
-            // let mut hash = DefaultHasher::new();
-            // vec.hash(&mut hash);
-            // println!("{}", hash.finish());
-
 
             // TODO
 
