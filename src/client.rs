@@ -4,17 +4,18 @@ use serde_json::{ Value, json };
 use anyhow::Result;
 use std::collections::HashMap;
 use std::fs::File;
+use std::sync::Arc;
 use std::io::prelude::*;
 use crate::loaders::s3_connector::Storage;
 use tokio::runtime::Runtime;
 use once_cell::sync::Lazy;
-use crate::loaders::csv_format::{ CsvReader };
+use crate::loaders::csv_format::{ CsvReader as csvr };
 use std::io::Cursor;
 use arrow::record_batch::RecordBatch;
 use crate::loaders::frame::DataFrame;
+use crate::loaders::dataframe::NcodeDataFrame;
+use polars::prelude::*;
 use arrow::datatypes::DataType;
-// use arrow::csv::ReaderBuilder as ArrowReaderBuilder;
-// use crate::loaders::csv_format::Loader;
 
 
 // #[cfg(feature = "prettyprint")]
@@ -122,8 +123,21 @@ impl Frontend {
 
                     // try local file
                     _ => {
+                            // input_to_fetch is a local file
+                            let file = File::open(input_to_fetch)
+                                .expect("could not read file");
 
-                            unimplemented!()
+                            let df = CsvReader::new(file)
+                                .infer_schema(None)
+                                .has_header(true)
+                                .finish().unwrap();
+
+                            dbg!(&df);
+
+                            let dataframe = NcodeDataFrame { dataframe: Arc::new(df) };
+                            let prof = dataframe.profile();
+
+
                     }
 
                 }
@@ -144,7 +158,7 @@ impl Frontend {
         let data_str = String::from_utf8(data).unwrap();
         let file = Cursor::new(&data_str[..]);
         // from here on it's like a regular file descriptor
-        let mut reader = CsvReader::new(file)
+        let mut reader = csvr::new(file)
             .infer_schema(100)
             .has_header(true)
             .with_batch_size(128)
