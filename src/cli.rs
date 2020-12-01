@@ -11,6 +11,7 @@ use clap::Clap;
 // cargo run -- get --all
 
 // cargo run -- profile --input filename.csv
+// cargo run -- profile -i filename.csv
 
 // xtract --input=mydata.csv --output=meta.txt --publish=true
 // xtract --input=s3://mydata.csv --output=meta.txt --publish=true
@@ -27,7 +28,7 @@ pub struct Get {
 
 #[derive(Clap, Clone)]
 pub struct Profile {
-    #[clap(long)]
+    #[clap(short, long)]
     pub input: Option<String>,
 
     // #[clap(long, conflicts_with="id", takes_value=false)]
