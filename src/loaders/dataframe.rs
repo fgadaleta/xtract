@@ -6,6 +6,7 @@ use std::collections::HashMap;
 use arrow::datatypes::DataType;
 use serde::{Deserialize, Serialize};
 use regex::Regex;
+use histo_fp::Histogram;
 
 use crate::parsers::iban::validate_iban;
 
@@ -42,14 +43,37 @@ pub enum ColumnType {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+pub struct Hist {
+    bins: Vec<f64>,
+    counts: Vec<u64>
+}
+
+impl Hist {
+    pub fn new() -> Self {
+
+        Self {
+            bins: vec![],
+            counts: vec![]
+         }
+    }
+
+    pub fn update(&mut self, bins: Vec<f64>, counts: Vec<u64>) {
+        self.bins= bins;
+        self.counts = counts;
+    }
+
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct NumericFeatures {
     min: f64,
     max: f64,
     mean: f64,
     variance: f64,
     std: f64,
-    // TODO histogram
+    hist: Option<Hist>,
 }
+
 
 impl NumericFeatures {
 
@@ -59,13 +83,42 @@ impl NumericFeatures {
         let mean: f64 = data.mean().unwrap();
         let std: f64  = data.std_as_series().sum().unwrap();
         let variance: f64  = data.var_as_series().sum().unwrap();
+        // hasher not stricly numerical but here for optimization (scanning only once)
+        // let mut hasher = DefaultHasher::new();
+        // let mut histogram = Histogram::with_buckets(10, None);
+        //
+        // let coliter = data
+        //             .i64()
+        //             .expect("Something wrong happened reading column")
+        //             .into_iter();
+        // for element in coliter {
+        //     match element {
+        //         Some(el) => {
+        //             // histogram.add(el as f64);
+        //             let num_str = el.to_ne_bytes();
+        //             // hasher.write(&num_str);
+        //         },
+        //         _ => panic!("Some element is wrong")
+        //     }
+        // }
+        //
+        // let mut bins: Vec<f64> = vec![];
+        // let mut counts: Vec<u64> = vec![];
+        // for bucket in histogram.buckets() {
+        //     bins.push(bucket.start());
+        //     counts.push(bucket.count());
+        //     // do_stuff(bucket.start(), bucket.end(), bucket.count());
+        // }
+        // let hist = Hist{bins, counts};
+        // let hist = Hist::new();
 
         Self{
             min,
             max,
             mean,
             variance,
-            std
+            std,
+            hist: Some(Hist::new())
         }
     }
 
@@ -183,11 +236,8 @@ impl NcodeDataFrame {
             let colfeats: ColumnFeatures;
 
             match coltype {
-
                 DataType::Int64 => {
-                    let numeric_features = NumericFeatures::get_numeric_features(&colvalues);
-                    colfeats = ColumnFeatures::Numeric{features: numeric_features};
-
+                    let mut histogram = Histogram::with_buckets(10, None);
                     let coliter = colvalues
                                         .i64()
                                         .expect("Something wrong happened reading column")
@@ -196,32 +246,64 @@ impl NcodeDataFrame {
                     for element in coliter {
                         match element {
                             Some(el) => {
+                                // count into histogram
+                                histogram.add(el as f64);
                                 let num_str = el.to_ne_bytes();
                                 hasher.write(&num_str);
                             },
                             _ => panic!("Some element is wrong")
                         }
                     }
+
+                    let mut bins: Vec<f64> = vec![];
+                    let mut counts: Vec<u64> = vec![];
+
+                    for bucket in histogram.buckets() {
+                        bins.push(bucket.start());
+                        counts.push(bucket.count());
+                        // do_stuff(bucket.start(), bucket.end(), bucket.count());
+                    }
+
+                    let hist = Hist { bins, counts };
+
+                    let mut numeric_features = NumericFeatures::get_numeric_features(&colvalues);
+                    numeric_features.hist = Some(hist);
+                    colfeats = ColumnFeatures::Numeric{features: numeric_features};
                 },
 
                 DataType::Float64 => {
-                    let numeric_features = NumericFeatures::get_numeric_features(&colvalues);
-                    colfeats = ColumnFeatures::Numeric{features: numeric_features};
+                    let mut histogram = Histogram::with_buckets(10, None);
 
                     let coliter = colvalues
-                    .f64()
-                    .expect("Something wrong happened reading column values")
-                    .into_iter();
+                                    .f64()
+                                    .expect("Something wrong happened reading column values")
+                                    .into_iter();
 
                     for element in coliter {
                         match element {
                             Some(el) => {
+                                // count into histogram
+                                histogram.add(el);
                                 let num_str = el.to_ne_bytes();
                                 hasher.write(&num_str);
                             },
                             _ => panic!("Some element is wrong")
                         }
                     }
+                    let mut bins: Vec<f64> = vec![];
+                    let mut counts: Vec<u64> = vec![];
+
+                    for bucket in histogram.buckets() {
+                        bins.push(bucket.start());
+                        counts.push(bucket.count());
+                    }
+
+                    let hist = Hist { bins, counts };
+                    let mut numeric_features = NumericFeatures::get_numeric_features(&colvalues);
+                    numeric_features.hist = Some(hist);
+                    colfeats = ColumnFeatures::Numeric{features: numeric_features};
+
+
                 },
                 // generic string
                 DataType::Utf8 => {
