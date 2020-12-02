@@ -2,6 +2,7 @@ mod cli;
 mod client;
 mod configuration;
 mod loaders;
+mod parsers;
 
 use clap::Clap;
 use anyhow::Result;
