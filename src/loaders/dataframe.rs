@@ -9,7 +9,24 @@ use regex::Regex;
 
 use crate::parsers::iban::validate_iban;
 
-#[derive(Hash, Eq, PartialEq, Debug)]
+
+/// Struct for JSON serialization
+///
+#[derive(Serialize, Deserialize)]
+pub struct DataFrameMeta {
+    datasource: String,
+    hash: String,
+    profile: ProfileMeta
+}
+#[derive(Serialize, Deserialize)]
+pub struct ProfileMeta {
+    nrows: usize,
+    ncols: usize,
+    columns: HashMap<String, Column>,
+}
+
+
+#[derive(Hash, Eq, PartialEq, Debug, Serialize, Deserialize)]
 pub enum ColumnType {
     Str,
     Float,
@@ -65,21 +82,26 @@ pub struct StringColumnFeatures {
 }
 
 
-#[derive(Default)]
+#[derive(Default, Serialize, Deserialize)]
 pub struct Column {
     name: String,
-    hash: Vec<u8>,
+    hash: String,
     nunique: usize,
     count: usize,
     null_count: usize,
-    types: Vec<ColumnType>
+    categorical: bool,
+    types: HashMap<ColumnType, usize>
 }
 
 
 impl Column {
     /// Create new metadata for column
-    pub fn new(name: String, hash: Vec<u8>, nunique: usize,
-               count: usize, null_count: usize, types: Vec<ColumnType>) -> Self {
+    pub fn new(name: String, hash: String, nunique: usize,
+               count: usize, null_count: usize, types: HashMap<ColumnType, usize>) -> Self {
+
+        assert!(count > 0);
+        let ratio = nunique as f64 / count as f64;
+        const THRESHOLD: f64 = 0.2;
 
         Column {
             name,
@@ -87,18 +109,22 @@ impl Column {
             nunique,
             count,
             null_count,
+            categorical: ratio < THRESHOLD,
             types
             }
     }
 
-    pub fn is_categorical(&self, threshold: f64) -> bool {
+    /// Set categorical flag wrt to threshold
+    ///
+    pub fn set_categorical(&mut self, threshold: f64) {
         assert!(self.count > 0);
 
         let ratio = self.nunique as f64 / self.count as f64;
-        ratio < threshold
+        self.categorical = ratio < threshold;
+
     }
 
-    pub fn set_hash(&mut self, hash: Vec<u8>) {
+    pub fn set_hash(&mut self, hash: String) {
         self.hash = hash;
     }
 
@@ -132,6 +158,9 @@ impl NcodeDataFrame {
         let colnames = self.dataframe.get_column_names();
         let mut coltypes: Vec<&DataType> = vec![];
 
+        // meta data for single column
+        let mut columns_meta: HashMap<String, Column> = HashMap::new();
+
         for colname in colnames {
             // extract values of this column
             let colvalues = self.dataframe.column(colname).unwrap();
@@ -140,9 +169,10 @@ impl NcodeDataFrame {
             // println!("{:?}", &coltype);
             coltypes.push(coltype);
             let mut hasher = DefaultHasher::new();
-            let mut parsed_types: HashMap<ColumnType, u32> = HashMap::new();
+            let mut parsed_types: HashMap<ColumnType, usize> = HashMap::new();
 
             match coltype {
+
                 DataType::Int64 => {
                     let numeric_features = NumericColumnFeatures::get_numeric_features(&colvalues);
                     // let numeric_features = get_numeric_features(&colvalues);
@@ -239,20 +269,33 @@ impl NcodeDataFrame {
             // get number of unique values
             let nunique = colvalues.unique().unwrap().len();
 
+
             let col = Column::new(colname.to_string(),
-                                        vec![],
+                                        colhash,
                                         nunique,
                                         nrows,
                                         null_count,
-                                        vec![]);
-            columns.push(col);
+                                        parsed_types,
+                                    );
 
+            columns_meta.insert(colname.to_string(), col);
         }
 
-        // TODO columns of string type are scanned element-wise to infer complex types
+        let profilemeta = ProfileMeta {
+            nrows,
+            ncols,
+            columns: columns_meta
+        };
 
+        let dfmeta = DataFrameMeta{
+            datasource: String::from(""),
+            // TODO hash of all sorted columns hashes
+            hash: String::from(""),
+            profile: profilemeta
+        };
 
-        String::from("")
+        let profile_str = serde_json::to_string_pretty(&dfmeta).unwrap();
+        profile_str
     }
 
 }

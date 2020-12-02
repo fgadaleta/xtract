@@ -135,7 +135,9 @@ impl Frontend {
                             dbg!(&df);
 
                             let dataframe = NcodeDataFrame { dataframe: Arc::new(df) };
-                            let prof = dataframe.profile();
+                            let profile = dataframe.profile();
+
+                            println!("Profile: {}", profile);
 
 
                     }
