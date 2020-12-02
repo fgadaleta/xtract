@@ -6,7 +6,6 @@ use std::collections::HashMap;
 use arrow::datatypes::DataType;
 use serde::{Deserialize, Serialize};
 use regex::Regex;
-use lazy_static::lazy_static;
 
 use crate::parsers::iban::validate_iban;
 
@@ -31,7 +30,28 @@ pub struct NumericColumnFeatures {
     max: f64,
     mean: f64,
     variance: f64,
-    std: f64
+    std: f64,
+    // TODO histogram
+}
+
+impl NumericColumnFeatures {
+
+    fn get_numeric_features(data: &Series) -> Self {
+        let max: f64 = data.max().unwrap();
+        let min: f64 = data.min().unwrap();
+        let mean: f64 = data.mean().unwrap();
+        let std: f64  = data.std_as_series().sum().unwrap();
+        let variance: f64  = data.var_as_series().sum().unwrap();
+
+        Self{
+            min,
+            max,
+            mean,
+            variance,
+            std
+        }
+    }
+
 }
 
 #[derive(Debug)]
@@ -43,46 +63,6 @@ pub struct StringColumnFeatures {
     n_lowercase: usize,
     n_uppercase: usize
 }
-
-
-/// Checks whether all characters in this address are valid. Returns a true if all characters are
-/// valid, false otherwise.
-/// From https://docs.rs/iban_validate/0.3.1/src/iban/iban_standard.rs.html
-// fn validate_characters(address: &str) -> bool {
-//     lazy_static! {
-//         static ref RE: Regex = Regex::new(r"^[A-Z]{2}\d{2}[A-Z\d]{1,30}$")
-//             .expect("Could not compile regular expression. Please file an issue at \
-//                 https://github.com/ThomasdenH/iban_validate.");
-//     }
-//     RE.is_match(address)
-// }
-
-// pub fn validate_iban(address: &str) -> bool {
-//     return
-//     // Check the characters
-//     validate_characters(&address)
-//       // Check the checksum
-//       && compute_checksum(&address) == 1;
-// }
-
-// fn compute_checksum(address: &str) -> u8 {
-//     address.chars()
-//     // Move the first four characters to the back
-//     .cycle()
-//     .skip(4)
-//     .take(address.len())
-//     // Calculate the checksum
-//     .fold(0, |acc, c| {
-//       // Convert '0'-'Z' to 0-35
-//       let digit = c.to_digit(36)
-//         .expect("An address was supplied to compute_checksum with an invalid character. \
-//                     Please file an issue at https://github.com/ThomasdenH/iban_validate.");
-//       // If the number consists of two digits, multiply by 100
-//       let multiplier = if digit > 9 { 100 } else { 10 };
-//       // Calculate modulo
-//       (acc * multiplier + digit) % 97
-//     }) as u8
-// }
 
 
 #[derive(Default)]
@@ -125,25 +105,8 @@ impl Column {
 }
 
 
-fn get_numeric_features(data: &Series) -> NumericColumnFeatures {
-    let max: f64 = data.max().unwrap();
-    let min: f64 = data.min().unwrap();
-    let mean: f64 = data.mean().unwrap();
-    let std: f64  = data.std_as_series().sum().unwrap();
-    let variance: f64  = data.var_as_series().sum().unwrap();
-
-    NumericColumnFeatures{
-        min,
-        max,
-        mean,
-        variance,
-        std
-
-    }
-}
-
 fn get_string_features(data: &Series) -> StringColumnFeatures {
-
+    // WIP
     StringColumnFeatures {
         min_len: 0,
         max_len: 0,
@@ -174,16 +137,15 @@ impl NcodeDataFrame {
             let colvalues = self.dataframe.column(colname).unwrap();
             // extract inferred column type
             let coltype = colvalues.dtype();
-            println!("{:?}", &coltype);
+            // println!("{:?}", &coltype);
             coltypes.push(coltype);
             let mut hasher = DefaultHasher::new();
-            // let mut parsed_types: Vec<ColumnType> = vec![];
             let mut parsed_types: HashMap<ColumnType, u32> = HashMap::new();
-
 
             match coltype {
                 DataType::Int64 => {
-                    let numeric_features = get_numeric_features(&colvalues);
+                    let numeric_features = NumericColumnFeatures::get_numeric_features(&colvalues);
+                    // let numeric_features = get_numeric_features(&colvalues);
                     println!("num_feats: {:?}", &numeric_features);
 
                     let coliter = colvalues
@@ -204,7 +166,8 @@ impl NcodeDataFrame {
 
                 DataType::Float64 => {
                     // TODO compute mean, std, max,min
-                    let numeric_features = get_numeric_features(&colvalues);
+                    let numeric_features = NumericColumnFeatures::get_numeric_features(&colvalues);
+                    // let numeric_features = get_numeric_features(&colvalues);
                     println!("num_feats: {:?}", &numeric_features);
 
                     let coliter = colvalues
@@ -229,7 +192,7 @@ impl NcodeDataFrame {
 
                     let coliter = colvalues
                     .utf8()
-                    .expect("something")
+                    .expect("Something wrong happened converting element to string")
                     .into_iter();
 
                     let mut total_len: usize = 0;
@@ -238,7 +201,6 @@ impl NcodeDataFrame {
                         match element {
                             Some(el) => {
                                 let is_email = regex_email_address.is_match(el);
-                                // let is_iban = regex_iban.is_match(el);
                                 let is_iban = validate_iban(el);
 
                                 if is_email {
@@ -263,22 +225,19 @@ impl NcodeDataFrame {
                             _ => panic!("Some element is wrong")
                         }
                     }
-
                     let mean_element_len = total_len as f64 / nrows as f64;
-
                 },
+
                 _ => unimplemented!()
             }
 
             let colhash = hasher.finish().to_string();
             println!("column hash: {}", colhash);
-
             println!("parsed_types: {:?}", parsed_types);
 
             let null_count = colvalues.null_count();
             // get number of unique values
             let nunique = colvalues.unique().unwrap().len();
-
 
             let col = Column::new(colname.to_string(),
                                         vec![],
@@ -291,8 +250,6 @@ impl NcodeDataFrame {
         }
 
         // TODO columns of string type are scanned element-wise to infer complex types
-
-
 
 
         String::from("")
