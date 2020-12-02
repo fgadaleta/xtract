@@ -109,7 +109,7 @@ pub struct StringFeatures {
 }
 
 impl StringFeatures {
-    fn get_string_features(data: &Series) -> Self {
+    fn get_string_features(_data: &Series) -> Self {
         // TODO WIP
 
         Self {
@@ -187,7 +187,6 @@ impl Column {
 
 pub struct NcodeDataFrame {
     pub dataframe: Arc<DataFrame>,
-    // columns metadata
 }
 
 impl NcodeDataFrame {
@@ -199,10 +198,7 @@ impl NcodeDataFrame {
         // meta data for single column
         let mut columns_meta: HashMap<String, Column> = HashMap::new();
 
-        // progress bars
-        let m = MultiProgress::new();
-
-        for (i, colname) in colnames.iter().enumerate() {
+        for (_i, colname) in colnames.iter().enumerate() {
             // extract values of this column
             let colvalues = self.dataframe.column(colname).unwrap();
             // extract inferred column type
@@ -224,10 +220,6 @@ impl NcodeDataFrame {
             match coltype {
                 DataType::Int64 => {
                     let mut histogram = Histogram::with_buckets(10, None);
-                    // let coliter = colvalues
-                    //                     .i64()
-                    //                     .expect("Something wrong happened reading column")
-                    //                     .into_iter();
                     let mut j = 0;
                     colvalues
                             .i64()
@@ -265,27 +257,6 @@ impl NcodeDataFrame {
 
                 DataType::Float64 => {
                     let mut histogram = Histogram::with_buckets(10, None);
-                    // let coliter = colvalues
-                    //                 .f64()
-                    //                 .expect("Something wrong happened reading column values")
-                    //                 .into_iter();
-                    //
-                    // for (j, element) in coliter.enumerate() {
-                    //     match element {
-                    //         Some(el) => {
-                    //             // count into histogram
-                    //             histogram.add(el);
-                    //             let num_str = el.to_ne_bytes();
-                    //             hasher.write(&num_str);
-                    //
-                    //             // update progress bar
-                    //             pb.inc(1);
-                    //             pb.set_message(&format!("{:3}%", 100 * j / nrows));
-                    //         },
-                    //         _ => panic!("Some element is wrong")
-                    //     }
-                    // }
-
                     let mut j = 0;
                     colvalues
                             .f64()
@@ -326,12 +297,6 @@ impl NcodeDataFrame {
 
                     // TODO
                     // get_string_features(&colvalues) and move parsing into get_string_features
-                    //
-                    // let coliter = colvalues
-                    //         .utf8()
-                    //         .expect("Something wrong happened converting element to string")
-                    //         .into_iter();
-
                     let string_features = StringFeatures::get_string_features(&colvalues);
                     colfeats = ColumnFeatures::String{features: string_features};
                     let mut total_len: usize = 0;
@@ -368,33 +333,8 @@ impl NcodeDataFrame {
                                     _ => panic!("ciao")
                                 }
                             });
-                    // for (j, element) in coliter.enumerate() {
-                    //     match element {
-                    //         Some(el) => {
-                    //             let is_email = regex_email_address.is_match(el);
-                    //             let is_iban = validate_iban(el);
-                    //             if is_email {
-                    //                 *parsed_types.entry(ColumnType::Email).or_insert(0) += 1;
-                    //             }
-                    //             // TODO all types here
-                    //             else if is_iban {
-                    //                 *parsed_types.entry(ColumnType::Iban).or_insert(0) += 1;
-                    //              }
-                    //             else {
-                    //                 *parsed_types.entry(ColumnType::Unknown).or_insert(0) += 1;
-                    //             }
-                    //             let elem_str = el.as_bytes();
-                    //             hasher.write(&elem_str);
-                    //             // add len of single element
-                    //             total_len += elem_str.len();
-                    //             // update progress bar
-                    //             pb.inc(1);
-                    //             pb.set_message(&format!("{:3}%", 100 * j / nrows));
-                    //         },
-                    //         _ => panic!("Some element is wrong")
-                    //     }
-                    // }
-                    let mean_element_len = total_len as f64 / nrows as f64;
+
+                    let _mean_element_len = total_len as f64 / nrows as f64;
                 },
 
                 _ => unimplemented!()
