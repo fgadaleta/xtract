@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 use regex::Regex;
 use histo_fp::Histogram;
 use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
+use rayon::prelude::*;
 
 use crate::parsers::iban::validate_iban;
 
@@ -223,27 +224,30 @@ impl NcodeDataFrame {
             match coltype {
                 DataType::Int64 => {
                     let mut histogram = Histogram::with_buckets(10, None);
+                    // let coliter = colvalues
+                    //                     .i64()
+                    //                     .expect("Something wrong happened reading column")
+                    //                     .into_iter();
+                    let mut j = 0;
+                    colvalues
+                            .i64()
+                            .expect("Something wrong happened reading column")
+                            .into_iter()
+                            .for_each(|element| {
+                                match element {
+                                    Some(el) => {
+                                        histogram.add(el as f64);
+                                        let num_str = el.to_ne_bytes();
+                                        hasher.write(&num_str);
+                                        // update progress bar
+                                        pb.inc(1);
+                                        pb.set_message(&format!("{:3}%", 100 * j / nrows));
+                                        j += 1;
+                                    },
 
-                    let coliter = colvalues
-                                        .i64()
-                                        .expect("Something wrong happened reading column")
-                                        .into_iter();
-
-                    for (j, element) in coliter.enumerate() {
-                        match element {
-                            Some(el) => {
-                                // count into histogram
-                                histogram.add(el as f64);
-                                let num_str = el.to_ne_bytes();
-                                hasher.write(&num_str);
-
-                                // update progress bar
-                                pb.inc(1);
-                                pb.set_message(&format!("{:3}%", 100 * j / nrows));
-                            },
-                            _ => panic!("Some element is wrong")
-                        }
-                    }
+                                    _ => panic!("ciao")
+                                }
+                            });
 
                     let mut bins: Vec<f64> = vec![];
                     let mut counts: Vec<u64> = vec![];
@@ -261,34 +265,55 @@ impl NcodeDataFrame {
 
                 DataType::Float64 => {
                     let mut histogram = Histogram::with_buckets(10, None);
-                    let coliter = colvalues
-                                    .f64()
-                                    .expect("Something wrong happened reading column values")
-                                    .into_iter();
+                    // let coliter = colvalues
+                    //                 .f64()
+                    //                 .expect("Something wrong happened reading column values")
+                    //                 .into_iter();
+                    //
+                    // for (j, element) in coliter.enumerate() {
+                    //     match element {
+                    //         Some(el) => {
+                    //             // count into histogram
+                    //             histogram.add(el);
+                    //             let num_str = el.to_ne_bytes();
+                    //             hasher.write(&num_str);
+                    //
+                    //             // update progress bar
+                    //             pb.inc(1);
+                    //             pb.set_message(&format!("{:3}%", 100 * j / nrows));
+                    //         },
+                    //         _ => panic!("Some element is wrong")
+                    //     }
+                    // }
 
-                    for (j, element) in coliter.enumerate() {
-                        match element {
-                            Some(el) => {
-                                // count into histogram
-                                histogram.add(el);
-                                let num_str = el.to_ne_bytes();
-                                hasher.write(&num_str);
+                    let mut j = 0;
+                    colvalues
+                            .f64()
+                            .expect("Something wrong happened reading column")
+                            .into_iter()
+                            .for_each(|element| {
+                                match element {
+                                    Some(el) => {
+                                        // count into histogram
+                                        histogram.add(el);
+                                        let num_str = el.to_ne_bytes();
+                                        hasher.write(&num_str);
+                                        // update progress bar
+                                        pb.inc(1);
+                                        pb.set_message(&format!("{:3}%", 100 * j / nrows));
+                                        j += 1;
+                                    },
 
-                                // update progress bar
-                                pb.inc(1);
-                                pb.set_message(&format!("{:3}%", 100 * j / nrows));
-                            },
-                            _ => panic!("Some element is wrong")
-                        }
-                    }
+                                    _ => panic!("ciao")
+                                }
+                            });
+
                     let mut bins: Vec<f64> = vec![];
                     let mut counts: Vec<u64> = vec![];
-
                     for bucket in histogram.buckets() {
                         bins.push(bucket.start());
                         counts.push(bucket.count());
                     }
-
                     let hist = Hist { bins, counts };
                     let mut numeric_features = NumericFeatures::get_numeric_features(&colvalues);
                     numeric_features.hist = Some(hist);
@@ -301,50 +326,74 @@ impl NcodeDataFrame {
 
                     // TODO
                     // get_string_features(&colvalues) and move parsing into get_string_features
-
-                    let coliter = colvalues
-                    .utf8()
-                    .expect("Something wrong happened converting element to string")
-                    .into_iter();
+                    //
+                    // let coliter = colvalues
+                    //         .utf8()
+                    //         .expect("Something wrong happened converting element to string")
+                    //         .into_iter();
 
                     let string_features = StringFeatures::get_string_features(&colvalues);
                     colfeats = ColumnFeatures::String{features: string_features};
-
                     let mut total_len: usize = 0;
+                    let mut j = 0;
+                    colvalues
+                            .utf8()
+                            .expect("Something wrong happened reading column")
+                            .into_iter()
+                            .for_each(|element| {
+                                match element {
+                                    Some(el) => {
+                                        let is_email = regex_email_address.is_match(el);
+                                        let is_iban = validate_iban(el);
+                                        if is_email {
+                                            *parsed_types.entry(ColumnType::Email).or_insert(0) += 1;
+                                        }
+                                        // TODO all types here
+                                        else if is_iban {
+                                            *parsed_types.entry(ColumnType::Iban).or_insert(0) += 1;
+                                         }
+                                        else {
+                                            *parsed_types.entry(ColumnType::Unknown).or_insert(0) += 1;
+                                        }
+                                        let elem_str = el.as_bytes();
+                                        hasher.write(&elem_str);
+                                        // add len of single element
+                                        total_len += elem_str.len();
+                                        // update progress bar
+                                        pb.inc(1);
+                                        pb.set_message(&format!("{:3}%", 100 * j / nrows));
+                                        j += 1;
+                                    },
 
-                    for (j, element) in coliter.enumerate() {
-                        match element {
-                            Some(el) => {
-                                let is_email = regex_email_address.is_match(el);
-                                let is_iban = validate_iban(el);
-
-                                if is_email {
-                                    *parsed_types.entry(ColumnType::Email).or_insert(0) += 1;
+                                    _ => panic!("ciao")
                                 }
-
-                                // TODO all types here
-                                else if is_iban {
-                                    *parsed_types.entry(ColumnType::Iban).or_insert(0) += 1;
-                                 }
-
-                                else {
-                                    *parsed_types.entry(ColumnType::Unknown).or_insert(0) += 1;
-
-                                }
-                                let elem_str = el.as_bytes();
-                                hasher.write(&elem_str);
-
-                                // add len of single element
-                                total_len += elem_str.len();
-
-                                // update progress bar
-                                pb.inc(1);
-                                pb.set_message(&format!("{:3}%", 100 * j / nrows));
-
-                            },
-                            _ => panic!("Some element is wrong")
-                        }
-                    }
+                            });
+                    // for (j, element) in coliter.enumerate() {
+                    //     match element {
+                    //         Some(el) => {
+                    //             let is_email = regex_email_address.is_match(el);
+                    //             let is_iban = validate_iban(el);
+                    //             if is_email {
+                    //                 *parsed_types.entry(ColumnType::Email).or_insert(0) += 1;
+                    //             }
+                    //             // TODO all types here
+                    //             else if is_iban {
+                    //                 *parsed_types.entry(ColumnType::Iban).or_insert(0) += 1;
+                    //              }
+                    //             else {
+                    //                 *parsed_types.entry(ColumnType::Unknown).or_insert(0) += 1;
+                    //             }
+                    //             let elem_str = el.as_bytes();
+                    //             hasher.write(&elem_str);
+                    //             // add len of single element
+                    //             total_len += elem_str.len();
+                    //             // update progress bar
+                    //             pb.inc(1);
+                    //             pb.set_message(&format!("{:3}%", 100 * j / nrows));
+                    //         },
+                    //         _ => panic!("Some element is wrong")
+                    //     }
+                    // }
                     let mean_element_len = total_len as f64 / nrows as f64;
                 },
 
