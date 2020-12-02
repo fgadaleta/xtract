@@ -132,13 +132,11 @@ impl Frontend {
                                 .has_header(true)
                                 .finish().unwrap();
 
-                            dbg!(&df);
-
+                            // dbg!(&df);
                             let dataframe = NcodeDataFrame { dataframe: Arc::new(df) };
                             let profile = dataframe.profile();
 
                             println!("Profile: {}", profile);
-
 
                     }
 

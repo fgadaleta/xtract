@@ -35,3 +35,4 @@ polars = "0.9.0"
 arrow = {version = "2", default_features = false}
 ndarray = "0.13.1"
 rayon = "1.5"
+indicatif = "0.15.0"

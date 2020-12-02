@@ -7,6 +7,7 @@ use arrow::datatypes::DataType;
 use serde::{Deserialize, Serialize};
 use regex::Regex;
 use histo_fp::Histogram;
+use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
 
 use crate::parsers::iban::validate_iban;
 
@@ -83,34 +84,6 @@ impl NumericFeatures {
         let mean: f64 = data.mean().unwrap();
         let std: f64  = data.std_as_series().sum().unwrap();
         let variance: f64  = data.var_as_series().sum().unwrap();
-        // hasher not stricly numerical but here for optimization (scanning only once)
-        // let mut hasher = DefaultHasher::new();
-        // let mut histogram = Histogram::with_buckets(10, None);
-        //
-        // let coliter = data
-        //             .i64()
-        //             .expect("Something wrong happened reading column")
-        //             .into_iter();
-        // for element in coliter {
-        //     match element {
-        //         Some(el) => {
-        //             // histogram.add(el as f64);
-        //             let num_str = el.to_ne_bytes();
-        //             // hasher.write(&num_str);
-        //         },
-        //         _ => panic!("Some element is wrong")
-        //     }
-        // }
-        //
-        // let mut bins: Vec<f64> = vec![];
-        // let mut counts: Vec<u64> = vec![];
-        // for bucket in histogram.buckets() {
-        //     bins.push(bucket.start());
-        //     counts.push(bucket.count());
-        //     // do_stuff(bucket.start(), bucket.end(), bucket.count());
-        // }
-        // let hist = Hist{bins, counts};
-        // let hist = Hist::new();
 
         Self{
             min,
@@ -225,7 +198,10 @@ impl NcodeDataFrame {
         // meta data for single column
         let mut columns_meta: HashMap<String, Column> = HashMap::new();
 
-        for colname in colnames {
+        // progress bars
+        let m = MultiProgress::new();
+
+        for (i, colname) in colnames.iter().enumerate() {
             // extract values of this column
             let colvalues = self.dataframe.column(colname).unwrap();
             // extract inferred column type
@@ -234,22 +210,36 @@ impl NcodeDataFrame {
             let mut hasher = DefaultHasher::new();
             let mut parsed_types: HashMap<ColumnType, usize> = HashMap::new();
             let colfeats: ColumnFeatures;
+            let pb = ProgressBar::new(nrows as u64);
+            let prefix = format!("Column: {}\t", colname);
+            let s = ("Fade in: ", "█▉▊▋▌▍▎▏  ", "yellow");
+            pb.set_style(ProgressStyle::default_bar()
+                // .template("{prefix:.bold} [{elapsed_precise}] {bar:40.cyan/blue} {pos:>7}/{len:7} {msg}")
+                .template(&format!("{{prefix:.bold}}▕ {{bar:.{}}} ▏{{msg}}", s.2))
+                .progress_chars("##-"));
+            pb.set_prefix(&prefix[..]);
+            pb.set_position(0);
 
             match coltype {
                 DataType::Int64 => {
                     let mut histogram = Histogram::with_buckets(10, None);
+
                     let coliter = colvalues
                                         .i64()
                                         .expect("Something wrong happened reading column")
                                         .into_iter();
 
-                    for element in coliter {
+                    for (j, element) in coliter.enumerate() {
                         match element {
                             Some(el) => {
                                 // count into histogram
                                 histogram.add(el as f64);
                                 let num_str = el.to_ne_bytes();
                                 hasher.write(&num_str);
+
+                                // update progress bar
+                                pb.inc(1);
+                                pb.set_message(&format!("{:3}%", 100 * j / nrows));
                             },
                             _ => panic!("Some element is wrong")
                         }
@@ -261,11 +251,9 @@ impl NcodeDataFrame {
                     for bucket in histogram.buckets() {
                         bins.push(bucket.start());
                         counts.push(bucket.count());
-                        // do_stuff(bucket.start(), bucket.end(), bucket.count());
                     }
 
                     let hist = Hist { bins, counts };
-
                     let mut numeric_features = NumericFeatures::get_numeric_features(&colvalues);
                     numeric_features.hist = Some(hist);
                     colfeats = ColumnFeatures::Numeric{features: numeric_features};
@@ -273,19 +261,22 @@ impl NcodeDataFrame {
 
                 DataType::Float64 => {
                     let mut histogram = Histogram::with_buckets(10, None);
-
                     let coliter = colvalues
                                     .f64()
                                     .expect("Something wrong happened reading column values")
                                     .into_iter();
 
-                    for element in coliter {
+                    for (j, element) in coliter.enumerate() {
                         match element {
                             Some(el) => {
                                 // count into histogram
                                 histogram.add(el);
                                 let num_str = el.to_ne_bytes();
                                 hasher.write(&num_str);
+
+                                // update progress bar
+                                pb.inc(1);
+                                pb.set_message(&format!("{:3}%", 100 * j / nrows));
                             },
                             _ => panic!("Some element is wrong")
                         }
@@ -302,10 +293,8 @@ impl NcodeDataFrame {
                     let mut numeric_features = NumericFeatures::get_numeric_features(&colvalues);
                     numeric_features.hist = Some(hist);
                     colfeats = ColumnFeatures::Numeric{features: numeric_features};
-
-
                 },
-                // generic string
+
                 DataType::Utf8 => {
                     // if inferred type is string, try parse each element into known regex
                     let regex_email_address = Regex::new(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)").unwrap();
@@ -323,7 +312,7 @@ impl NcodeDataFrame {
 
                     let mut total_len: usize = 0;
 
-                    for element in coliter {
+                    for (j, element) in coliter.enumerate() {
                         match element {
                             Some(el) => {
                                 let is_email = regex_email_address.is_match(el);
@@ -347,6 +336,11 @@ impl NcodeDataFrame {
 
                                 // add len of single element
                                 total_len += elem_str.len();
+
+                                // update progress bar
+                                pb.inc(1);
+                                pb.set_message(&format!("{:3}%", 100 * j / nrows));
+
                             },
                             _ => panic!("Some element is wrong")
                         }
@@ -372,6 +366,9 @@ impl NcodeDataFrame {
                                     );
 
             columns_meta.insert(colname.to_string(), col);
+
+            pb.finish_with_message("100%");
+
         }
 
         let profilemeta = ProfileMeta {
