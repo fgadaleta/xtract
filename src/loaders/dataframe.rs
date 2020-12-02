@@ -211,7 +211,7 @@ impl NcodeDataFrame {
             let mut parsed_types: HashMap<ColumnType, usize> = HashMap::new();
             let colfeats: ColumnFeatures;
             let pb = ProgressBar::new(nrows as u64);
-            let prefix = format!("Column: {}\t", colname);
+            let prefix = format!("Column: {}\t\t", colname);
             let s = ("Fade in: ", "█▉▊▋▌▍▎▏  ", "yellow");
             pb.set_style(ProgressStyle::default_bar()
                 // .template("{prefix:.bold} [{elapsed_precise}] {bar:40.cyan/blue} {pos:>7}/{len:7} {msg}")
@@ -366,9 +366,7 @@ impl NcodeDataFrame {
                                     );
 
             columns_meta.insert(colname.to_string(), col);
-
-            pb.finish_with_message("100%");
-
+            pb.finish_with_message("done");
         }
 
         let profilemeta = ProfileMeta {
@@ -380,7 +378,7 @@ impl NcodeDataFrame {
         let dfmeta = DataFrameMeta{
             datasource: String::from(""),
             // TODO hash of all sorted columns hashes
-            hash: String::from(""),
+            hash: String::from("TODO"),
             profile: profilemeta
         };
 
