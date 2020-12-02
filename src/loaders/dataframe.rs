@@ -3,6 +3,9 @@ use std::sync::Arc;
 use std::collections::hash_map::DefaultHasher;
 use std::hash::Hasher;
 use arrow::datatypes::DataType;
+use serde::{Deserialize, Serialize};
+use regex::Regex;
+use lazy_static;
 
 pub enum Type {
     Str,
@@ -66,6 +69,8 @@ impl Column {
 }
 
 
+
+
 pub struct NcodeDataFrame {
     pub dataframe: Arc<DataFrame>,
     // columns metadata
@@ -87,8 +92,8 @@ impl NcodeDataFrame {
             let coltype = colvalues.dtype();
             println!("{:?}", &coltype);
             coltypes.push(coltype);
-
             let mut hasher = DefaultHasher::new();
+            let mut parsed_types: Vec<Type> = vec![];
 
             match coltype {
                 DataType::Int64 => {
@@ -106,20 +111,6 @@ impl NcodeDataFrame {
                             _ => panic!("Some element is wrong")
                         }
                     }
-
-                    // let _something: Series = colvalues
-                    //     .sort(false).i64()
-                    //     .expect("series was not an i64 dtype")
-                    //     .into_iter()
-                    //     .map(|opt_angle| opt_angle.map(|angle|
-                    //         {
-                    //             let num_str = angle.to_ne_bytes();
-                    //             hasher.write(&num_str);
-                    //             angle
-                    //         }
-                    //     ))
-                    //     .collect();
-
                 },
                 DataType::Float64 => {
                     let coliter = colvalues
@@ -150,9 +141,12 @@ impl NcodeDataFrame {
                     // ))
                     // .collect();
                 },
-
                 // generic string
                 DataType::Utf8 => {
+                    // if inferred type is string,
+                    // try parse each element into known regex
+                    let re = Regex::new(r"(\d{4})-(\d{2})-(\d{2})").unwrap();
+
                     let coliter = colvalues
                     .utf8()
                     .expect("something")
@@ -161,26 +155,15 @@ impl NcodeDataFrame {
                     for element in coliter {
                         match element {
                             Some(el) => {
+                                let is_iban = re.is_match(el);
+                                if is_iban { parsed_types.push(Type::Iban); }
+
                                 let elem_str = el.as_bytes();
                                 hasher.write(&elem_str);
                             },
                             _ => panic!("Some element is wrong")
                         }
                     }
-
-                    // let _something: Series = colvalues
-                    // .sort(false).utf8()
-                    // .expect("series was not an utf8 dtype")
-                    // .into_iter()
-                    // .map(|opt_angle| opt_angle.map(|angle|
-                    //     {
-                    //         let elem_str = angle.as_bytes();
-                    //         hasher.write(&elem_str);
-                    //         // let ret = elem_str.to_string();
-                    //         0
-                    //     }
-                    // ))
-                    // .collect();
 
                 },
                 _ => unimplemented!()
@@ -195,8 +178,6 @@ impl NcodeDataFrame {
             let nunique = colvalues.unique().unwrap().len();
 
             // TODO calculate hash of colvalues after sorting
-            // let sorted_colvalues: Vec<_> = colvalues.sort(false).into();
-
             // TODO
 
             let col = Column::new(colname.to_string(),
