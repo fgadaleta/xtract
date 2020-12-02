@@ -41,8 +41,8 @@ pub enum ColumnType {
     Unknown
 }
 
-#[derive(Debug)]
-pub struct NumericColumnFeatures {
+#[derive(Debug, Serialize, Deserialize)]
+pub struct NumericFeatures {
     min: f64,
     max: f64,
     mean: f64,
@@ -51,7 +51,7 @@ pub struct NumericColumnFeatures {
     // TODO histogram
 }
 
-impl NumericColumnFeatures {
+impl NumericFeatures {
 
     fn get_numeric_features(data: &Series) -> Self {
         let max: f64 = data.max().unwrap();
@@ -71,8 +71,8 @@ impl NumericColumnFeatures {
 
 }
 
-#[derive(Debug)]
-pub struct StringColumnFeatures {
+#[derive(Debug, Serialize, Deserialize)]
+pub struct StringFeatures {
     min_len: usize,
     max_len: usize,
     avg_len: f64,
@@ -81,8 +81,30 @@ pub struct StringColumnFeatures {
     n_uppercase: usize
 }
 
+impl StringFeatures {
+    fn get_string_features(data: &Series) -> Self {
+        // TODO WIP
 
-#[derive(Default, Serialize, Deserialize)]
+        Self {
+            min_len: 0,
+            max_len: 0,
+            avg_len: 0f64,
+            n_capitalized: 0,
+            n_lowercase: 0,
+            n_uppercase: 0
+        }
+    }
+
+
+}
+
+#[derive(Serialize, Deserialize)]
+pub enum ColumnFeatures {
+    Numeric {features: NumericFeatures},
+    String {features: StringFeatures},
+}
+
+#[derive(Serialize, Deserialize)]
 pub struct Column {
     name: String,
     hash: String,
@@ -90,6 +112,7 @@ pub struct Column {
     count: usize,
     null_count: usize,
     categorical: bool,
+    features: ColumnFeatures,
     types: HashMap<ColumnType, usize>
 }
 
@@ -97,7 +120,9 @@ pub struct Column {
 impl Column {
     /// Create new metadata for column
     pub fn new(name: String, hash: String, nunique: usize,
-               count: usize, null_count: usize, types: HashMap<ColumnType, usize>) -> Self {
+               count: usize, null_count: usize,
+               features: ColumnFeatures,
+               types: HashMap<ColumnType, usize>) -> Self {
 
         assert!(count > 0);
         let ratio = nunique as f64 / count as f64;
@@ -110,6 +135,7 @@ impl Column {
             count,
             null_count,
             categorical: ratio < THRESHOLD,
+            features,
             types
             }
     }
@@ -131,17 +157,6 @@ impl Column {
 }
 
 
-fn get_string_features(data: &Series) -> StringColumnFeatures {
-    // WIP
-    StringColumnFeatures {
-        min_len: 0,
-        max_len: 0,
-        avg_len: 0f64,
-        n_capitalized: 0,
-        n_lowercase: 0,
-        n_uppercase: 0
-    }
-}
 
 
 pub struct NcodeDataFrame {
@@ -152,7 +167,7 @@ pub struct NcodeDataFrame {
 impl NcodeDataFrame {
 
     pub fn profile(&self) -> String {
-        let mut columns: Vec<Column> = vec![];
+        // let mut columns: Vec<Column> = vec![];
 
         let (nrows, ncols) = self.dataframe.shape();
         let colnames = self.dataframe.get_column_names();
@@ -170,13 +185,16 @@ impl NcodeDataFrame {
             coltypes.push(coltype);
             let mut hasher = DefaultHasher::new();
             let mut parsed_types: HashMap<ColumnType, usize> = HashMap::new();
+            let mut colfeats: ColumnFeatures;
+
 
             match coltype {
 
                 DataType::Int64 => {
-                    let numeric_features = NumericColumnFeatures::get_numeric_features(&colvalues);
+                    let numeric_features = NumericFeatures::get_numeric_features(&colvalues);
                     // let numeric_features = get_numeric_features(&colvalues);
                     println!("num_feats: {:?}", &numeric_features);
+                    colfeats = ColumnFeatures::Numeric{features: numeric_features};
 
                     let coliter = colvalues
                                         .i64()
@@ -196,9 +214,11 @@ impl NcodeDataFrame {
 
                 DataType::Float64 => {
                     // TODO compute mean, std, max,min
-                    let numeric_features = NumericColumnFeatures::get_numeric_features(&colvalues);
+                    let numeric_features = NumericFeatures::get_numeric_features(&colvalues);
                     // let numeric_features = get_numeric_features(&colvalues);
                     println!("num_feats: {:?}", &numeric_features);
+                    colfeats = ColumnFeatures::Numeric{features: numeric_features};
+
 
                     let coliter = colvalues
                     .f64()
@@ -224,6 +244,9 @@ impl NcodeDataFrame {
                     .utf8()
                     .expect("Something wrong happened converting element to string")
                     .into_iter();
+
+                    let string_features = StringFeatures::get_string_features(&colvalues);
+                    colfeats = ColumnFeatures::String{features: string_features};
 
                     let mut total_len: usize = 0;
 
@@ -262,19 +285,19 @@ impl NcodeDataFrame {
             }
 
             let colhash = hasher.finish().to_string();
-            println!("column hash: {}", colhash);
-            println!("parsed_types: {:?}", parsed_types);
+            // println!("column hash: {}", colhash);
+            // println!("parsed_types: {:?}", parsed_types);
 
             let null_count = colvalues.null_count();
             // get number of unique values
             let nunique = colvalues.unique().unwrap().len();
-
 
             let col = Column::new(colname.to_string(),
                                         colhash,
                                         nunique,
                                         nrows,
                                         null_count,
+                                        colfeats,
                                         parsed_types,
                                     );
 
