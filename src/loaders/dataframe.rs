@@ -158,7 +158,6 @@ impl Column {
 
 
 
-
 pub struct NcodeDataFrame {
     pub dataframe: Arc<DataFrame>,
     // columns metadata
@@ -167,12 +166,9 @@ pub struct NcodeDataFrame {
 impl NcodeDataFrame {
 
     pub fn profile(&self) -> String {
-        // let mut columns: Vec<Column> = vec![];
-
         let (nrows, ncols) = self.dataframe.shape();
         let colnames = self.dataframe.get_column_names();
         let mut coltypes: Vec<&DataType> = vec![];
-
         // meta data for single column
         let mut columns_meta: HashMap<String, Column> = HashMap::new();
 
@@ -181,24 +177,20 @@ impl NcodeDataFrame {
             let colvalues = self.dataframe.column(colname).unwrap();
             // extract inferred column type
             let coltype = colvalues.dtype();
-            // println!("{:?}", &coltype);
             coltypes.push(coltype);
             let mut hasher = DefaultHasher::new();
             let mut parsed_types: HashMap<ColumnType, usize> = HashMap::new();
-            let mut colfeats: ColumnFeatures;
-
+            let colfeats: ColumnFeatures;
 
             match coltype {
 
                 DataType::Int64 => {
                     let numeric_features = NumericFeatures::get_numeric_features(&colvalues);
-                    // let numeric_features = get_numeric_features(&colvalues);
-                    println!("num_feats: {:?}", &numeric_features);
                     colfeats = ColumnFeatures::Numeric{features: numeric_features};
 
                     let coliter = colvalues
                                         .i64()
-                                        .expect("something")
+                                        .expect("Something wrong happened reading column")
                                         .into_iter();
 
                     for element in coliter {
@@ -213,16 +205,12 @@ impl NcodeDataFrame {
                 },
 
                 DataType::Float64 => {
-                    // TODO compute mean, std, max,min
                     let numeric_features = NumericFeatures::get_numeric_features(&colvalues);
-                    // let numeric_features = get_numeric_features(&colvalues);
-                    println!("num_feats: {:?}", &numeric_features);
                     colfeats = ColumnFeatures::Numeric{features: numeric_features};
-
 
                     let coliter = colvalues
                     .f64()
-                    .expect("something")
+                    .expect("Something wrong happened reading column values")
                     .into_iter();
 
                     for element in coliter {
@@ -239,6 +227,9 @@ impl NcodeDataFrame {
                 DataType::Utf8 => {
                     // if inferred type is string, try parse each element into known regex
                     let regex_email_address = Regex::new(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)").unwrap();
+
+                    // TODO
+                    // get_string_features(&colvalues) and move parsing into get_string_features
 
                     let coliter = colvalues
                     .utf8()
@@ -285,9 +276,6 @@ impl NcodeDataFrame {
             }
 
             let colhash = hasher.finish().to_string();
-            // println!("column hash: {}", colhash);
-            // println!("parsed_types: {:?}", parsed_types);
-
             let null_count = colvalues.null_count();
             // get number of unique values
             let nunique = colvalues.unique().unwrap().len();
