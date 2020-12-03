@@ -26,10 +26,23 @@ impl DataFrameMeta{
     pub fn get_column_names(&self) -> Vec<String>{
         self.profile.columns.keys().cloned().collect()
     }
+
+    pub fn set_datasource(&mut self, name: String) {
+        self.datasource = name.clone();
+
+        let mut hasher = DefaultHasher::new();
+        hasher.write(name.as_bytes());
+        self.profile.data_id = hasher.finish().to_string();
+    }
+
+    pub fn data_id(&self) -> String {
+        self.profile.data_id.to_owned()
+    }
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct ProfileMeta {
+    data_id: String,
     nrows: usize,
     ncols: usize,
     columns: HashMap<String, Column>,
@@ -37,7 +50,6 @@ pub struct ProfileMeta {
 
 #[derive(Serialize, Deserialize)]
 pub struct Column {
-    // name: String,
     hash: String,
     nunique: usize,
     count: usize,
@@ -369,6 +381,7 @@ impl NcodeDataFrame {
         }
 
         let profilemeta = ProfileMeta {
+            data_id: String::from(""),
             nrows,
             ncols,
             columns: columns_meta

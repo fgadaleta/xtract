@@ -15,7 +15,7 @@ use clap::Clap;
 
 // xtract profile --input=mydata.csv --output=meta.txt --publish=true
 // xtract profile --input=s3://mydata.csv --output=meta.txt --publish=true
-
+// xtract profile -i ./data/filename.csv --name custom_name.csv --publish
 
 #[derive(Clap, Clone)]
 pub struct Get {
@@ -32,8 +32,10 @@ pub struct Profile {
     pub input: Option<String>,
 
     // #[clap(long, conflicts_with="id", takes_value=false)]
-    // pub all: Option<bool>,
+    #[clap(long, takes_value=false)]
+    pub publish: bool,
 }
+
 
 #[derive(Clap)]
 pub enum SubCommand {
@@ -45,7 +47,7 @@ pub enum SubCommand {
     /// Set metadata of remote assets
     Set,
     /// Publish metadata to remote service
-    Publish,
+    // Publish,
     /// Profile of data passed as argument
     Profile(Profile)
 }

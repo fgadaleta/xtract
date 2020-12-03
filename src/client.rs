@@ -96,15 +96,19 @@ impl Frontend {
                 unimplemented!()
             },
 
-            SubCommand::Publish => {
-                unimplemented!()
-            },
+            // SubCommand::Publish => {
+            //     unimplemented!()
+            // },
 
             SubCommand::Profile(t) => {
                 let input_to_fetch = match t.input.as_ref() {
                     Some(input) => String::from(input),
                     None => String::from("")
                 };
+
+                let publish_to_api = t.publish;
+                println!("Publish after profile: {:?}", publish_to_api);
+
 
                 let input_location: String = input_to_fetch
                                                             .chars()
@@ -115,6 +119,7 @@ impl Frontend {
                 match input_location.as_ref() {
                     // try s3 bucket
                     "s3://" => {
+                            // TODO integrate DataFrame
                             let filename: String = input_to_fetch.chars().skip(5).collect();
                             println!("filename input_to_fetch: {}", filename);
                             let storage = Storage::new();
@@ -128,7 +133,7 @@ impl Frontend {
                     // try local file
                     _ => {
                             // input_to_fetch is a local file
-                            let file = File::open(input_to_fetch)
+                            let file = File::open(input_to_fetch.clone())
                                 .expect("could not read file");
 
                             let df = CsvReader::new(file)
@@ -138,10 +143,43 @@ impl Frontend {
 
                             // dbg!(&df);
                             let dataframe = NcodeDataFrame { dataframe: Arc::new(df) };
-                            let profile = dataframe.profile();
+                            let mut profile = dataframe.profile();
+                            // add filename to profile
+                            profile.set_datasource(input_to_fetch.clone());
+
                             // Convert to string and print
                             let profile_str = serde_json::to_string_pretty(&profile).unwrap();
                             println!("Profile: {}", profile_str);
+
+                            // TODO
+                            if publish_to_api {
+                                let data_id: u64 = profile.data_id().parse().unwrap();
+
+                                let post_data_endpoint = format!("{}/data/", url);
+                                // let data_body: String = format!("{{ \"datastore\": {} \", \"filename\": \"synthetic_demo_data.csv\",
+                                //     \"description\": \"Some testing data in csv format\",
+                                //     \"is_published\": true
+                                //   }}", data_id);
+
+                                let data_body = json!({
+                                    "datastore": "local",
+                                    "data_id": data_id,
+                                    "filename": "synthetic_demo_data.csv",
+                                    "is_published": true,
+                                    "description": "some empty descr"});
+
+                                println!("DBG body: {:?}", data_body);
+                                println!("DBG body.to_string(): {:?}", data_body.to_string());
+
+                                let res = self.post_helper(post_data_endpoint,
+                                                              tokenfile.clone(),
+                                                              data_body).unwrap();
+                                println!("DBG POST req res: {:?}", res);
+                                let post_profile_endpoint = format!("{}/data/{}/profile", url, data_id);
+                                println!("DBG ready to hit endpoint {:?} ", post_profile_endpoint);
+                                let res = self.post_helper(post_profile_endpoint, tokenfile, json!(profile_str)).unwrap();
+                                println!("DBG POST req res: {:?}", res);
+                            }
 
                     }
 
@@ -262,6 +300,48 @@ impl Frontend {
 
         Ok(())
     }
+
+    fn post_helper(&self, endpoint: String, tokenfile: String, body: Value) -> Result<()> {
+
+        // let gist_body = json!({
+        //     "description": "the description for this gist",
+        //     "public": true,
+        //     "files": {
+        //          "main.rs": {
+        //          "content": r#"fn main() { println!("hello world!");}"#
+        //         }
+        //     }});
+
+
+        let token = get_content_from_file(&tokenfile[..])?;
+        let token = base64::encode(token);
+        let http_client = reqwest::blocking::ClientBuilder::new().build()?;
+        let response = http_client
+            .post(&endpoint)
+            .header("Authorization", format!("{}{}", "Bearer ", token))
+            .json(&body)
+            .send();
+
+        match response {
+            Ok(res) => {
+                if res.status() == reqwest::StatusCode::OK {
+                    println!("status ok ");
+                    let assets: String = res.json()?;
+                    // let assets: String = res.text()?;
+                }
+                else {
+                    println!("Status not ok");
+                }
+            },
+
+            Err(e) => {
+                println!("Could not make request! {:?} ", e);
+            }
+        }
+
+        Ok(())
+    }
+
 
 }
 
