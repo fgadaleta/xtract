@@ -28,6 +28,17 @@ pub struct ProfileMeta {
     columns: HashMap<String, Column>,
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct Column {
+    // name: String,
+    hash: String,
+    nunique: usize,
+    count: usize,
+    null_count: usize,
+    categorical: bool,
+    features: ColumnFeatures,
+    types: HashMap<ColumnType, usize>
+}
 
 #[derive(Hash, Eq, PartialEq, Debug, Serialize, Deserialize)]
 pub enum ColumnType {
@@ -42,6 +53,13 @@ pub enum ColumnType {
     PersonName,
     Nan,
     Unknown
+}
+
+
+#[derive(Serialize, Deserialize)]
+pub enum ColumnFeatures {
+    Numeric(NumericFeatures),
+    String(StringFeatures)
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -125,28 +143,10 @@ impl StringFeatures {
 
 }
 
-#[derive(Serialize, Deserialize)]
-pub enum ColumnFeatures {
-    Numeric {features: NumericFeatures},
-    String {features: StringFeatures},
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Column {
-    name: String,
-    hash: String,
-    nunique: usize,
-    count: usize,
-    null_count: usize,
-    categorical: bool,
-    features: ColumnFeatures,
-    types: HashMap<ColumnType, usize>
-}
-
 
 impl Column {
     /// Create new metadata for column
-    pub fn new(name: String, hash: String, nunique: usize,
+    pub fn new(hash: String, nunique: usize,
                count: usize, null_count: usize,
                features: ColumnFeatures,
                types: HashMap<ColumnType, usize>) -> Self {
@@ -156,7 +156,7 @@ impl Column {
         const THRESHOLD: f64 = 0.2;
 
         Column {
-            name,
+            // name,
             hash,
             nunique,
             count,
@@ -252,7 +252,8 @@ impl NcodeDataFrame {
                     let hist = Hist { bins, counts };
                     let mut numeric_features = NumericFeatures::get_numeric_features(&colvalues);
                     numeric_features.hist = Some(hist);
-                    colfeats = ColumnFeatures::Numeric{features: numeric_features};
+                    // colfeats = ColumnFeatures::Numeric{features: numeric_features};
+                    colfeats = ColumnFeatures::Numeric(numeric_features);
                 },
 
                 DataType::Float64 => {
@@ -288,7 +289,8 @@ impl NcodeDataFrame {
                     let hist = Hist { bins, counts };
                     let mut numeric_features = NumericFeatures::get_numeric_features(&colvalues);
                     numeric_features.hist = Some(hist);
-                    colfeats = ColumnFeatures::Numeric{features: numeric_features};
+                    // colfeats = ColumnFeatures::Numeric{features: numeric_features};
+                    colfeats = ColumnFeatures::Numeric(numeric_features);
                 },
 
                 DataType::Utf8 => {
@@ -298,7 +300,9 @@ impl NcodeDataFrame {
                     // TODO
                     // get_string_features(&colvalues) and move parsing into get_string_features
                     let string_features = StringFeatures::get_string_features(&colvalues);
-                    colfeats = ColumnFeatures::String{features: string_features};
+                    // colfeats = ColumnFeatures::String{features: string_features};
+                    colfeats = ColumnFeatures::String(string_features);
+
                     let mut total_len: usize = 0;
                     let mut j = 0;
                     colvalues
@@ -345,8 +349,7 @@ impl NcodeDataFrame {
             // get number of unique values
             let nunique = colvalues.unique().unwrap().len();
 
-            let col = Column::new(colname.to_string(),
-                                        colhash,
+            let col = Column::new(colhash,
                                         nunique,
                                         nrows,
                                         null_count,
