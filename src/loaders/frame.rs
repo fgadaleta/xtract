@@ -1,15 +1,15 @@
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 use std::collections::{HashMap, HashSet};
-use arrow::datatypes::{Field, Schema, DataType, ArrowPrimitiveType };
+use arrow::datatypes::{Field, Schema, DataType};
 use arrow::array::*;
 use arrow::record_batch::RecordBatch;
 use histo_fp::Histogram;
 use noisy_float::prelude::*;
 use serde_json;
-use serde_json::Value;
+// use serde_json::Value;
 use serde::{Deserialize, Serialize};
 use crate::loaders::error::*;
-use std::hash::{Hash, Hasher};
+// use std::hash::{Hash, Hasher};
 
 
 /// Generic type that encapsulates vecs of primitive types

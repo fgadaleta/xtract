@@ -20,3 +20,10 @@ WIP
 ## Profile file stored in  local filesystem
 
 `xtract profile -i ./data/filename.csv`
+
+
+## Profile local file and publish to cloud
+
+`xtract profile -i ./data/filename.csv --publish`
+
+(configuration.toml should contain the login credentials and/or token.dat should be locally stored - e.g. obtained by `xtract login` )

@@ -1,11 +1,9 @@
-mod cli;
-mod client;
-mod configuration;
-mod loaders;
-mod parsers;
-
 use clap::Clap;
 use anyhow::Result;
+
+pub mod cli;
+pub mod client;
+// use xtract::{cli, client} ;
 
 
 fn main() -> Result<()> {

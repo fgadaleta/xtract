@@ -7,7 +7,7 @@ use arrow::datatypes::DataType;
 use serde::{Deserialize, Serialize};
 use regex::Regex;
 use histo_fp::Histogram;
-use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
+use indicatif::{ProgressBar, ProgressStyle};
 use rayon::prelude::*;
 
 use crate::parsers::iban::validate_iban;
@@ -21,6 +21,13 @@ pub struct DataFrameMeta {
     hash: String,
     profile: ProfileMeta
 }
+
+impl DataFrameMeta{
+    pub fn get_column_names(&self) -> Vec<String>{
+        self.profile.columns.keys().cloned().collect()
+    }
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct ProfileMeta {
     nrows: usize,
@@ -191,7 +198,7 @@ pub struct NcodeDataFrame {
 
 impl NcodeDataFrame {
 
-    pub fn profile(&self) -> String {
+    pub fn profile(&self) -> DataFrameMeta {
         let (nrows, ncols) = self.dataframe.shape();
         let colnames = self.dataframe.get_column_names();
         let mut coltypes: Vec<&DataType> = vec![];
@@ -237,7 +244,7 @@ impl NcodeDataFrame {
                                         j += 1;
                                     },
 
-                                    _ => panic!("ciao")
+                                    _ => panic!("Something wrong happened during conversion")
                                 }
                             });
 
@@ -276,7 +283,7 @@ impl NcodeDataFrame {
                                         j += 1;
                                     },
 
-                                    _ => panic!("ciao")
+                                    _ => panic!("Something wrong happened during conversion")
                                 }
                             });
 
@@ -334,7 +341,7 @@ impl NcodeDataFrame {
                                         j += 1;
                                     },
 
-                                    _ => panic!("ciao")
+                                    _ => panic!("Something wrong happened during conversion")
                                 }
                             });
 
@@ -374,8 +381,8 @@ impl NcodeDataFrame {
             profile: profilemeta
         };
 
-        let profile_str = serde_json::to_string_pretty(&dfmeta).unwrap();
-        profile_str
+        dfmeta
+
     }
 
 }

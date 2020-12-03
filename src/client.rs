@@ -1,21 +1,25 @@
-use crate::cli::{ Args, SubCommand};
-use crate::configuration::{ get_content_from_file, get_configuration_from_file };
+use super::cli::{ Args, SubCommand};
+use xtract::configuration::{ get_content_from_file, get_configuration_from_file };
 use serde_json::{ Value, json };
 use anyhow::Result;
 use std::collections::HashMap;
 use std::fs::File;
 use std::sync::Arc;
 use std::io::prelude::*;
-use crate::loaders::s3_connector::Storage;
+use xtract::loaders::s3_connector::Storage;
 use tokio::runtime::Runtime;
 use once_cell::sync::Lazy;
-use crate::loaders::csv_format::{ CsvReader as csvr };
 use std::io::Cursor;
 use arrow::record_batch::RecordBatch;
-use crate::loaders::frame::DataFrame;
-use crate::loaders::dataframe::NcodeDataFrame;
+
+// TODO remove and use only polars DataFrame
+use xtract::loaders::frame::DataFrame;
+use xtract::loaders::dataframe::NcodeDataFrame;
+// use crate::transformers::simple;
+use xtract::loaders::csv_format::CsvReader as csvr;
+
 use polars::prelude::*;
-use arrow::datatypes::DataType;
+// use arrow::datatypes::DataType;
 
 
 // #[cfg(feature = "prettyprint")]
@@ -135,8 +139,9 @@ impl Frontend {
                             // dbg!(&df);
                             let dataframe = NcodeDataFrame { dataframe: Arc::new(df) };
                             let profile = dataframe.profile();
-
-                            println!("Profile: {}", profile);
+                            // Convert to string and print
+                            let profile_str = serde_json::to_string_pretty(&profile).unwrap();
+                            println!("Profile: {}", profile_str);
 
                     }
 

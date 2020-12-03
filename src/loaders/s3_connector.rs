@@ -51,7 +51,7 @@ impl Storage {
             ..Default::default()
         };
 
-        let mut data = self.client.get_object(get_req).await.expect("Could not GET remote file! :(( ");
+        let data = self.client.get_object(get_req).await.expect("Could not GET remote file! :(( ");
         dbg!(&data);
         let content_type = data.content_type.unwrap();
         let mut stream = data.body.unwrap().into_async_read();

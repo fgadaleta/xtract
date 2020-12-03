@@ -1,13 +1,13 @@
 use lazy_static::lazy_static;
 use regex::{Regex, RegexBuilder};
-use std::io::{BufReader, Read, Seek, SeekFrom};
-use std::fmt;
-use std::collections::HashSet;
+use std::io::{Read, Seek};
+// use std::fmt;
+// use std::collections::HashSet;
 // use csv::ReaderBuilder;
 use std::sync::Arc;
-use arrow::csv::{ Reader, ReaderBuilder, WriterBuilder};
-use arrow::datatypes::{ArrowPrimitiveType, Field, Schema};
-use arrow::record_batch::{RecordBatch, RecordBatchReader};
+use arrow::csv::{ Reader, ReaderBuilder};
+use arrow::datatypes::Schema;
+// use arrow::record_batch::{RecordBatch, RecordBatchReader};
 // use arrow::util::pretty;
 
 // use crate::loaders::datatypes::DataType;

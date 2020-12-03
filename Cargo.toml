@@ -21,7 +21,6 @@ noisy_float = "0.1.13"
 once_cell = "1.5.2"
 regex = "1.4.1"
 reqwest = {version = "0.10.8", features=["blocking", "json"]}
-# runtime-tokio = "0.0.0"
 rusoto_core = "0.45.0"
 rusoto_credential = "0.45.0"
 rusoto_s3 = "0.45.0"
@@ -40,6 +39,6 @@ indicatif = "0.15.0"
 criterion = "0.3"
 
 
-# [[bench]]
-# name = "xtract_profile"
-# harness = false
+[[bench]]
+name = "xtract_profile"
+harness = false
