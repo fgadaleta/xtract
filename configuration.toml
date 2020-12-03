@@ -1,0 +1,16 @@
+[api]
+server = "192.168.0.111"
+port = 5000
+max-age = 5400
+
+[credentials]
+username = "frag"
+password = "1234"
+
+[settings]
+tokenfile = "./token.dat"
+
+[storage]
+url = "http://localhost:9000"
+access_key = "frag"
+secret_access_key = ""
