@@ -109,28 +109,26 @@ impl Frontend {
                     None => false
                 };
 
-                let delete_alert = match t.delete {
-                    Some(opt) => true,
-                    None => false,
+                let delete_alert = match &t.delete {
+                    opt => {
+                        dbg!("Some branch {:?}", opt);
+                        opt
+                    },
+                    _ => {
+                        dbg!("None branch");
+                        &false
+                    },
                 };
 
-                println!("delete_flag={}", delete_alert);
+                println!("delete_flag={:?}", delete_alert);
 
-
-                // let delete_alert = match t.delete {
-                //     Some(f) => {
-                //         println!("flag={}", &f);
-                //         f
-                //     },
-                //     None => false
-                // };
 
                 if get_all_alerts {
-                    println!("data_id={} delete={}", data_id, delete_alert);
+                    println!("data_id={:?} delete={:?}", data_id, delete_alert);
                 }
 
                 if get_single_alert {
-                    println!("alert_id={} delete={}", alert_id, delete_alert);
+                    println!("alert_id={:?} delete={:?}", alert_id, delete_alert);
                 }
 
                 Ok(())

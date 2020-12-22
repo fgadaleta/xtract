@@ -45,7 +45,7 @@ pub struct Alerts {
     pub data: Option<String>,
 
     #[clap(long, takes_value = false)]
-    pub delete: Option<bool>,
+    pub delete: bool,
 }
 
 #[derive(Clap, Clone)]
