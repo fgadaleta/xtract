@@ -1,5 +1,5 @@
 [api]
-server = "192.168.0.111"
+server = "localhost"
 port = 5000
 max-age = 5400
 

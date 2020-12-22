@@ -1,8 +1,8 @@
 use clap::Clap;
 
-
 // subcommands to implement
-// get
+// data
+// alerts
 // set
 // publish
 // profile
@@ -17,13 +17,35 @@ use clap::Clap;
 // xtract profile --input=s3://mydata.csv --output=meta.txt --publish=true
 // xtract profile -i ./data/filename.csv --name custom_name.csv --publish
 
+// Get all alerts of data_id = 0x1234
+// xtract alerts --data 0x1234
+
+// Get single alert with id
+// xtract alerts --id 0xabcd
+
+// Flag to delete alerts in the request
+// xtract alerts --data 0x1234 --delete
+// xtract alerts --id 0xabcd --delete
+
 #[derive(Clap, Clone)]
-pub struct Get {
+pub struct Data {
     #[clap(long)]
     pub id: Option<String>,
 
-    #[clap(long, conflicts_with="id", takes_value=false)]
+    #[clap(long, conflicts_with = "id", takes_value = false)]
     pub all: Option<bool>,
+}
+
+#[derive(Clap, Clone)]
+pub struct Alerts {
+    #[clap(long)]
+    pub id: Option<String>,
+
+    #[clap(long, conflicts_with = "id")]
+    pub data: Option<String>,
+
+    #[clap(long, takes_value = false)]
+    pub delete: Option<bool>,
 }
 
 #[derive(Clap, Clone)]
@@ -32,10 +54,9 @@ pub struct Profile {
     pub input: Option<String>,
 
     // #[clap(long, conflicts_with="id", takes_value=false)]
-    #[clap(long, takes_value=false)]
+    #[clap(long, takes_value = false)]
     pub publish: bool,
 }
-
 
 #[derive(Clap)]
 pub enum SubCommand {
@@ -43,17 +64,23 @@ pub enum SubCommand {
     /// Login to remote service
     Login,
     /// Get remote assets
-    Get(Get),
+    Data(Data),
+    /// Get alerts
+    Alerts(Alerts),
     /// Set metadata of remote assets
     Set,
+
     /// Publish metadata to remote service
     // Publish,
     /// Profile of data passed as argument
-    Profile(Profile)
+    Profile(Profile),
 }
 
 #[derive(Clap)]
-#[clap(version = "0.0.1", author = "Author: Francesco Gadaleta <francesco@amethix.com>")]
+#[clap(
+    version = "0.0.1",
+    author = "Author: Francesco Gadaleta <francesco@amethix.com>"
+)]
 pub struct Args {
     #[clap(subcommand)]
     pub subcmd: SubCommand,
@@ -64,4 +91,3 @@ pub struct Args {
     #[clap(short, long)]
     _verbose: Option<i32>,
 }
-

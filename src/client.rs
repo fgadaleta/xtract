@@ -62,7 +62,7 @@ impl Frontend {
                 Ok(())
             }
 
-            SubCommand::Get(t) => {
+            SubCommand::Data(t) => {
                 // let get_all = t.all?;
                 let get_all = match t.all {
                     Some(opt) => opt,
@@ -72,6 +72,7 @@ impl Frontend {
                 if get_all {
                     let endpoint = format!("{}/data", url);
                     self.get_helper(endpoint, tokenfile)?;
+
                 } else {
                     // fetching only one asset with id
                     // let id_to_fetch = t.id.as_ref().unwrap();
@@ -86,6 +87,54 @@ impl Frontend {
 
                 Ok(())
             }
+
+
+            SubCommand::Alerts(t) => {
+                let mut data_id: String = "".to_string();
+                let mut alert_id: String = "".to_string();
+
+                let get_all_alerts: bool = match t.data.as_ref() {
+                    Some(did) => {
+                        data_id = did.to_string();
+                        true
+                    },
+                    None => false
+                };
+
+                let get_single_alert: bool = match t.id.as_ref() {
+                    Some(aid) => {
+                        alert_id = aid.to_string();
+                        true
+                    },
+                    None => false
+                };
+
+                let delete_alert = match t.delete {
+                    Some(opt) => true,
+                    None => false,
+                };
+
+                println!("delete_flag={}", delete_alert);
+
+
+                // let delete_alert = match t.delete {
+                //     Some(f) => {
+                //         println!("flag={}", &f);
+                //         f
+                //     },
+                //     None => false
+                // };
+
+                if get_all_alerts {
+                    println!("data_id={} delete={}", data_id, delete_alert);
+                }
+
+                if get_single_alert {
+                    println!("alert_id={} delete={}", alert_id, delete_alert);
+                }
+
+                Ok(())
+            },
 
             SubCommand::Set => unimplemented!(),
 
@@ -246,8 +295,11 @@ impl Frontend {
 
     fn get_helper(&self, endpoint: String, tokenfile: String) -> Result<()> {
         // let endpoint = format!("{}/data", url);
+
+        // get token and send to request as is (encoding occurs server-side)
         let token = get_content_from_file(&tokenfile[..])?;
-        let token = base64::encode(token);
+        // let token = base64::encode(token);
+
         let http_client = reqwest::blocking::ClientBuilder::new().build()?;
         let response = http_client
             .get(&endpoint)
@@ -258,8 +310,8 @@ impl Frontend {
             Ok(res) => {
                 if res.status() == reqwest::StatusCode::OK {
                     println!("status ok ");
-                    let assets: String = res.json()?;
-                    // let assets: String = res.text()?;
+                    let assets: String = res.text()?;
+                    // let assets: String = res.json()?;
                     println!("Assets: {}", assets);
 
                     let assets: HashMap<String, Value> = serde_json::from_str(&assets[..]).unwrap();
@@ -272,6 +324,8 @@ impl Frontend {
                     }
                 } else {
                     println!("Status not ok");
+                    let response = res.text()?;
+                    println!("Response: {:?}", response);
                 }
             }
 
