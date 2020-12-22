@@ -114,7 +114,7 @@ impl Frontend {
                 // TODO prepare endpoints here and call get_helper
                 if get_all_alerts {
                     let endpoint = format!("{}/data/{}/alerts", url, data_id);
-                    //self.get_helper(endpoint, tokenfile.clone())?;
+                    self.get_helper(endpoint, tokenfile.clone())?;
                     println!("data_id={:?} delete={:?}", data_id, delete_alert);
                     if delete_alert {
                         println!("TODO create endpoint DEL /alerts/:id for each :id");
@@ -123,7 +123,7 @@ impl Frontend {
 
                 if get_single_alert {
                     let endpoint = format!("{}/alerts/{}", url, alert_id);
-                    //self.get_helper(endpoint, tokenfile.clone())?;
+                    self.get_helper(endpoint, tokenfile.clone())?;
                     println!("alert_id={:?} delete={:?}", alert_id, delete_alert);
                     if delete_alert {
                         println!("TODO create endpoint DEL /alerts/:id");
@@ -290,7 +290,7 @@ impl Frontend {
         }
     }
 
-    fn get_helper(&self, endpoint: String, tokenfile: String) -> Result<()> {
+    fn get_helper(&self, endpoint: String, tokenfile: String) -> Result<String> {
         // let endpoint = format!("{}/data", url);
 
         // get token and send to request as is (encoding occurs server-side)
@@ -311,14 +311,14 @@ impl Frontend {
                     // let assets: String = res.json()?;
                     println!("Assets: {}", assets);
 
-                    let assets: HashMap<String, Value> = serde_json::from_str(&assets[..]).unwrap();
-                    for (hash, info) in &assets {
-                        println!("\n\n----------------------------\n");
-                        println!("Data hash: [{}]\n", hash);
-                        println!("----------------------------\n");
-                        println!("{}", serde_json::to_string_pretty(&info).unwrap());
-                        println!("\n------------------------\n");
-                    }
+                    // let assets: HashMap<String, Value> = serde_json::from_str(&assets[..]).unwrap();
+                    // for (hash, info) in &assets {
+                    //     println!("\n\n----------------------------\n");
+                    //     println!("Data hash: [{}]\n", hash);
+                    //     println!("----------------------------\n");
+                    //     println!("{}", serde_json::to_string_pretty(&info).unwrap());
+                    //     println!("\n------------------------\n");
+                    // }
                 } else {
                     println!("Status not ok");
                     let response = res.text()?;
@@ -331,7 +331,7 @@ impl Frontend {
             }
         }
 
-        Ok(())
+        Ok("".to_string())
     }
 
     fn post_helper(&self, endpoint: String, tokenfile: String, body: Value) -> Result<()> {
