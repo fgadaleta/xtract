@@ -109,22 +109,25 @@ impl Frontend {
                     None => false
                 };
 
-                let delete_alert = match &t.delete {
-                    opt => {
-                        opt
-                    },
-                    _ => {
-                        &false
-                    },
-                };
+                let delete_alert = t.delete;
 
                 // TODO prepare endpoints here and call get_helper
                 if get_all_alerts {
+                    let endpoint = format!("{}/data/{}/alerts", url, data_id);
+                    //self.get_helper(endpoint, tokenfile.clone())?;
                     println!("data_id={:?} delete={:?}", data_id, delete_alert);
+                    if delete_alert {
+                        println!("TODO create endpoint DEL /alerts/:id for each :id");
+                    }
                 }
 
                 if get_single_alert {
+                    let endpoint = format!("{}/alerts/{}", url, alert_id);
+                    //self.get_helper(endpoint, tokenfile.clone())?;
                     println!("alert_id={:?} delete={:?}", alert_id, delete_alert);
+                    if delete_alert {
+                        println!("TODO create endpoint DEL /alerts/:id");
+                    }
                 }
 
                 Ok(())
