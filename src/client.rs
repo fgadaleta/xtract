@@ -111,18 +111,14 @@ impl Frontend {
 
                 let delete_alert = match &t.delete {
                     opt => {
-                        dbg!("Some branch {:?}", opt);
                         opt
                     },
                     _ => {
-                        dbg!("None branch");
                         &false
                     },
                 };
 
-                println!("delete_flag={:?}", delete_alert);
-
-
+                // TODO prepare endpoints here and call get_helper
                 if get_all_alerts {
                     println!("data_id={:?} delete={:?}", data_id, delete_alert);
                 }
