@@ -116,6 +116,8 @@ impl Frontend {
 
             SubCommand::Data(t) => {
                 let mut res: HashMap<String, String> = HashMap::new();
+                let delete_data = t.delete;
+
                 let get_all = match t.all {
                     Some(opt) => opt,
                     None => false,
@@ -123,18 +125,17 @@ impl Frontend {
 
                 if get_all {
                     let endpoint = format!("{}/data", url);
-                    res = self.get_helper(endpoint, tokenfile)?;
+                    res = self.get_helper(endpoint, tokenfile.clone())?;
 
                 } else {
                     // fetching only one asset with id
-                    // let id_to_fetch = t.id.as_ref().unwrap();
                     let id_to_fetch = match t.id.as_ref() {
                         Some(id) => String::from(id),
                         None => String::from(""),
                     };
 
                     let endpoint = format!("{}/data/{}", url, id_to_fetch);
-                    res = self.get_helper(endpoint, tokenfile)?;
+                    res = self.get_helper(endpoint, tokenfile.clone())?;
                 }
 
                 if res.contains_key("status").not() {
@@ -154,6 +155,12 @@ impl Frontend {
                             println!("filename: {}", asset["filename"]);
                             println!("submitted_on: {}", asset["_submitted_on"]);
                             println!("datastore: {}", asset["datastore"]);
+
+                            if delete_data {
+                                let endpoint = format!("{}/data/{}", url, asset["id"]);
+                                let res = self.del_helper(endpoint, tokenfile.clone());
+                            }
+
                         }
                     },
                     _ => println!("Status not OK"),

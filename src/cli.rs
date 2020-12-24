@@ -34,6 +34,9 @@ pub struct Data {
 
     #[clap(long, conflicts_with = "id", takes_value = false)]
     pub all: Option<bool>,
+
+    #[clap(long, takes_value = false)]
+    pub delete: bool,
 }
 
 #[derive(Clap, Clone)]
@@ -69,7 +72,6 @@ pub enum SubCommand {
     Alerts(Alerts),
     /// Set metadata of remote assets
     Set,
-
     /// Publish metadata to remote service
     // Publish,
     /// Profile of data passed as argument
