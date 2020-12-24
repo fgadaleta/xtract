@@ -3,6 +3,11 @@ use anyhow::Result;
 use arrow::record_batch::RecordBatch;
 use once_cell::sync::Lazy;
 use serde_json::{json, Value};
+use serde::{Serialize, Deserialize};
+use serde::de::{
+    DeserializeSeed, EnumAccess, IntoDeserializer, MapAccess, SeqAccess,
+    VariantAccess, Visitor,
+};
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::prelude::*;
@@ -28,6 +33,52 @@ static RT: Lazy<Runtime> = Lazy::new(|| Runtime::new().unwrap());
 
 pub struct Frontend {
     args: Args,
+}
+
+
+#[derive(Serialize, Deserialize, Debug)]
+struct DataResponse {
+    id: String,
+    r#type: String,
+    datastore: String,
+    filename: String,
+    _is_published: Option<String>,
+    _submitted_on: String,
+    _id: Option<String>,
+    _key: Option<String>,
+    _rev: Option<String>
+}
+
+// type AlertBody = HashMap<String, String>;
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Body {
+    timestamp: String,
+    profile_id: String,
+    r#type: String,
+    //#[serde(deserialize_with = "...")]
+    message: Vec<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct AlertResponse {
+    data_id: String,
+    body: Body,
+    created_on: String,
+    id: String,
+    _id: Option<String>,
+    _key: Option<String>,
+    _rev: Option<String>
+}
+
+impl AlertResponse {
+    pub fn get_timestamp(&self) -> String {
+        self.body.timestamp.to_owned()
+    }
+
+    // pub fn get_body(&self) -> &Body {
+    //     &self
+    // }
 }
 
 impl Frontend {
@@ -63,6 +114,9 @@ impl Frontend {
             }
 
             SubCommand::Data(t) => {
+
+                let mut res: HashMap<String, String> = HashMap::new();
+
                 // let get_all = t.all?;
                 let get_all = match t.all {
                     Some(opt) => opt,
@@ -71,7 +125,7 @@ impl Frontend {
 
                 if get_all {
                     let endpoint = format!("{}/data", url);
-                    self.get_helper(endpoint, tokenfile)?;
+                    res = self.get_helper(endpoint, tokenfile)?;
 
                 } else {
                     // fetching only one asset with id
@@ -82,7 +136,42 @@ impl Frontend {
                     };
 
                     let endpoint = format!("{}/data/{}", url, id_to_fetch);
-                    self.get_helper(endpoint, tokenfile)?;
+                    res = self.get_helper(endpoint, tokenfile)?;
+                }
+
+
+                // let var = serde_json::from_string::<Vec<HashMap<String, String>>(input);
+                // let assets: HashMap<String, Value> = serde_json::from_str(&assets[..]).unwrap();
+                // let assets: HashMap<String, Value> = serde_json::from_str(&res["message"][..]).unwrap();
+                // println!("Assets: {:?}", assets);
+                // if res["status"] == "success" {}
+
+
+                /*
+                let array: Vec<String> = serde_json::from_str(res["message"].as_str())?;
+                for elem in array.iter() {
+                    println!("single data asset {:?}", elem);
+                }
+                 */
+
+                match &res["status"][..] {
+                    "success" => {
+                        // TODO serde_json deserialize with Option<fields>
+
+                        let data_assets = serde_json::from_str::<Vec<HashMap<String, String>>>(res["message"].as_str()).unwrap();
+                        for (i, asset) in data_assets.iter().enumerate() {
+                            println!("\n********** DATA ASSET {}", i);
+                            println!("id: {}", asset["id"]);
+                            println!("type: {}", asset["type"]);
+                            println!("filename: {}", asset["filename"]);
+                            println!("submitted_on: {}", asset["_submitted_on"]);
+                            println!("datastore: {}", asset["datastore"]);
+                            // println!("profile: {}", asset["profile_id"]);
+                        }
+
+                        // println!("Data assets: {}", res["message"])
+                    },
+                    _ => println!("Status not OK"),
                 }
 
                 Ok(())
@@ -92,6 +181,7 @@ impl Frontend {
             SubCommand::Alerts(t) => {
                 let mut data_id: String = "".to_string();
                 let mut alert_id: String = "".to_string();
+                let mut res: HashMap<String, String> = HashMap::new();
 
                 let get_all_alerts: bool = match t.data.as_ref() {
                     Some(did) => {
@@ -114,8 +204,9 @@ impl Frontend {
                 // TODO prepare endpoints here and call get_helper
                 if get_all_alerts {
                     let endpoint = format!("{}/data/{}/alerts", url, data_id);
-                    self.get_helper(endpoint, tokenfile.clone())?;
-                    println!("data_id={:?} delete={:?}", data_id, delete_alert);
+                    res = self.get_helper(endpoint, tokenfile.clone())?;
+                    // println!("DBG alert res: {:?}", res);
+                    // println!("data_id={:?} delete={:?}", data_id, delete_alert);
                     if delete_alert {
                         println!("TODO create endpoint DEL /alerts/:id for each :id");
                     }
@@ -123,11 +214,39 @@ impl Frontend {
 
                 if get_single_alert {
                     let endpoint = format!("{}/alerts/{}", url, alert_id);
-                    self.get_helper(endpoint, tokenfile.clone())?;
-                    println!("alert_id={:?} delete={:?}", alert_id, delete_alert);
+                    res = self.get_helper(endpoint, tokenfile.clone())?;
+                    // println!("DBG alert res: {:?}", res);
+                    // println!("alert_id={:?} delete={:?}", alert_id, delete_alert);
                     if delete_alert {
                         println!("TODO create endpoint DEL /alerts/:id");
                     }
+                }
+
+                match &res["status"][..] {
+                    "success" => {
+                        // TODO serde_json deserialize with Option<fields>
+
+                        // let alerts = serde_json::from_str::<Vec<HashMap<String, String>>>(res["message"].as_str()).unwrap();
+                        let alerts = serde_json::from_str::<Vec<AlertResponse>>(res["message"].as_str());
+                        // println!("DBG DBG {:?}", alerts);
+                        for (i, alert) in alerts.iter().enumerate() {
+                            println!("\n********** ALERT {} ********** ", i);
+                            println!("data_id: {}", alert[0].data_id);
+                            println!("created_on: {}", alert[0].created_on);
+                            println!("alert_id: {}", alert[0].id);
+                            let body = &alert[0].body;
+                            println!("timestamp: {}", &body.timestamp);
+                            println!("alert_type: {}", &body.r#type);
+                            let messages: &Vec<String> = &body.message;
+                            for (j, message) in messages.iter().enumerate() {
+                                println!("\n____________________ msg {} ____________________ \n", j);
+                                println!("    {}", message);
+                            }
+
+                        }
+
+                    },
+                    _ => println!("Cannot retrieve alert(s). Status not OK"),
                 }
 
                 Ok(())
@@ -159,7 +278,7 @@ impl Frontend {
                         // TODO get this from input_to_fetch
                         // let filename = String::from("synthetic_demo_data.csv");
                         let df = self.csv_reader_helper(storage, filename);
-                        let profile = df.profile();
+                        let _profile = df.profile();
                         // println!("Dataset profile: {}", profile);
                     }
 
@@ -183,7 +302,7 @@ impl Frontend {
                         profile.set_datasource(input_to_fetch.clone());
 
                         // Convert to string and print
-                        let profile_str = serde_json::to_string_pretty(&profile).unwrap();
+                        let _profile_str = serde_json::to_string_pretty(&profile).unwrap();
                         // println!("Profile: {}", profile_str);
 
                         // TODO
@@ -290,7 +409,7 @@ impl Frontend {
         }
     }
 
-    fn get_helper(&self, endpoint: String, tokenfile: String) -> Result<String> {
+    fn get_helper(&self, endpoint: String, tokenfile: String) -> Result<HashMap<String, String>> {
         // let endpoint = format!("{}/data", url);
 
         // get token and send to request as is (encoding occurs server-side)
@@ -303,26 +422,41 @@ impl Frontend {
             .header("Authorization", format!("{}{}", "Bearer ", token))
             .send();
 
+        // let mut response: String = "".to_string();
+        let mut result: HashMap<String, String> = HashMap::new();
+
         match response {
             Ok(res) => {
                 if res.status() == reqwest::StatusCode::OK {
                     println!("status ok ");
-                    let assets: String = res.text()?;
+                    let str_assets: String = res.text()?;
                     // let assets: String = res.json()?;
-                    println!("Assets: {}", assets);
+                    // println!("Assets: {}", assets);
+                    // response = assets;
+                    result.insert("status".to_string(), "success".to_string());
+                    result.insert("message".to_string(), str_assets.clone());
 
-                    // let assets: HashMap<String, Value> = serde_json::from_str(&assets[..]).unwrap();
-                    // for (hash, info) in &assets {
-                    //     println!("\n\n----------------------------\n");
-                    //     println!("Data hash: [{}]\n", hash);
-                    //     println!("----------------------------\n");
-                    //     println!("{}", serde_json::to_string_pretty(&info).unwrap());
-                    //     println!("\n------------------------\n");
-                    // }
+                    // println!("str_assets: {}", str_assets);
+
+                    // print directly from here
+                    // let assets: HashMap<String, Value> = serde_json::from_str(&str_assets[..]).unwrap();
+
+                    /*
+                    for (hash, info) in &assets {
+                        println!("\n\n----------------------------\n");
+                        println!("Data hash: [{}]\n", hash);
+                        println!("----------------------------\n");
+                        println!("{}", serde_json::to_string_pretty(&info).unwrap());
+                        println!("\n------------------------\n");
+                    }
+                     */
+
                 } else {
                     println!("Status not ok");
-                    let response = res.text()?;
-                    println!("Response: {:?}", response);
+                    // response = res.text()?;
+                    result.insert("status".to_string(), "failed".to_string());
+                    result.insert("message".to_string(), res.text()?);
+                    // println!("Response: {:?}", response);
                 }
             }
 
@@ -331,7 +465,7 @@ impl Frontend {
             }
         }
 
-        Ok("".to_string())
+        Ok(result)
     }
 
     fn post_helper(&self, endpoint: String, tokenfile: String, body: Value) -> Result<()> {
