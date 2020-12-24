@@ -13,10 +13,11 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::Cursor;
 use std::sync::Arc;
+use std::ops::Not;
+use std::process;
 use tokio::runtime::Runtime;
 use xtract::configuration::{get_configuration_from_file, get_content_from_file};
 use xtract::loaders::s3_connector::Storage;
-
 // TODO remove and use only polars DataFrame
 use xtract::loaders::dataframe::NcodeDataFrame;
 use xtract::loaders::frame::DataFrame;
@@ -139,13 +140,10 @@ impl Frontend {
                     res = self.get_helper(endpoint, tokenfile)?;
                 }
 
-
-                // let var = serde_json::from_string::<Vec<HashMap<String, String>>(input);
-                // let assets: HashMap<String, Value> = serde_json::from_str(&assets[..]).unwrap();
-                // let assets: HashMap<String, Value> = serde_json::from_str(&res["message"][..]).unwrap();
-                // println!("Assets: {:?}", assets);
-                // if res["status"] == "success" {}
-
+                if res.contains_key("status").not() {
+                    println!("Error establishing connection.\nServer can be down.");
+                    process::exit(1);
+                }
 
                 /*
                 let array: Vec<String> = serde_json::from_str(res["message"].as_str())?;
@@ -166,10 +164,7 @@ impl Frontend {
                             println!("filename: {}", asset["filename"]);
                             println!("submitted_on: {}", asset["_submitted_on"]);
                             println!("datastore: {}", asset["datastore"]);
-                            // println!("profile: {}", asset["profile_id"]);
                         }
-
-                        // println!("Data assets: {}", res["message"])
                     },
                     _ => println!("Status not OK"),
                 }
@@ -228,22 +223,25 @@ impl Frontend {
                         let alerts = serde_json::from_str::<Vec<AlertResponse>>(res["message"].as_str()).unwrap();
                         // println!("DBG DBG {:?} len={}", alerts, alerts.len());
 
-                        for (i, alert) in alerts.iter().enumerate() {
-                            println!("\n********** ALERT {} ********** ", i);
-                            println!("data_id: {}", alert.data_id);
-                            println!("created_on: {}", alert.created_on);
-                            println!("alert_id: {}", alert.id);
-                            let body = &alert.body;
-                            println!("timestamp: {}", &body.timestamp);
-                            println!("alert_type: {}", &body.r#type);
-                            let messages: &Vec<String> = &body.message;
-                            for (j, message) in messages.iter().enumerate() {
-                                println!("\n____________________ msg {} ____________________ \n", j);
-                                println!("    {}", message);
-                            }
-
+                        if alerts.len() ==  0 {
+                            println!("No alerts for this data asset.")
                         }
-
+                        else {
+                            for (i, alert) in alerts.iter().enumerate() {
+                                println!("\n********** ALERT {} ********** ", i);
+                                println!("data_id: {}", alert.data_id);
+                                println!("created_on: {}", alert.created_on);
+                                println!("alert_id: {}", alert.id);
+                                let body = &alert.body;
+                                println!("timestamp: {}", &body.timestamp);
+                                println!("alert_type: {}", &body.r#type);
+                                let messages: &Vec<String> = &body.message;
+                                for (j, message) in messages.iter().enumerate() {
+                                    println!("\n____________________ msg {} ____________________ \n", j);
+                                    println!("    {}", message);
+                                }
+                            }
+                        }
                     },
                     _ => println!("Cannot retrieve alert(s). Status not OK"),
                 }
