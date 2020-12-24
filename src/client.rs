@@ -4,10 +4,10 @@ use arrow::record_batch::RecordBatch;
 use once_cell::sync::Lazy;
 use serde_json::{json, Value};
 use serde::{Serialize, Deserialize};
-use serde::de::{
-    DeserializeSeed, EnumAccess, IntoDeserializer, MapAccess, SeqAccess,
-    VariantAccess, Visitor,
-};
+// use serde::de::{
+//     DeserializeSeed, EnumAccess, IntoDeserializer, MapAccess, SeqAccess,
+//     VariantAccess, Visitor,
+// };
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::prelude::*;
@@ -237,8 +237,8 @@ impl Frontend {
                                 println!("alert_type: {}", &body.r#type);
                                 let messages: &Vec<String> = &body.message;
                                 for (j, message) in messages.iter().enumerate() {
-                                    println!("\n____________________ msg {} ____________________ \n", j);
-                                    println!("    {}", message);
+                                    println!("\n\t____________________ msg {} ____________________ \n", j);
+                                    println!("\t{}", message);
                                 }
                             }
                         }
@@ -428,32 +428,14 @@ impl Frontend {
                     println!("status ok ");
                     let str_assets: String = res.text()?;
                     // let assets: String = res.json()?;
-                    // println!("Assets: {}", assets);
-                    // response = assets;
                     result.insert("status".to_string(), "success".to_string());
                     result.insert("message".to_string(), str_assets.clone());
-
-                    // println!("str_assets: {}", str_assets);
-
-                    // print directly from here
-                    // let assets: HashMap<String, Value> = serde_json::from_str(&str_assets[..]).unwrap();
-
-                    /*
-                    for (hash, info) in &assets {
-                        println!("\n\n----------------------------\n");
-                        println!("Data hash: [{}]\n", hash);
-                        println!("----------------------------\n");
-                        println!("{}", serde_json::to_string_pretty(&info).unwrap());
-                        println!("\n------------------------\n");
-                    }
-                     */
 
                 } else {
                     println!("Status not ok");
                     // response = res.text()?;
                     result.insert("status".to_string(), "failed".to_string());
                     result.insert("message".to_string(), res.text()?);
-                    // println!("Response: {:?}", response);
                 }
             }
 
@@ -461,7 +443,6 @@ impl Frontend {
                 println!("Could not make request! {:?} ", e);
             }
         }
-
         Ok(result)
     }
 
