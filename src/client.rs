@@ -115,10 +115,7 @@ impl Frontend {
             }
 
             SubCommand::Data(t) => {
-
                 let mut res: HashMap<String, String> = HashMap::new();
-
-                // let get_all = t.all?;
                 let get_all = match t.all {
                     Some(opt) => opt,
                     None => false,
@@ -144,13 +141,6 @@ impl Frontend {
                     println!("Error establishing connection.\nServer can be down.");
                     process::exit(1);
                 }
-
-                /*
-                let array: Vec<String> = serde_json::from_str(res["message"].as_str())?;
-                for elem in array.iter() {
-                    println!("single data asset {:?}", elem);
-                }
-                 */
 
                 match &res["status"][..] {
                     "success" => {
@@ -196,12 +186,10 @@ impl Frontend {
 
                 let delete_alert = t.delete;
 
-                // TODO prepare endpoints here and call get_helper
+                // prepare endpoints here and call get_helper for all and single
                 if get_all_alerts {
                     let endpoint = format!("{}/data/{}/alerts", url, data_id);
                     res = self.get_helper(endpoint, tokenfile.clone())?;
-                    // println!("DBG alert res: {:?}", res);
-                    // println!("data_id={:?} delete={:?}", data_id, delete_alert);
                     if delete_alert {
                         println!("TODO create endpoint DEL /alerts/:id for each :id");
                     }
@@ -210,8 +198,6 @@ impl Frontend {
                 if get_single_alert {
                     let endpoint = format!("{}/alerts/{}", url, alert_id);
                     res = self.get_helper(endpoint, tokenfile.clone())?;
-                    // println!("DBG alert res: {:?}", res);
-                    // println!("alert_id={:?} delete={:?}", alert_id, delete_alert);
                     if delete_alert {
                         println!("TODO create endpoint DEL /alerts/:id");
                     }
@@ -414,8 +400,6 @@ impl Frontend {
     }
 
     fn get_helper(&self, endpoint: String, tokenfile: String) -> Result<HashMap<String, String>> {
-        // let endpoint = format!("{}/data", url);
-
         // get token and send to request as is (encoding occurs server-side)
         let token = get_content_from_file(&tokenfile[..])?;
         // let token = base64::encode(token);
