@@ -224,17 +224,16 @@ impl Frontend {
 
                 match &res["status"][..] {
                     "success" => {
-                        // TODO serde_json deserialize with Option<fields>
-
                         // let alerts = serde_json::from_str::<Vec<HashMap<String, String>>>(res["message"].as_str()).unwrap();
-                        let alerts = serde_json::from_str::<Vec<AlertResponse>>(res["message"].as_str());
-                        // println!("DBG DBG {:?}", alerts);
+                        let alerts = serde_json::from_str::<Vec<AlertResponse>>(res["message"].as_str()).unwrap();
+                        // println!("DBG DBG {:?} len={}", alerts, alerts.len());
+
                         for (i, alert) in alerts.iter().enumerate() {
                             println!("\n********** ALERT {} ********** ", i);
-                            println!("data_id: {}", alert[0].data_id);
-                            println!("created_on: {}", alert[0].created_on);
-                            println!("alert_id: {}", alert[0].id);
-                            let body = &alert[0].body;
+                            println!("data_id: {}", alert.data_id);
+                            println!("created_on: {}", alert.created_on);
+                            println!("alert_id: {}", alert.id);
+                            let body = &alert.body;
                             println!("timestamp: {}", &body.timestamp);
                             println!("alert_type: {}", &body.r#type);
                             let messages: &Vec<String> = &body.message;
