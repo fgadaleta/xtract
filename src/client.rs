@@ -240,7 +240,14 @@ impl Frontend {
                                     println!("\n\t____________________ msg {} ____________________ \n", j);
                                     println!("\t{}", message);
                                 }
+
+                                if delete_alert {
+                                    let endpoint = format!("{}/alerts/{}", url, alert.id);
+                                    let res = self.del_helper(endpoint, tokenfile.clone());
+                                }
+
                             }
+
                         }
                     },
                     _ => println!("Cannot retrieve alert(s). Status not OK"),
@@ -416,6 +423,42 @@ impl Frontend {
         let http_client = reqwest::blocking::ClientBuilder::new().build()?;
         let response = http_client
             .get(&endpoint)
+            .header("Authorization", format!("{}{}", "Bearer ", token))
+            .send();
+
+        // let mut response: String = "".to_string();
+        let mut result: HashMap<String, String> = HashMap::new();
+
+        match response {
+            Ok(res) => {
+                if res.status() == reqwest::StatusCode::OK {
+                    println!("status ok ");
+                    let str_assets: String = res.text()?;
+                    // let assets: String = res.json()?;
+                    result.insert("status".to_string(), "success".to_string());
+                    result.insert("message".to_string(), str_assets.clone());
+
+                } else {
+                    println!("Status not ok");
+                    // response = res.text()?;
+                    result.insert("status".to_string(), "failed".to_string());
+                    result.insert("message".to_string(), res.text()?);
+                }
+            }
+
+            Err(e) => {
+                println!("Could not make request! {:?} ", e);
+            }
+        }
+        Ok(result)
+    }
+
+    fn del_helper(&self, endpoint: String, tokenfile: String) -> Result<HashMap<String, String>> {
+        // get token and send to request as is (encoding occurs server-side)
+        let token = get_content_from_file(&tokenfile[..])?;
+        let http_client = reqwest::blocking::ClientBuilder::new().build()?;
+        let response = http_client
+            .delete(&endpoint)
             .header("Authorization", format!("{}{}", "Bearer ", token))
             .send();
 
