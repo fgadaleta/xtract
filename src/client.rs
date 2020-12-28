@@ -313,31 +313,51 @@ impl Frontend {
                             // println!("DBG body: {:?}", data_body);
                             // println!("DBG body.to_string(): {:?}", data_body.to_string());
 
-                            let res = self
+                            let res: HashMap<String, String> = self
                                 .post_helper(post_data_endpoint, tokenfile.clone(), data_body)
                                 .unwrap();
-                            // println!("DBG POST req res: {:?}", &res);
+
+                            println!("DBG POST req res: {:?}", &res);
                             // println!("data_id: {:?}", res.get("data_id"));
 
                             // get data_id from response
                             match res.get("data_id") {
                                 Some(did) => {
+                                    println!("DBG in match did: {}", did);
+
                                     let post_profile_endpoint = format!("{}/data/{}/profile", url, did);
                                     let profile_res = self
                                          .post_helper(post_profile_endpoint, tokenfile.clone(), json!(profile_str))
                                          .unwrap();
 
-                                    match profile_res.get("message") {
-                                        Some(msg) => {
-                                            println!("{}\n", msg);
+                                    println!("DBG profile_res {:?}", &profile_res);
+
+                                    let status = profile_res.get("status"); // .unwrap();
+
+                                    match status {
+                                        Some(s) => {
+                                            println!("status: {}", s);
+                                            println!("message: {}", profile_res.get("message").unwrap());
+                                            },
+
+                                        _ => {
+                                            println!("status: None");
+                                            // println!("message: {}", profile_res.get("message").unwrap());
                                         },
-                                        None => {
-                                            println!("Something went wrong ");
-                                            process::exit(1);
-                                        }
                                     }
 
+                                    // match profile_res.get("message") {
+                                    //     Some(msg) => {
+                                    //         println!("{}\n", msg);
+                                    //     },
+                                    //     None => {
+                                    //         println!("Something went wrong ");
+                                    //         process::exit(1);
+                                    //     }
+                                    // }
+
                                 },
+
                                 None => {
                                     println!("No data_id returned from server. Contact an administrator at hello@ncode.ai");
                                     process::exit(1);
@@ -531,10 +551,10 @@ impl Frontend {
                     result.insert("message".to_string(), response.clone());
 
                 } else if res.status() == reqwest::StatusCode::CONFLICT {
-                    println!("Data asset already submitted. Still ok...");
-                    // let response: HashMap<String, String> = res.json()?;
                     result = res.json()?;
-                    // println!("DBG from post_helper res_json: {:?} ", result);
+
+                } else if res.status() == reqwest::StatusCode::CREATED {
+                    result = res.json()?;
                 }
             }
 
