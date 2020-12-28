@@ -54,7 +54,7 @@ pub struct Alerts {
 #[derive(Clap, Clone)]
 pub struct Profile {
     #[clap(short, long)]
-    pub input: Option<String>,
+    pub input: String,
 
     // #[clap(long, conflicts_with="id", takes_value=false)]
     #[clap(long, takes_value = false)]

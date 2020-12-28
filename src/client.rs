@@ -36,6 +36,8 @@ pub struct Frontend {
     args: Args,
 }
 
+#[cfg(feature = "async_await")]
+
 
 #[derive(Serialize, Deserialize, Debug)]
 struct DataResponse {
@@ -254,12 +256,11 @@ impl Frontend {
             // SubCommand::Publish => {
             //     unimplemented!()
             // },
-            SubCommand::Profile(t) => {
-                let input_to_fetch = match t.input.as_ref() {
-                    Some(input) => String::from(input),
-                    None => String::from(""),
-                };
 
+
+            SubCommand::Profile(t) => {
+
+                let input_to_fetch = &t.input;
                 let publish_to_api = t.publish;
                 println!("Publish after profile: {:?}", publish_to_api);
 
@@ -294,32 +295,54 @@ impl Frontend {
                         let dataframe = NcodeDataFrame {
                             dataframe: Arc::new(df),
                         };
+
+                        // TODO Result(profile)
                         let mut profile = dataframe.profile();
+
                         // add filename to profile
                         profile.set_datasource(input_to_fetch.clone());
-
                         // Convert to string and print
-                        let _profile_str = serde_json::to_string_pretty(&profile).unwrap();
+                        // let profile_str = serde_json::to_string_pretty(&profile).unwrap();
+                        let profile_str = serde_json::to_value(&profile).unwrap();
                         // println!("Profile: {}", profile_str);
 
-                        // TODO
                         if publish_to_api {
-                            // TODO add datasource as local filename first
-                            // TODO get data_id from response
-                            // TODO post profile to new url
-
+                            // post profile to new url
                             let post_data_endpoint = format!("{}/data/", url);
-                            let data_body = json!({"type": "local",
-                            "filename": "synthetic_demo_data.csv",
-                            });
-
-                            println!("DBG body: {:?}", data_body);
-                            println!("DBG body.to_string(): {:?}", data_body.to_string());
+                            let data_body = json!({"type": "local", "filename": format!("{}", input_to_fetch.clone()) });
+                            // println!("DBG body: {:?}", data_body);
+                            // println!("DBG body.to_string(): {:?}", data_body.to_string());
 
                             let res = self
                                 .post_helper(post_data_endpoint, tokenfile.clone(), data_body)
                                 .unwrap();
-                            println!("DBG POST req res: {:?}", res);
+                            // println!("DBG POST req res: {:?}", &res);
+                            // println!("data_id: {:?}", res.get("data_id"));
+
+                            // get data_id from response
+                            match res.get("data_id") {
+                                Some(did) => {
+                                    let post_profile_endpoint = format!("{}/data/{}/profile", url, did);
+                                    let profile_res = self
+                                         .post_helper(post_profile_endpoint, tokenfile.clone(), json!(profile_str))
+                                         .unwrap();
+
+                                    match profile_res.get("message") {
+                                        Some(msg) => {
+                                            println!("{}\n", msg);
+                                        },
+                                        None => {
+                                            println!("Something went wrong ");
+                                            process::exit(1);
+                                        }
+                                    }
+
+                                },
+                                None => {
+                                    println!("No data_id returned from server. Contact an administrator at hello@ncode.ai");
+                                    process::exit(1);
+                                }
+                            }
 
                             // let post_profile_endpoint = format!("{}/data/{}/profile", url, data_id);
                             // println!("DBG ready to hit endpoint {:?} ", post_profile_endpoint);
@@ -392,10 +415,12 @@ impl Frontend {
                 if res.status() == reqwest::StatusCode::OK {
                     let auth_token = res.json::<HashMap<String, String>>()?;
                     result = auth_token["Authorization"].to_string();
+
                 } else {
                     println!("Response not 200 OK :(");
+                    process::exit(-1);
                 }
-
+                println!("Successfully logged in!\nWelcome to ncode!\n\n");
                 Ok(result)
             }
 
@@ -480,20 +505,15 @@ impl Frontend {
         Ok(result)
     }
 
-    fn post_helper(&self, endpoint: String, tokenfile: String, body: Value) -> Result<()> {
-        // let gist_body = json!({
-        //     "description": "the description for this gist",
-        //     "public": true,
-        //     "files": {
-        //          "main.rs": {
-        //          "content": r#"fn main() { println!("hello world!");}"#
-        //         }
-        //     }});
-
+    fn post_helper(&self, endpoint: String, tokenfile: String, body: Value) -> Result<HashMap<String, String>> {
+        let mut result: HashMap<String, String> = HashMap::new();
         let token = get_content_from_file(&tokenfile[..])?;
-        dbg!("get_content_from_file token: {}", &token);
+        // dbg!("get_content_from_file token: {}", &token);
         // let token = base64::encode(token);
         let http_client = reqwest::blocking::ClientBuilder::new().build()?;
+
+        // let body: HashMap<String, String> = body;
+
         let response = http_client
             .post(&endpoint)
             .header("Authorization", format!("{}{}", "Bearer ", token))
@@ -503,16 +523,18 @@ impl Frontend {
         match response {
             Ok(res) => {
                 if res.status() == reqwest::StatusCode::OK {
-                    let response: String = res.json()?;
-                    println!("response: {}", response);
-                // let assets: String = res.text()?;
+                    // let response: String = res.json()?;
+                    let response: String = res.text()?;
+                    // println!("response: {}", response);
+                    // let assets: String = res.text()?;
+                    result.insert("status".to_string(), "success".to_string());
+                    result.insert("message".to_string(), response.clone());
+
                 } else if res.status() == reqwest::StatusCode::CONFLICT {
                     println!("Data asset already submitted. Still ok...");
-                    let response: String = res.text()?;
-                    let response: HashMap<String, String> =
-                        serde_json::from_str(&response[..]).unwrap();
-
-                    println!("response: {:?}", response);
+                    // let response: HashMap<String, String> = res.json()?;
+                    result = res.json()?;
+                    // println!("DBG from post_helper res_json: {:?} ", result);
                 }
             }
 
@@ -521,6 +543,6 @@ impl Frontend {
             }
         }
 
-        Ok(())
+        Ok(result)
     }
 }
