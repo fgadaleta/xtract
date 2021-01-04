@@ -122,9 +122,7 @@ impl Frontend {
         let mut config_file_path = config_path.clone();
         config_file_path.push("configuration.toml");
         let config_file_path = config_file_path.into_os_string().into_string().unwrap();
-
         println!("expected config file path exist {}", config_file_path);
-
         let config_path_exist = config_path.exists();
         println!("config path exist {}", config_path_exist);
 
@@ -136,13 +134,7 @@ impl Frontend {
                 .into_string()
                 .unwrap();
 
-            // println!("something {}", something);
-            // fs::create_dir(format!("{:?}/.ncode", home_dir)).unwrap();
-            // let file_path = PathBuf::from("~/.ncode/").join(file_name);
-            // let path = std::path::Path::new("~/.ncode/configuration.toml");
-            // let prefix = path.parent().unwrap();
             std::fs::create_dir_all(config_path.clone()).unwrap();
-            // let content = "Be prepared to appreciate what you meet";
             let mut file = File::create(format!("{}/configuration-sample.toml", config_path)).unwrap();
             file.write_all(config_sample_content.as_bytes()).unwrap();
             println!("done.");
