@@ -9,6 +9,7 @@ use serde::{Serialize, Deserialize};
 //     VariantAccess, Visitor,
 // };
 use std::collections::HashMap;
+use std::fs;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::Cursor;
@@ -31,6 +32,26 @@ use polars::prelude::*;
 // use arrow::util::print_batches;
 
 static RT: Lazy<Runtime> = Lazy::new(|| Runtime::new().unwrap());
+
+static config_sample_content:&'static str = "
+[api]
+server = \"api.ncode.ai\"
+port = 5000
+max-age = 5400
+
+[credentials]
+username = \"frag\"
+password = \"1234\"
+
+[settings]
+tokenfile = \"~/.ncode/.token\"
+
+[storage]
+url = \"http://localhost:9000\"
+access_key = \"frag\"
+secret_access_key = \"\"
+";
+
 
 pub struct Frontend {
     args: Args,
@@ -90,8 +111,33 @@ impl Frontend {
     }
 
     pub fn run(&self) -> Result<()> {
+        // TODO check if exists
+
+        // TODO create ~/.ncode if not exists
+        println!("Creating ncode home folder...");
+        let mut config_dir = std::env::home_dir().unwrap();
+        config_dir.push(".ncode");
+        println!("CONFIG_DIR: {:?}", &config_dir);
+        let config_path = config_dir.clone().into_os_string().into_string().unwrap();
+        // println!("something {}", something);
+
+        // fs::create_dir(format!("{:?}/.ncode", home_dir)).unwrap();
+        // let file_path = PathBuf::from("~/.ncode/").join(file_name);
+        // let path = std::path::Path::new("~/.ncode/configuration.toml");
+        // let prefix = path.parent().unwrap();
+        std::fs::create_dir_all(config_dir).unwrap();
+
+        // let content = "Be prepared to appreciate what you meet";
+        let mut file = File::create(format!("{}/configuration.toml", config_path)).unwrap();
+        file.write_all(config_sample_content.as_bytes()).unwrap();
+
+        println!("done.");
+
+
+
         // get configuration
         let config = get_configuration_from_file("./configuration.toml")?;
+
 
         // TODO different type dispatcher
 
