@@ -8,8 +8,12 @@ use serde::{Serialize, Deserialize};
 //     DeserializeSeed, EnumAccess, IntoDeserializer, MapAccess, SeqAccess,
 //     VariantAccess, Visitor,
 // };
+use home_dir;
 use std::collections::HashMap;
 use std::fs;
+use std::path::Path;
+use std::env::var;
+use std::path::PathBuf;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::Cursor;
@@ -111,33 +115,41 @@ impl Frontend {
     }
 
     pub fn run(&self) -> Result<()> {
-        // TODO check if exists
+        // check if exists
+        let mut config_path = PathBuf::from(var("HOME").unwrap());
+        config_path.push(".ncode");
 
-        // TODO create ~/.ncode if not exists
-        println!("Creating ncode home folder...");
-        let mut config_dir = std::env::home_dir().unwrap();
-        config_dir.push(".ncode");
-        println!("CONFIG_DIR: {:?}", &config_dir);
-        let config_path = config_dir.clone().into_os_string().into_string().unwrap();
-        // println!("something {}", something);
+        let mut config_file_path = config_path.clone();
+        config_file_path.push("configuration.toml");
+        let config_file_path = config_file_path.into_os_string().into_string().unwrap();
 
-        // fs::create_dir(format!("{:?}/.ncode", home_dir)).unwrap();
-        // let file_path = PathBuf::from("~/.ncode/").join(file_name);
-        // let path = std::path::Path::new("~/.ncode/configuration.toml");
-        // let prefix = path.parent().unwrap();
-        std::fs::create_dir_all(config_dir).unwrap();
+        println!("expected config file path exist {}", config_file_path);
 
-        // let content = "Be prepared to appreciate what you meet";
-        let mut file = File::create(format!("{}/configuration.toml", config_path)).unwrap();
-        file.write_all(config_sample_content.as_bytes()).unwrap();
+        let config_path_exist = config_path.exists();
+        println!("config path exist {}", config_path_exist);
 
-        println!("done.");
+        if !config_path_exist {
+            println!("Creating ncode home folder for the first time...");
+            let config_path = config_path
+                .clone()
+                .into_os_string()
+                .into_string()
+                .unwrap();
 
-
+            // println!("something {}", something);
+            // fs::create_dir(format!("{:?}/.ncode", home_dir)).unwrap();
+            // let file_path = PathBuf::from("~/.ncode/").join(file_name);
+            // let path = std::path::Path::new("~/.ncode/configuration.toml");
+            // let prefix = path.parent().unwrap();
+            std::fs::create_dir_all(config_path.clone()).unwrap();
+            // let content = "Be prepared to appreciate what you meet";
+            let mut file = File::create(format!("{}/configuration-sample.toml", config_path)).unwrap();
+            file.write_all(config_sample_content.as_bytes()).unwrap();
+            println!("done.");
+        }
 
         // get configuration
-        let config = get_configuration_from_file("./configuration.toml")?;
-
+        let config = get_configuration_from_file(&config_file_path[..])?;
 
         // TODO different type dispatcher
 

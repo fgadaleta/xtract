@@ -37,7 +37,7 @@ ndarray = "0.14.0"
 rayon = "1.5"
 indicatif = "0.15.0"
 criterion = "0.3"
-
+home-dir = "0.1.0"
 
 [[bench]]
 name = "xtract_profile"
