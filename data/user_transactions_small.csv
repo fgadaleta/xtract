@@ -44,7 +44,7 @@
 42,8257,Robert,Miles,creditCard,Restaurants/Dining,2016-12-12,63.47,debit
 43,7807,Boris,Tsibelman,bank,Travel,2016-12-14,1000.0,debit
 44,7807,Boris,Tsibelman,bank,Transfers,2016-10-20,1000.0,credit
-45,1158,,,bank,Home Improvement,2017-02-13,1.9,debit
+45,1158,,,bank,Home Improvement,2017-02-13,9,debit
 46,7807,Boris,Tsibelman,bank,Credit Card Payments,2016-10-13,1000.0,debit
 47,7807,Boris,Tsibelman,bank,Transfers,2016-10-24,1000.0,credit
 48,7807,Boris,Tsibelman,bank,Credit Card Payments,2016-10-21,1000.0,debit
@@ -52,6 +52,7 @@
 50,7807,Boris,Tsibelman,bank,Credit Card Payments,2016-11-01,1000.0,debit
 51,7807,Boris,Tsibelman,bank,Transfers,2016-12-09,1000.0,credit
 52,7807,Boris,Tsibelman,bank,Taxes,2016-12-02,1000.0,debit
+52,7807,Boris,Tsibelman,bank,Taxes,2017-12-02,5000.0,debit
 53,7807,Boris,Tsibelman,bank,Transfers,2016-12-23,1000.0,credit
 54,7807,Boris,Tsibelman,bank,Travel,2016-12-20,1000.0,debit
 55,7807,Boris,Tsibelman,bank,Transfers,2016-08-02,409.15,credit

@@ -45,15 +45,15 @@ port = 5000
 max-age = 5400
 
 [credentials]
-username = \"frag\"
-password = \"1234\"
+username = \"username\"
+password = \"password\"
 
 [settings]
 
 [storage]
-url = \"http://localhost:9000\"
-access_key = \"frag\"
-secret_access_key = \"\"
+url = \"http://my-s3-storage\"
+access_key = \"access_key\"
+secret_access_key = \"secret_access_key\"
 ";
 
 
@@ -202,7 +202,7 @@ impl Frontend {
                 match &res["status"][..] {
                     "success" => {
                         // TODO serde_json deserialize with Option<fields>
-
+                        // println!("res[message] {:?}", &res["message"]);
                         let data_assets = serde_json::from_str::<Vec<HashMap<String, String>>>(res["message"].as_str()).unwrap();
                         for (i, asset) in data_assets.iter().enumerate() {
                             println!("\n********** DATA ASSET {}", i);
@@ -371,20 +371,20 @@ impl Frontend {
                                 .post_helper(post_data_endpoint, tokenfile.clone(), data_body)
                                 .unwrap();
 
-                            println!("DBG POST req res: {:?}", &res);
+                            // println!("DBG POST req res: {:?}", &res);
                             // println!("data_id: {:?}", res.get("data_id"));
 
                             // get data_id from response
                             match res.get("data_id") {
                                 Some(did) => {
-                                    println!("DBG in match did: {}", did);
+                                    // println!("DBG in match did: {}", did);
 
                                     let post_profile_endpoint = format!("{}/data/{}/profile", url, did);
                                     let profile_res = self
                                          .post_helper(post_profile_endpoint, tokenfile.clone(), json!(profile_str))
                                          .unwrap();
 
-                                    println!("DBG profile_res {:?}", &profile_res);
+                                    // println!("DBG profile_res {:?}", &profile_res);
 
                                     let status = profile_res.get("status"); // .unwrap();
 
