@@ -33,7 +33,15 @@ pub struct Settings {
 
 
 pub fn get_content_from_file(filepath: &str) -> Result<String, Error> {
-    let mut file = File::open(filepath)?;
+    let mut file = match File::open(filepath) {
+        Ok(f) => f,
+        Err(err) => {
+            println!("{} (~/.ncode/configuration.toml)", err);
+            println!("Please create a configuration file under ~/.ncode/configuration.toml");
+            std::process::exit(1);
+        }
+    };
+
     let mut content = String::new();
     file.read_to_string(&mut content)?;
     Ok(content)

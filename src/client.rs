@@ -8,9 +8,9 @@ use serde::{Serialize, Deserialize};
 //     DeserializeSeed, EnumAccess, IntoDeserializer, MapAccess, SeqAccess,
 //     VariantAccess, Visitor,
 // };
-use home_dir;
+// use home_dir;
 use std::collections::HashMap;
-use std::fs;
+// use std::fs;
 use std::path::Path;
 use std::env::var;
 use std::path::PathBuf;
@@ -28,16 +28,17 @@ use xtract::loaders::dataframe::NcodeDataFrame;
 use xtract::loaders::frame::DataFrame;
 // use crate::transformers::simple;
 use xtract::loaders::csv_format::CsvReader as csvr;
-
 use polars::prelude::*;
 // use arrow::datatypes::DataType;
-
 // #[cfg(feature = "prettyprint")]
 // use arrow::util::print_batches;
 
+// TODO move to config.rs or something
 static RT: Lazy<Runtime> = Lazy::new(|| Runtime::new().unwrap());
-
-static config_sample_content:&'static str = "
+const CONFIG_DIR: &str = ".ncode";
+const CONFIG_FILENAME: &str = "configuration.toml";
+const CONFIG_SAMPLE_FILENAME: &str = "configuration-sample.toml";
+static CONFIG_SAMPLE_CONTENT: &'static str = "
 [api]
 server = \"api.ncode.ai\"
 port = 5000
@@ -48,7 +49,6 @@ username = \"frag\"
 password = \"1234\"
 
 [settings]
-tokenfile = \"~/.ncode/.token\"
 
 [storage]
 url = \"http://localhost:9000\"
@@ -62,7 +62,6 @@ pub struct Frontend {
 }
 
 #[cfg(feature = "async_await")]
-
 
 #[derive(Serialize, Deserialize, Debug)]
 struct DataResponse {
@@ -117,14 +116,17 @@ impl Frontend {
     pub fn run(&self) -> Result<()> {
         // check if exists
         let mut config_path = PathBuf::from(var("HOME").unwrap());
-        config_path.push(".ncode");
-
+        config_path.push(CONFIG_DIR);
         let mut config_file_path = config_path.clone();
-        config_file_path.push("configuration.toml");
-        let config_file_path = config_file_path.into_os_string().into_string().unwrap();
-        println!("expected config file path exist {}", config_file_path);
+        config_file_path.push(CONFIG_FILENAME);
+        let mut token_file_path = config_path.clone();
+        token_file_path.push(".token");
+
+        let config_file_path = config_file_path
+            .into_os_string()
+            .into_string()
+            .unwrap();
         let config_path_exist = config_path.exists();
-        println!("config path exist {}", config_path_exist);
 
         if !config_path_exist {
             println!("Creating ncode home folder for the first time...");
@@ -135,8 +137,9 @@ impl Frontend {
                 .unwrap();
 
             std::fs::create_dir_all(config_path.clone()).unwrap();
-            let mut file = File::create(format!("{}/configuration-sample.toml", config_path)).unwrap();
-            file.write_all(config_sample_content.as_bytes()).unwrap();
+            let mut file = File::create(format!("{}/{}", config_path, CONFIG_SAMPLE_FILENAME))
+                .unwrap();
+            file.write_all(CONFIG_SAMPLE_CONTENT.as_bytes()).unwrap();
             println!("done.");
         }
 
@@ -147,7 +150,9 @@ impl Frontend {
 
         // get API url
         let url = format!("http://{}:{}", config.api.server, config.api.port);
-        let tokenfile = config.settings.tokenfile;
+        // let tokenfile = config.settings.tokenfile;
+        let tokenfile = token_file_path.into_os_string().into_string().unwrap();
+
 
         match &self.args.subcmd {
             SubCommand::Login => {
@@ -161,8 +166,12 @@ impl Frontend {
                 let token = self.login_helper(url, credentials)?;
 
                 // store token somewhere
+                // let tokenfile = Path::new(&tokenfile);
+
+                println!("Creating tokenfile at {:?}", &tokenfile);
                 let mut file = File::create(tokenfile)?;
                 file.write_all(token.as_bytes())?;
+
                 Ok(())
             }
 
