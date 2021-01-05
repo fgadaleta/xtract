@@ -27,7 +27,7 @@ pub struct Credentials {
 
 #[derive(Deserialize, Debug)]
 pub struct Settings {
-    pub tokenfile: String,
+    // pub tokenfile: String,
     // TODO other settings here
 }
 
@@ -64,7 +64,7 @@ pub fn get_configuration_from_file(filepath: &str) -> Result<Config, Error> {
             },
 
             settings: Settings {
-                tokenfile: config.settings.tokenfile
+                // tokenfile: config.settings.tokenfile
             }
         }
     )
