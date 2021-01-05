@@ -117,8 +117,10 @@ impl Frontend {
         // check if exists
         let mut config_path = PathBuf::from(var("HOME").unwrap());
         config_path.push(CONFIG_DIR);
+
         let mut config_file_path = config_path.clone();
         config_file_path.push(CONFIG_FILENAME);
+
         let mut token_file_path = config_path.clone();
         token_file_path.push(".token");
 
@@ -150,9 +152,7 @@ impl Frontend {
 
         // get API url
         let url = format!("http://{}:{}", config.api.server, config.api.port);
-        // let tokenfile = config.settings.tokenfile;
         let tokenfile = token_file_path.into_os_string().into_string().unwrap();
-
 
         match &self.args.subcmd {
             SubCommand::Login => {
@@ -164,14 +164,9 @@ impl Frontend {
 
                 // login and get token
                 let token = self.login_helper(url, credentials)?;
-
-                // store token somewhere
-                // let tokenfile = Path::new(&tokenfile);
-
-                println!("Creating tokenfile at {:?}", &tokenfile);
+                // println!("Creating tokenfile at {:?}", &tokenfile);
                 let mut file = File::create(tokenfile)?;
                 file.write_all(token.as_bytes())?;
-
                 Ok(())
             }
 
