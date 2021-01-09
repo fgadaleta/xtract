@@ -225,7 +225,6 @@ impl Frontend {
                 Ok(())
             }
 
-
             SubCommand::Alerts(t) => {
                 let mut data_id: String = "".to_string();
                 let mut alert_id: String = "".to_string();
@@ -246,6 +245,12 @@ impl Frontend {
                     },
                     None => false
                 };
+
+                // exit if no flag is passed
+                if !(get_all_alerts || get_single_alert) {
+                    println!("Must pass at least one flag --data or --id ");
+                    process::exit(-1);
+                }
 
                 let delete_alert = t.delete;
 

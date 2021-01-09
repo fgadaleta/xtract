@@ -3,9 +3,9 @@
 1,7807,Boris,Tsibelman,bank,Transfers,2016-08-23,1000.0,debit
 2,2662,Keef,,bank,Uncategorized,2016-10-04,0.11,credit
 3,2098,Andy,Roy,bank,Entertainment,2016-08-24,7.0,debit
-4,7807,Boris,Tsibelman,bank,Transfers,2016-09-08,1000.0,credit
-5,7807,Boris,Tsibelman,bank,Transfers,2016-10-11,1000.0,credit
-6,7807,Boris,Tsibelman,bank,Transfers,2016-10-14,1000.0,debit
+4,7807,Boris,Tsibelman,bank,Transfers,2016-09-08,4000.0,credit
+5,7807,Boris,Tsibelman,bank,Transfers,2016-10-11,100.0,credit
+6,7807,Boris,Tsibelman,bank,Transfers,2016-10-14,100.0,debit
 7,1158,,,bank,Uncategorized,2017-02-09,18.0,credit
 8,7807,Boris,Tsibelman,bank,Transfers,2016-10-14,1000.0,credit
 9,2360,,,bank,Online Services,2016-12-23,0.32,debit
