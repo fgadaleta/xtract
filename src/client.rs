@@ -11,7 +11,7 @@ use serde::{Serialize, Deserialize};
 // use home_dir;
 use std::collections::HashMap;
 // use std::fs;
-use std::path::Path;
+// use std::path::Path;
 use std::env::var;
 use std::path::PathBuf;
 use std::fs::File;
@@ -214,7 +214,7 @@ impl Frontend {
 
                             if delete_data {
                                 let endpoint = format!("{}/data/{}", url, asset["id"]);
-                                let res = self.del_helper(endpoint, tokenfile.clone());
+                                let _res = self.del_helper(endpoint, tokenfile.clone());
                             }
 
                         }
@@ -297,7 +297,7 @@ impl Frontend {
 
                                 if delete_alert {
                                     let endpoint = format!("{}/alerts/{}", url, alert.id);
-                                    let res = self.del_helper(endpoint, tokenfile.clone());
+                                    let _res = self.del_helper(endpoint, tokenfile.clone());
                                 }
 
                             }
@@ -312,13 +312,48 @@ impl Frontend {
 
             SubCommand::Set => unimplemented!(),
 
-            // SubCommand::Publish => {
-            //     unimplemented!()
-            // },
 
+            SubCommand::Search(t) => {
+                // TODO
+                let mut at_least_one_flag: bool = false;
+
+                let cols = match t.cols.as_ref() {
+                    Some(c) => {
+                        at_least_one_flag = true;
+                        String::from(c)
+                    },
+                    None => "".to_string()
+                };
+
+                let rows = match t.rows.as_ref() {
+                    Some(r) => {
+                        at_least_one_flag = true;
+                        String::from(r)
+                    },
+                    None => "".to_string()
+                };
+
+                let tags = match t.tags.as_ref() {
+                    Some(x) => {
+                        at_least_one_flag = true;
+                        String::from(x)
+                    },
+                    None => "".to_string()
+                };
+
+                if !at_least_one_flag {
+                    println!("You must provide at least one parameter.");
+                    process::exit(-1);
+                }
+
+                println!("Search criteria\ncols: {}, rows: {}, tags: {}", cols, rows, tags);
+                // TODO parse arguments into ranges or numbers
+
+
+                Ok(())
+            },
 
             SubCommand::Profile(t) => {
-
                 let input_to_fetch = &t.input;
                 let publish_to_api = t.publish;
                 println!("Publish after profile: {:?}", publish_to_api);

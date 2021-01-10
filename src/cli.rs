@@ -27,6 +27,8 @@ use clap::Clap;
 // xtract alerts --data 0x1234 --delete
 // xtract alerts --id 0xabcd --delete
 
+// xtract search --cols "3,10" --rows "1000,3000" --tags "finance money transactions"
+
 #[derive(Clap, Clone)]
 pub struct Data {
     #[clap(long)]
@@ -61,6 +63,22 @@ pub struct Profile {
     pub publish: bool,
 }
 
+#[derive(Clap, Clone)]
+pub struct Search {
+    #[clap(long)]
+    pub cols: Option<String>,
+
+    #[clap(long)]
+    pub rows: Option<String>,
+
+    #[clap(long)]
+    pub tags: Option<String>,
+
+}
+
+
+
+
 #[derive(Clap)]
 pub enum SubCommand {
     #[clap(version = "0.0.1", author = "francesco@amethix.com")]
@@ -72,15 +90,15 @@ pub enum SubCommand {
     Alerts(Alerts),
     /// Set metadata of remote assets
     Set,
-    /// Publish metadata to remote service
-    // Publish,
+    /// Search data assets by criteria
+    Search(Search),
     /// Profile of data passed as argument
     Profile(Profile),
 }
 
 #[derive(Clap)]
 #[clap(
-    version = "0.0.1",
+    version = "0.0.1-alpha",
     author = "Author: Francesco Gadaleta <francesco@amethix.com>"
 )]
 pub struct Args {
