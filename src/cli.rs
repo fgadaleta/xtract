@@ -77,6 +77,38 @@ pub struct Search {
 }
 
 
+/// Return historical profiles from date to date for specific column
+/// xtract history --from_date 10/11/2020 --to_date 31/12/2020 --column "Amount" --nullcount --mean
+#[derive(Clap, Clone)]
+pub struct History {
+    #[clap(long)]
+    pub column: String,
+
+    #[clap(long)]
+    pub from_date: String,
+    #[clap(long)]
+    pub to_date: String,
+
+    #[clap(long, takes_value = false)]
+    pub nunique: bool,
+    #[clap(long, takes_value = false)]
+    pub nullcount: bool,
+    #[clap(long, takes_value = false)]
+    pub categorical: bool,
+    #[clap(long, takes_value = false)]
+    pub min: bool,
+    #[clap(long, takes_value = false)]
+    pub max: bool,
+    #[clap(long, takes_value = false)]
+    pub mean: bool,
+    #[clap(long, takes_value = false)]
+    pub std: bool,
+    #[clap(long, takes_value = false)]
+    pub types: bool,
+}
+
+
+
 
 
 #[derive(Clap)]

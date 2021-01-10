@@ -132,21 +132,53 @@ impl NumericFeatures {
 pub struct StringFeatures {
     min_len: usize,
     max_len: usize,
-    avg_len: f64,
+    avg_len: f32,
     n_capitalized: usize,
     n_lowercase: usize,
     n_uppercase: usize,
 }
 
 impl StringFeatures {
-    fn get_string_features(_data: &Series) -> Self {
+    fn get_string_features(data: &Series) -> Self {
         // TODO WIP
 
+        // vector of lenghts of elements
+        let lens: Vec<usize> = data.utf8()
+            .unwrap()
+            .into_iter()
+            .map(|o| {
+                match o {
+                    Some(x) => x.len(),
+                    None => 0
+                }
+            }).collect();
+
+        let min_len = *lens.iter().min().unwrap();
+        let max_len = *lens.iter().max().unwrap();
+        let avg_len: f32 = lens.iter().sum::<usize>() as f32 / lens.len() as f32;
+
+        // vector of capitalized elements
+        let capital: Vec<usize> = data.utf8()
+            .unwrap()
+            .into_iter()
+            .map(|o| {
+                match o {
+                    Some(x) => {
+                        let c = x.chars().nth(0).unwrap();
+                        if c.is_uppercase() { 1 as usize } else { 0 as usize }
+                    },
+                    None => 0
+                }
+            }).collect();
+
+        let n_capitalized: usize = capital.iter().sum();
+
+
         Self {
-            min_len: 0,
-            max_len: 0,
-            avg_len: 0f64,
-            n_capitalized: 0,
+            min_len,
+            max_len,
+            avg_len,
+            n_capitalized,
             n_lowercase: 0,
             n_uppercase: 0,
         }
@@ -180,7 +212,6 @@ impl Column {
     }
 
     /// Set categorical flag wrt to threshold
-    ///
     pub fn set_categorical(&mut self, threshold: f64) {
         assert!(self.count > 0);
 
@@ -303,6 +334,8 @@ impl NcodeDataFrame {
                 }
 
                 DataType::Utf8 => {
+                    // dbg!("DBG this column is Utf8");
+
                     // if inferred type is string, try parse each element into known regex
                     let regex_email_address =
                         Regex::new(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)").unwrap();

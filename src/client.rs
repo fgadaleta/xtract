@@ -237,7 +237,6 @@ impl Frontend {
                     },
                     None => false
                 };
-
                 let get_single_alert: bool = match t.id.as_ref() {
                     Some(aid) => {
                         alert_id = aid.to_string();
@@ -245,15 +244,12 @@ impl Frontend {
                     },
                     None => false
                 };
-
                 // exit if no flag is passed
                 if !(get_all_alerts || get_single_alert) {
                     println!("Must pass at least one flag --data or --id ");
                     process::exit(-1);
                 }
-
                 let delete_alert = t.delete;
-
                 // prepare endpoints here and call get_helper for all and single
                 if get_all_alerts {
                     let endpoint = format!("{}/data/{}/alerts", url, data_id);
@@ -262,7 +258,6 @@ impl Frontend {
                         println!("TODO create endpoint DEL /alerts/:id for each :id");
                     }
                 }
-
                 if get_single_alert {
                     let endpoint = format!("{}/alerts/{}", url, alert_id);
                     res = self.get_helper(endpoint, tokenfile.clone())?;
@@ -270,7 +265,6 @@ impl Frontend {
                         println!("TODO create endpoint DEL /alerts/:id");
                     }
                 }
-
                 match &res["status"][..] {
                     "success" => {
                         // let alerts = serde_json::from_str::<Vec<HashMap<String, String>>>(res["message"].as_str()).unwrap();
@@ -299,19 +293,15 @@ impl Frontend {
                                     let endpoint = format!("{}/alerts/{}", url, alert.id);
                                     let _res = self.del_helper(endpoint, tokenfile.clone());
                                 }
-
                             }
-
                         }
                     },
                     _ => println!("Cannot retrieve alert(s). Status not OK"),
                 }
-
                 Ok(())
             },
 
             SubCommand::Set => unimplemented!(),
-
 
             SubCommand::Search(t) => {
                 // TODO
@@ -398,7 +388,7 @@ impl Frontend {
                         // Convert to string and print
                         // let profile_str = serde_json::to_string_pretty(&profile).unwrap();
                         let profile_str = serde_json::to_value(&profile).unwrap();
-                        // println!("Profile: {}", profile_str);
+                        println!("Profile: {}", &profile_str);
 
                         if publish_to_api {
                             // post profile to new url
