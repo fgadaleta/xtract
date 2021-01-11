@@ -11,6 +11,7 @@ use std::sync::Arc;
 // use rayon::prelude::*;
 
 use crate::parsers::iban::validate_iban;
+use currency::Currency;
 
 /// Struct for JSON serialization
 ///
@@ -173,14 +174,44 @@ impl StringFeatures {
 
         let n_capitalized: usize = capital.iter().sum();
 
+        // vector of lowercase elements
+        let lowercase: Vec<usize> = data.utf8()
+            .unwrap()
+            .into_iter()
+            .map(|o| {
+                match o {
+                    Some(x) => {
+                        let c = x.chars().all(|c| c.is_lowercase());
+                        c as usize
+                    },
+                    None => 0 as usize
+                }
+            }).collect();
+        let n_lowercase: usize = lowercase.iter().sum();
+
+        // vector of lowercase elements
+        let uppercase: Vec<usize> = data.utf8()
+            .unwrap()
+            .into_iter()
+            .map(|o| {
+                match o {
+                    Some(x) => {
+                        let c = x.chars().all(|c| c.is_uppercase());
+                        c as usize
+                    },
+                    None => 0 as usize
+                }
+            }).collect();
+        let n_uppercase: usize = uppercase.iter().sum();
+
 
         Self {
             min_len,
             max_len,
             avg_len,
             n_capitalized,
-            n_lowercase: 0,
-            n_uppercase: 0,
+            n_lowercase,
+            n_uppercase,
         }
     }
 }
@@ -348,6 +379,7 @@ impl NcodeDataFrame {
 
                     let mut total_len: usize = 0;
                     let mut j = 0;
+
                     colvalues
                         .utf8()
                         .expect("Something wrong happened reading column")
@@ -355,21 +387,46 @@ impl NcodeDataFrame {
                         .for_each(|element| {
                             match element {
                                 Some(el) => {
+                                    // match regex for user-defined types
                                     let is_email = regex_email_address.is_match(el);
                                     let is_iban = validate_iban(el);
+
+                                    /*
+                                    // parse if currency
+                                    let parsed_currency: Currency = Currency::from_str(el.clone()).unwrap();
+                                    let currency_value = parsed_currency.value();
+                                    let is_currency: bool = match parsed_currency.to_string().chars().nth(0) {
+                                        Some(s) => {
+                                            println!("DBG sym: {:?} values: {:?} ", s, currency_value);
+                                            true
+                                        },
+                                        None => false
+                                    };
+
+                                    if is_currency {
+                                        *parsed_types.entry(ColumnType::Currency).or_insert(0) += 1;
+                                    }
+                                    // update counters of types in hashmap of detected types
+                                    else */
+
                                     if is_email {
                                         *parsed_types.entry(ColumnType::Email).or_insert(0) += 1;
                                     }
                                     // TODO all types here
                                     else if is_iban {
                                         *parsed_types.entry(ColumnType::Iban).or_insert(0) += 1;
-                                    } else {
+                                    }
+                                    // last resort is unknown
+                                    else {
                                         *parsed_types.entry(ColumnType::Unknown).or_insert(0) += 1;
                                     }
+
+                                    // compute hash of this column values
                                     let elem_str = el.as_bytes();
                                     hasher.write(&elem_str);
                                     // add len of single element
                                     total_len += elem_str.len();
+
                                     // update progress bar
                                     pb.inc(1);
                                     pb.set_message(&format!("{:3}%", 100 * j / nrows));
