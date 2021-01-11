@@ -203,20 +203,29 @@ impl Frontend {
                     "success" => {
                         // TODO serde_json deserialize with Option<fields>
                         // println!("res[message] {:?}", &res["message"]);
-                        let data_assets = serde_json::from_str::<Vec<HashMap<String, String>>>(res["message"].as_str()).unwrap();
-                        for (i, asset) in data_assets.iter().enumerate() {
-                            println!("\n********** DATA ASSET {}", i);
-                            println!("id: {}", asset["id"]);
-                            println!("type: {}", asset["type"]);
-                            println!("filename: {}", asset["filename"]);
-                            println!("submitted_on: {}", asset["_submitted_on"]);
-                            println!("datastore: {}", asset["datastore"]);
+                        let data_assets = serde_json::from_str::<Vec<HashMap<String, String>>>(res["message"].as_str());
 
-                            if delete_data {
-                                let endpoint = format!("{}/data/{}", url, asset["id"]);
-                                let res = self.del_helper(endpoint, tokenfile.clone());
+                        match data_assets {
+                            Ok(da) => {
+                                println!("Found {} data asset(s)", da.len());
+
+                                for (i, asset) in da.iter().enumerate() {
+                                    println!("\n********** DATA ASSET {}", i);
+                                    println!("id: {}", asset["id"]);
+                                    println!("type: {}", asset["type"]);
+                                    println!("filename: {}", asset["filename"]);
+                                    println!("submitted_on: {}", asset["_submitted_on"]);
+                                    println!("datastore: {}", asset["datastore"]);
+                                    if delete_data {
+                                        let endpoint = format!("{}/data/{}", url, asset["id"]);
+                                        let _res = self.del_helper(endpoint, tokenfile.clone());
+                                    }
+                                }
+                            },
+                            Err(e) => {
+                                println!("There seems to be no data assets yet. [Err: {:?}]", e);
+                                process::exit(-1);
                             }
-
                         }
                     },
                     _ => println!("Status not OK"),
@@ -376,7 +385,7 @@ impl Frontend {
                                 .post_helper(post_data_endpoint, tokenfile.clone(), data_body)
                                 .unwrap();
 
-                            // println!("DBG POST req res: {:?}", &res);
+                            println!("DBG POST req res: {:?}", &res);
                             // println!("data_id: {:?}", res.get("data_id"));
 
                             // get data_id from response
