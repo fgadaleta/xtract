@@ -4,12 +4,15 @@ use arrow::record_batch::RecordBatch;
 use once_cell::sync::Lazy;
 use serde_json::{json, Value};
 use serde::{Serialize, Deserialize};
+use jsonwebtoken::{decode, decode_header, DecodingKey, Validation, Algorithm};
+
 // use serde::de::{
 //     DeserializeSeed, EnumAccess, IntoDeserializer, MapAccess, SeqAccess,
 //     VariantAccess, Visitor,
 // };
 // use home_dir;
 use std::collections::HashMap;
+use std::time::{SystemTime, UNIX_EPOCH};
 // use std::fs;
 // use std::path::Path;
 use std::env::var;
@@ -29,6 +32,14 @@ use xtract::loaders::frame::DataFrame;
 // use crate::transformers::simple;
 use xtract::loaders::csv_format::CsvReader as csvr;
 use polars::prelude::*;
+
+use sqlparser::dialect::GenericDialect;
+use sqlparser::parser::Parser;
+use futures::FutureExt;
+
+use datafusion::prelude::*;
+// use datafusion::error::Result;
+
 // use arrow::datatypes::DataType;
 // #[cfg(feature = "prettyprint")]
 // use arrow::util::print_batches;
@@ -55,6 +66,20 @@ url = \"http://my-s3-storage\"
 access_key = \"access_key\"
 secret_access_key = \"secret_access_key\"
 ";
+
+#[derive(Debug, Deserialize, Serialize)]
+struct Claims {
+    sub: String,
+    role: Option<String>,
+    exp: usize,
+}
+
+impl Claims {
+    pub fn expire(&self) -> usize {
+        self.exp
+    }
+}
+
 
 
 pub struct Frontend {
@@ -154,6 +179,24 @@ impl Frontend {
         let url = format!("http://{}:{}", config.api.server, config.api.port);
         let tokenfile = token_file_path.into_os_string().into_string().unwrap();
 
+        // check token is still valid
+        let token = get_content_from_file(&tokenfile[..])?;
+        let now = SystemTime::now();
+        let now = now
+                .duration_since(UNIX_EPOCH)
+                .expect("Time went backwards")
+                .as_secs();
+
+        let dectoken = decode::<Claims>(&token, &DecodingKey::from_secret("my_precious_secret_key".as_ref()), &Validation::default())?;
+        let expdate = dectoken.claims.expire() as u64;
+        let valid_for = expdate - now;
+
+        // check valid or exit
+        if valid_for < 1 {
+            println!("JWT token no longer valid. Please login again.");
+            process::exit(-1);
+        }
+
         match &self.args.subcmd {
             SubCommand::Login => {
                 // get credentials
@@ -164,7 +207,7 @@ impl Frontend {
 
                 // login and get token
                 let token = self.login_helper(url, credentials)?;
-                // println!("Creating tokenfile at {:?}", &tokenfile);
+
                 let mut file = File::create(tokenfile)?;
                 file.write_all(token.as_bytes())?;
                 Ok(())
@@ -181,7 +224,7 @@ impl Frontend {
 
                 if get_all {
                     let endpoint = format!("{}/data", url);
-                    res = self.get_helper(endpoint, tokenfile.clone())?;
+                    res = self.get_helper(endpoint, token.clone())?;
 
                 } else {
                     // fetching only one asset with id
@@ -191,7 +234,7 @@ impl Frontend {
                     };
 
                     let endpoint = format!("{}/data/{}", url, id_to_fetch);
-                    res = self.get_helper(endpoint, tokenfile.clone())?;
+                    res = self.get_helper(endpoint, token.clone())?;
                 }
 
                 if res.contains_key("status").not() {
@@ -214,7 +257,7 @@ impl Frontend {
 
                             if delete_data {
                                 let endpoint = format!("{}/data/{}", url, asset["id"]);
-                                let _res = self.del_helper(endpoint, tokenfile.clone());
+                                let _res = self.del_helper(endpoint, token.clone());
                             }
 
                         }
@@ -253,14 +296,14 @@ impl Frontend {
                 // prepare endpoints here and call get_helper for all and single
                 if get_all_alerts {
                     let endpoint = format!("{}/data/{}/alerts", url, data_id);
-                    res = self.get_helper(endpoint, tokenfile.clone())?;
+                    res = self.get_helper(endpoint, token.clone())?;
                     if delete_alert {
                         println!("TODO create endpoint DEL /alerts/:id for each :id");
                     }
                 }
                 if get_single_alert {
                     let endpoint = format!("{}/alerts/{}", url, alert_id);
-                    res = self.get_helper(endpoint, tokenfile.clone())?;
+                    res = self.get_helper(endpoint, token.clone())?;
                     if delete_alert {
                         println!("TODO create endpoint DEL /alerts/:id");
                     }
@@ -291,7 +334,7 @@ impl Frontend {
 
                                 if delete_alert {
                                     let endpoint = format!("{}/alerts/{}", url, alert.id);
-                                    let _res = self.del_helper(endpoint, tokenfile.clone());
+                                    let _res = self.del_helper(endpoint, token.clone());
                                 }
                             }
                         }
@@ -301,6 +344,7 @@ impl Frontend {
                 Ok(())
             },
 
+            /*
             SubCommand::Set => unimplemented!(),
 
             SubCommand::Search(t) => {
@@ -342,14 +386,64 @@ impl Frontend {
 
                 Ok(())
             },
+            */
 
             SubCommand::Profile(t) => {
                 let input_to_fetch = &t.input;
-                let publish_to_api = t.publish;
+                let publish_to_api = t.clone().publish;
                 println!("Publish after profile: {:?}", publish_to_api);
 
-                let input_location: String = input_to_fetch.chars().skip(0).take(5).collect();
+                /*
+                // TODO get sql from file and validate
+                // let sqlquery = t.clone().sql.unwrap_or_default();
+                let sqlquery = "
+                            SELECT a \
+                            WHERE b = 2 AND c = 3 \
+                            ";
 
+                println!("DBG sqlquery: [{:?}]", &sqlquery);
+                let dialect = GenericDialect {}; // or AnsiDialect, or your own dialect ...
+                let ast = Parser::parse_sql(&dialect, &sqlquery[..]).unwrap();
+
+                println!("DBG ast len: {:?}", ast.len());
+                for stm in ast.iter() {
+                    // println!("DBG ast: {:?}", ast);
+                    println!("DBG statement: {:?}", stm);
+                }
+
+                // create local execution context
+                let mut ctx = ExecutionContext::new();
+                // let testdata = arrow::util::test_util::arrow_test_data();
+
+                // register csv file with the execution context
+                ctx.register_csv(
+                    "virtual_table",
+                    &input_to_fetch,
+                    CsvReadOptions::new(),
+                )?;
+
+                // execute the query
+                let df = ctx.sql(
+                    "SELECT a \
+                    FROM virtual_table \
+                    WHERE b = 2 AND c = 3 \
+                    ",
+                )?;
+
+                let results = async {
+                    let res = df.collect().await.unwrap();
+                    println!("DBG res {:?}\n\n", res);
+                    res
+                };
+
+                // let som = async { results.await };
+                // results.await;
+                // results = results.map(|x| { println!("{:?}", x); x});
+                */
+
+                // dbg!("DBG res: ", results);
+
+                let input_location: String = input_to_fetch.chars().skip(0).take(5).collect();
                 match input_location.as_ref() {
                     // try s3 bucket
                     "s3://" => {
@@ -398,7 +492,7 @@ impl Frontend {
                             // println!("DBG body.to_string(): {:?}", data_body.to_string());
 
                             let res: HashMap<String, String> = self
-                                .post_helper(post_data_endpoint, tokenfile.clone(), data_body)
+                                .post_helper(post_data_endpoint, token.clone(), data_body)
                                 .unwrap();
 
                             // println!("DBG POST req res: {:?}", &res);
@@ -411,7 +505,7 @@ impl Frontend {
 
                                     let post_profile_endpoint = format!("{}/data/{}/profile", url, did);
                                     let profile_res = self
-                                         .post_helper(post_profile_endpoint, tokenfile.clone(), json!(profile_str))
+                                         .post_helper(post_profile_endpoint, token.clone(), json!(profile_str))
                                          .unwrap();
 
                                     // println!("DBG profile_res {:?}", &profile_res);
@@ -535,9 +629,9 @@ impl Frontend {
         }
     }
 
-    fn get_helper(&self, endpoint: String, tokenfile: String) -> Result<HashMap<String, String>> {
+    fn get_helper(&self, endpoint: String, token: String) -> Result<HashMap<String, String>> {
         // get token and send to request as is (encoding occurs server-side)
-        let token = get_content_from_file(&tokenfile[..])?;
+        // let token = get_content_from_file(&tokenfile[..])?;
         // let token = base64::encode(token);
 
         let http_client = reqwest::blocking::ClientBuilder::new().build()?;
@@ -573,9 +667,9 @@ impl Frontend {
         Ok(result)
     }
 
-    fn del_helper(&self, endpoint: String, tokenfile: String) -> Result<HashMap<String, String>> {
+    fn del_helper(&self, endpoint: String, token: String) -> Result<HashMap<String, String>> {
         // get token and send to request as is (encoding occurs server-side)
-        let token = get_content_from_file(&tokenfile[..])?;
+        // let token = get_content_from_file(&tokenfile[..])?;
         let http_client = reqwest::blocking::ClientBuilder::new().build()?;
         let response = http_client
             .delete(&endpoint)
@@ -609,9 +703,9 @@ impl Frontend {
         Ok(result)
     }
 
-    fn post_helper(&self, endpoint: String, tokenfile: String, body: Value) -> Result<HashMap<String, String>> {
+    fn post_helper(&self, endpoint: String, token: String, body: Value) -> Result<HashMap<String, String>> {
         let mut result: HashMap<String, String> = HashMap::new();
-        let token = get_content_from_file(&tokenfile[..])?;
+        // let token = get_content_from_file(&tokenfile[..])?;
         // dbg!("get_content_from_file token: {}", &token);
         // let token = base64::encode(token);
         let http_client = reqwest::blocking::ClientBuilder::new().build()?;

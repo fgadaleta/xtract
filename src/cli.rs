@@ -61,6 +61,10 @@ pub struct Profile {
     // #[clap(long, conflicts_with="id", takes_value=false)]
     #[clap(long, takes_value = false)]
     pub publish: bool,
+
+    #[clap(long)]
+    pub sql: Option<String>,
+
 }
 
 #[derive(Clap, Clone)]
@@ -113,7 +117,7 @@ pub struct History {
 
 #[derive(Clap)]
 pub enum SubCommand {
-    #[clap(version = "0.0.1", author = "francesco@amethix.com")]
+    #[clap(version = "0.0.1", author = "hello@ncode.ai")]
     /// Login to remote service
     Login,
     /// Get remote assets
@@ -121,9 +125,9 @@ pub enum SubCommand {
     /// Get alerts
     Alerts(Alerts),
     /// Set metadata of remote assets
-    Set,
+    // Set,
     /// Search data assets by criteria
-    Search(Search),
+    // Search(Search),
     /// Profile of data passed as argument
     Profile(Profile),
 }
@@ -131,7 +135,7 @@ pub enum SubCommand {
 #[derive(Clap)]
 #[clap(
     version = "0.0.1-alpha",
-    author = "Author: Francesco Gadaleta <francesco@amethix.com>"
+    author = "Team ncode.ai <hello@ncode.ai>"
 )]
 pub struct Args {
     #[clap(subcommand)]
