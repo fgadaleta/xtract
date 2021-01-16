@@ -41,8 +41,8 @@ pub struct Data {
     pub delete: bool,
 }
 
-#[derive(Clap, Clone)]
-pub struct Alerts {
+#[derive(Clap, Clone, Debug)]
+pub struct Alert {
     #[clap(long)]
     pub id: Option<String>,
 
@@ -51,6 +51,18 @@ pub struct Alerts {
 
     #[clap(long, takes_value = false)]
     pub delete: bool,
+}
+
+impl Alert {
+    pub fn new(id: Option<String>, data: Option<String> ) -> Self {
+
+        Alert {
+            id,
+            data,
+            delete: false
+        }
+    }
+
 }
 
 #[derive(Clap, Clone)]
@@ -113,8 +125,6 @@ pub struct History {
 
 
 
-
-
 #[derive(Clap)]
 pub enum SubCommand {
     #[clap(version = "0.0.1", author = "hello@ncode.ai")]
@@ -123,7 +133,7 @@ pub enum SubCommand {
     /// Get remote assets
     Data(Data),
     /// Get alerts
-    Alerts(Alerts),
+    Alert(Alert),
     /// Set metadata of remote assets
     // Set,
     /// Search data assets by criteria

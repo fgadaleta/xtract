@@ -1,6 +1,7 @@
-use super::cli::{Args, SubCommand};
+use super::cli::{Args, SubCommand, Alert};
 use anyhow::Result;
 use arrow::record_batch::RecordBatch;
+use arrow::util::pretty;
 use once_cell::sync::Lazy;
 use serde_json::{json, Value};
 use serde::{Serialize, Deserialize};
@@ -11,7 +12,7 @@ use jsonwebtoken::{decode, decode_header, DecodingKey, Validation, Algorithm};
 //     VariantAccess, Visitor,
 // };
 // use home_dir;
-use std::collections::HashMap;
+use std::{collections::HashMap, fmt::format};
 use std::time::{SystemTime, UNIX_EPOCH};
 // use std::fs;
 // use std::path::Path;
@@ -39,6 +40,8 @@ use futures::FutureExt;
 
 use datafusion::prelude::*;
 // use datafusion::error::Result;
+
+use tokio;
 
 // use arrow::datatypes::DataType;
 // #[cfg(feature = "prettyprint")]
@@ -80,6 +83,48 @@ impl Claims {
     }
 }
 
+
+/*
+
+"my_and_rule": Object({
+        "all": Array([String("b>2",), String("c=3",),]),
+    }),
+
+*/
+
+// user defined rule
+#[derive(Debug, Deserialize, Serialize)]
+struct Rule {
+    rulename: String,
+    conditions: Conditions, // HashMap<String, Vec<String>>
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct Conditions {
+    #[serde(default)]
+    any: Vec<String>,
+    #[serde(default)]
+    all: Vec<String>,
+    #[serde(default)]
+    not: Vec<String>,
+}
+
+
+// #[derive(Debug, Deserialize, Serialize)]
+// enum RuleType {
+//     All,
+//     Any
+// }
+
+// #[derive(Debug, Deserialize, Serialize)]
+// struct All {
+//     conditions: HashMap<String, Vec<String>>
+// }
+
+// #[derive(Debug, Deserialize, Serialize)]
+// struct Any {
+//     conditions: HashMap<String, Vec<String>>
+// }
 
 
 pub struct Frontend {
@@ -187,10 +232,10 @@ impl Frontend {
                 .expect("Time went backwards")
                 .as_secs();
 
-        let dectoken = decode::<Claims>(&token, &DecodingKey::from_secret("my_precious_secret_key".as_ref()), &Validation::default())?;
-        let expdate = dectoken.claims.expire() as u64;
-        let valid_for = expdate - now;
-
+        // let dectoken = decode::<Claims>(&token, &DecodingKey::from_secret("my_precious_secret_key".as_ref()), &Validation::default()).unwrap();
+        // let expdate = dectoken.claims.expire() as u64;
+        // let valid_for = expdate - now;
+        let valid_for = 2;
         // check valid or exit
         if valid_for < 1 {
             println!("JWT token no longer valid. Please login again.");
@@ -268,7 +313,7 @@ impl Frontend {
                 Ok(())
             }
 
-            SubCommand::Alerts(t) => {
+            SubCommand::Alert(t) => {
                 let mut data_id: String = "".to_string();
                 let mut alert_id: String = "".to_string();
                 let mut res: HashMap<String, String> = HashMap::new();
@@ -393,55 +438,168 @@ impl Frontend {
                 let publish_to_api = t.clone().publish;
                 println!("Publish after profile: {:?}", publish_to_api);
 
-                /*
                 // TODO get sql from file and validate
                 // let sqlquery = t.clone().sql.unwrap_or_default();
-                let sqlquery = "
-                            SELECT a \
-                            WHERE b = 2 AND c = 3 \
-                            ";
+                // let sqlquery = "
+                //             SELECT a \
+                //             WHERE b = 2 AND c = 3 \
+                //             ";
+                // let dialect = GenericDialect {}; // or AnsiDialect, or your own dialect ...
+                // let ast = Parser::parse_sql(&dialect, &sqlquery[..]).unwrap();
+                // println!("DBG ast len: {:?}", ast.len());
+                // for stm in ast.iter() {
+                //     println!("DBG statement: {:?}", stm);
+                // }
 
-                println!("DBG sqlquery: [{:?}]", &sqlquery);
-                let dialect = GenericDialect {}; // or AnsiDialect, or your own dialect ...
-                let ast = Parser::parse_sql(&dialect, &sqlquery[..]).unwrap();
 
-                println!("DBG ast len: {:?}", ast.len());
-                for stm in ast.iter() {
-                    // println!("DBG ast: {:?}", ast);
-                    println!("DBG statement: {:?}", stm);
-                }
+                // TODO parse rules into struct
+                let raw_rules = json!({
+                    "rules": [
+                        {
+                            "rulename": "my_and_rule",
+                            "conditions": { "all": ["b>2", "c=\'3\'"] }
+                        },
+
+                        {
+                            "rulename": "my_or_rule",
+                            "conditions": { "any": ["b=1", "c=\'3\'"] }
+                        }
+                    ]
+                });
+
+                // let rule_str = "
+                // {
+                //     \"rules\": {
+                //
+                //         \"my_and_rule\": {
+                //             \"all\": [\"b>2\", \"c=3\"]
+                //         },
+                //         \"my_or_rule\": {
+                //             \"any\": [\"b=1\", \"c=3\"]
+                //         }
+                //     }
+                // }
+                // ";
+
+                let rules = &raw_rules["rules"];
+                let rules: Vec<Rule> = serde_json::from_value(rules.to_owned()).unwrap();
+                dbg!("rules: ", &rules);
 
                 // create local execution context
                 let mut ctx = ExecutionContext::new();
-                // let testdata = arrow::util::test_util::arrow_test_data();
-
                 // register csv file with the execution context
                 ctx.register_csv(
                     "virtual_table",
                     &input_to_fetch,
-                    CsvReadOptions::new(),
-                )?;
+                    CsvReadOptions::new(),)
+                    .unwrap();
+
+                for rule in rules.iter() {
+                    println!("DBG processing rule {}", &rule.rulename);
+                    let any = &rule.conditions.any;
+                    let all = &rule.conditions.all;
+                    let not = &rule.conditions.not;
+
+                    // if zero conditions, move to next rule
+                    if any.len() + all.len() + not.len() == 0 {
+                        break;
+                    }
+
+                    // generate sql code from rules
+                    let mut sql_select_from = format!("SELECT * FROM virtual_table ");
+                    let mut sql_where = format!("WHERE ");
+
+                    // generate from ANY rules
+                    for (i, cond) in any.iter().enumerate() {
+                        sql_where.push_str(&cond[..]);
+                        if i < any.len()-1 {
+                            sql_where.push_str(" OR ");
+                        }
+                    }
+
+                    // generate from ALL rules
+                    for (i, cond) in all.iter().enumerate() {
+                        sql_where.push_str(&cond[..]);
+                        if i < all.len()-1 {
+                            sql_where.push_str(" AND ");
+                        }
+                    }
+
+                    // TODO generate from NOT rules
+                    for (i, cond) in not.iter().enumerate() {
+                        sql_where.push_str(&cond[..]);
+                        if i < not.len()-1 {
+                            sql_where.push_str(" NOT ");
+                        }
+                    }
+
+                    sql_select_from.push_str(&sql_where[..]);
+                    println!("DBG query: {:?}", sql_select_from);
+
+
+                    // execute this rule
+                    let df = ctx.sql(&sql_select_from[..]).unwrap();
+                    let results = async {
+                        let res = df.collect().await;
+                        let nelem = match res {
+                            Ok(s) => {
+                                let cols = s[0].columns();
+                                let sa = &cols[0];
+                                let s = sa.data().len();
+                                s
+                            },
+
+                            Err(_) => {
+                                println!("DBG error");
+                                0 as usize
+                            }
+                        };
+                        nelem
+                    };
+
+                    let trigger_alert = RT.handle().block_on(results);
+                    // println!("DBG {:?} elements triggered alert\n", trigger_alert);
+                    let mut alerts: Vec<Alert> = vec![];
+                    let alert_data = format!("DBG {:?} elements triggered alert", trigger_alert);
+                    let alert = Alert::new(None, Some(alert_data));
+                    alerts.push(alert);
+                    println!("DBG alerts: {:?}", alerts);
+                    // results = results.map(|x| { println!("{:?}", x); x});
+
+                }
+
 
                 // execute the query
-                let df = ctx.sql(
-                    "SELECT a \
-                    FROM virtual_table \
-                    WHERE b = 2 AND c = 3 \
-                    ",
-                )?;
-
-                let results = async {
-                    let res = df.collect().await.unwrap();
-                    println!("DBG res {:?}\n\n", res);
-                    res
-                };
-
-                // let som = async { results.await };
-                // results.await;
-                // results = results.map(|x| { println!("{:?}", x); x});
-                */
-
-                // dbg!("DBG res: ", results);
+                // let df = ctx.sql(
+                //     "SELECT * \
+                //     FROM virtual_table \
+                //     WHERE b > 2 \
+                //     ",
+                // )?;
+                // let results = async {
+                //     let res = df.collect().await;
+                //     let nelem = match res {
+                //         Ok(s) => {
+                //             let cols = s[0].columns();
+                //             let sa = &cols[0];
+                //             let s = sa.data().len();
+                //             s
+                //         },
+                //         Err(_) => {
+                //             println!("DBG error");
+                //             0 as usize
+                //         }
+                //     };
+                //     nelem
+                // };
+                // let trigger_alert = RT.handle().block_on(results);
+                // // println!("DBG {:?} elements triggered alert\n", trigger_alert);
+                // let mut alerts: Vec<Alert> = vec![];
+                // let alert_data = format!("DBG {:?} elements triggered alert", trigger_alert);
+                // let alert = Alert::new(None, Some(alert_data));
+                // alerts.push(alert);
+                // println!("DBG alerts: {:?}", alerts);
+                // // results = results.map(|x| { println!("{:?}", x); x});
 
                 let input_location: String = input_to_fetch.chars().skip(0).take(5).collect();
                 match input_location.as_ref() {
