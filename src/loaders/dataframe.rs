@@ -260,6 +260,11 @@ pub struct NcodeDataFrame {
 }
 
 impl NcodeDataFrame {
+
+    pub fn columns(&self) -> Vec<&str> {
+        self.dataframe.get_column_names()
+    }
+
     pub fn profile(&self) -> DataFrameMeta {
         let (nrows, ncols) = self.dataframe.shape();
         let colnames = self.dataframe.get_column_names();

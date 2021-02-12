@@ -32,3 +32,13 @@ WIP
 ### Profile and publish with custom name
 
 `xtract profile -i ./data/filename.csv --name custom_name.csv --publish`
+
+
+
+## Compilation
+
+### Measure timings
+
+```
+cargo +nightly build -Ztimings
+```

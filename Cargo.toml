@@ -9,6 +9,11 @@ version = "0.0.2"
 authors = ["Francesco Gadaleta <francesco@amethix.com>"]
 edition = "2018"
 
+[profile.dev]
+panic = "abort"
+debug = 0
+incremental = true
+
 
 [dependencies]
 anyhow = "1.0.33"
@@ -43,7 +48,9 @@ sqlparser = "0.7.0"
 datafusion = "2.0.0"
 futures = "0.3.9"
 jsonwebtoken = "7.2.0"
-
+encoding_rs = "0.8.26"
+chardetng = "0.1"
+thiserror = "1.0.23"
 
 [[bench]]
 name = "xtract_profile"

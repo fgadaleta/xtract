@@ -17,16 +17,22 @@ use clap::Clap;
 // xtract profile --input=s3://mydata.csv --output=meta.txt --publish=true
 // xtract profile -i ./data/filename.csv --name custom_name.csv --publish
 
+// xtract trigger --input=myrules.json --publish=true
+
 // Get all alerts of data_id = 0x1234
-// xtract alerts --data 0x1234
+// xtract alert --data 0x1234
 
 // Get single alert with id
-// xtract alerts --id 0xabcd
+// xtract alert --id 0xabcd
 
 // Flag to delete alerts in the request
-// xtract alerts --data 0x1234 --delete
-// xtract alerts --id 0xabcd --delete
+// xtract alert --data 0x1234 --delete
+// xtract alert --id 0xabcd --delete
 
+// Create triggers from user defined rule file
+// xtract trigger --input data/user_defined_rules.json
+
+// Search data by criteria
 // xtract search --cols "3,10" --rows "1000,3000" --tags "finance money transactions"
 
 #[derive(Clap, Clone)]
@@ -40,6 +46,25 @@ pub struct Data {
     #[clap(long, takes_value = false)]
     pub delete: bool,
 }
+
+#[derive(Clap, Clone)]
+pub struct Trigger {
+    #[clap(long)]
+    pub data: Option<String>,
+
+    #[clap(short, long)]
+    pub input: Option<String>,
+
+    #[clap(long, conflicts_with = "data", takes_value = false)]
+    pub all: bool,
+
+    #[clap(long, takes_value = false)]
+    pub publish: bool,
+
+    #[clap(long, takes_value = false)]
+    pub delete: bool,
+}
+
 
 #[derive(Clap, Clone, Debug)]
 pub struct Alert {
@@ -140,6 +165,7 @@ pub enum SubCommand {
     // Search(Search),
     /// Profile of data passed as argument
     Profile(Profile),
+    Trigger(Trigger),
 }
 
 #[derive(Clap)]

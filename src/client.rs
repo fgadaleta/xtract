@@ -6,6 +6,7 @@ use once_cell::sync::Lazy;
 use serde_json::{json, Value};
 use serde::{Serialize, Deserialize};
 use jsonwebtoken::{decode, decode_header, DecodingKey, Validation, Algorithm};
+use encoding_rs::*;
 
 // use serde::de::{
 //     DeserializeSeed, EnumAccess, IntoDeserializer, MapAccess, SeqAccess,
@@ -25,6 +26,10 @@ use std::sync::Arc;
 use std::ops::Not;
 use std::process;
 use tokio::runtime::Runtime;
+
+// from https://edgarluque.com/blog/wrapping-errors-in-rust
+use thiserror::Error;
+
 use xtract::configuration::{get_configuration_from_file, get_content_from_file};
 use xtract::loaders::s3_connector::Storage;
 // TODO remove and use only polars DataFrame
@@ -33,9 +38,12 @@ use xtract::loaders::frame::DataFrame;
 // use crate::transformers::simple;
 use xtract::loaders::csv_format::CsvReader as csvr;
 use polars::prelude::*;
+use polars::frame::ser::csv::CsvEncoding;
 
-use sqlparser::dialect::GenericDialect;
+use sqlparser::dialect::{GenericDialect, keywords::SQL};
 use sqlparser::parser::Parser;
+use sqlparser::ast::{Statement};
+use sqlparser::tokenizer::Tokenizer;
 use futures::FutureExt;
 
 use datafusion::prelude::*;
@@ -109,24 +117,6 @@ struct Conditions {
     not: Vec<String>,
 }
 
-
-// #[derive(Debug, Deserialize, Serialize)]
-// enum RuleType {
-//     All,
-//     Any
-// }
-
-// #[derive(Debug, Deserialize, Serialize)]
-// struct All {
-//     conditions: HashMap<String, Vec<String>>
-// }
-
-// #[derive(Debug, Deserialize, Serialize)]
-// struct Any {
-//     conditions: HashMap<String, Vec<String>>
-// }
-
-
 pub struct Frontend {
     args: Args,
 }
@@ -176,6 +166,159 @@ impl AlertResponse {
     // pub fn get_body(&self) -> &Body {
     //     &self
     // }
+}
+
+
+// pub struct Rule {
+//     id: String,
+//     rulename: String,
+//     conditions: HashMap<String, Vec<String>>
+// }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct TriggerResponse {
+    rules: Vec<Rule>,
+    r#type: Option<String>,
+    _submitted_by: String,
+    _submitted_on: String,
+    id: String,
+    _id: Option<String>,
+    _key: Option<String>,
+    _rev: Option<String>
+}
+
+fn alerts_from_custom_rules(inputpath: &String, rules: &Value, columns: Vec<&str>) -> Vec<Alert> {
+
+    let rules: Vec<Rule> = serde_json::from_value(rules.to_owned()).unwrap();
+
+    // println!("--------------------");
+    // println!("DBG rules: {:?}", &rules);
+    // println!("--------------------");
+
+    // create local execution context
+    let mut ctx = ExecutionContext::new();
+
+    // register csv file with the execution context
+    // ctx.register_csv(
+    //     "virtual_table",
+    //     &inputpath,
+    //     CsvReadOptions::new(),)
+    //     .unwrap();
+
+    match ctx.register_csv("virtual_table", &inputpath, CsvReadOptions::new()) {
+            Ok(x) => x,
+
+            Err(e) => {
+                println!("Error loading data. Only UTF-8 is supported.");
+                println!("Error: {:?}", e);
+                process::exit(-1);
+            }
+    };
+
+
+    let mut alerts: Vec<Alert> = vec![];
+
+    for rule in rules.iter() {
+        // println!("\n------------------------------------------");
+        println!("----- Processing rule name: [{:?}] -----", &rule.rulename);
+        let any = &rule.conditions.any;
+        let all = &rule.conditions.all;
+        let not = &rule.conditions.not;
+
+        // if zero conditions, move to next rule
+        if any.len() + all.len() + not.len() == 0 {
+            break;
+        }
+
+        // generate sql code from rules
+        let mut sql_select_from = format!("SELECT * FROM virtual_table ");
+        let mut sql_where = format!("WHERE ");
+
+        // generate from ANY rules
+        for (i, cond) in any.iter().enumerate() {
+            sql_where.push_str(&cond[..]);
+            if i < any.len()-1 {
+                sql_where.push_str(" OR ");
+            }
+        }
+
+        // generate from ALL rules
+        for (i, cond) in all.iter().enumerate() {
+            sql_where.push_str(&cond[..]);
+            if i < all.len()-1 {
+                sql_where.push_str(" AND ");
+            }
+        }
+
+        // TODO generate from NOT rules
+        for (i, cond) in not.iter().enumerate() {
+            sql_where.push_str(&cond[..]);
+            if i < not.len()-1 {
+                sql_where.push_str(" NOT ");
+            }
+        }
+
+        sql_select_from.push_str(&sql_where[..]);
+        println!("DBG generated query: {:?}", &sql_select_from);
+
+        let dialect = GenericDialect {};
+        let ast = Parser::parse_sql(&dialect, &sql_select_from[..]).unwrap();
+        let mut tok = Tokenizer::new(&dialect, &sql_select_from);
+        let toks = tok.tokenize().unwrap();
+        // println!("DBG tokens: {:?}", toks);
+
+        // println!("DBG AST len: {:?}", ast.len());
+        for stm in ast.iter() {
+            // dbg!("DBG AST statement: {:?}", &stm);
+            match stm {
+                Statement::Query(q) => {
+                    // println!("DBG AST parsed query {:?}", &q);
+                    let exp = &q.body;
+
+                    // match exp {
+
+                    // }
+
+                },
+
+                _ => println!("not a valid query")
+            }
+        }
+
+        // execute this rule
+        let df = ctx.sql(&sql_select_from[..]).unwrap();
+
+        let results = async {
+            let res = df.collect().await;
+            let nelem = match res {
+                Ok(s) => {
+                    let cols = s[0].columns();
+                    let sa = &cols[0];
+                    let s = sa.data().len();
+                    s
+                },
+
+                Err(_) => {
+                    println!("DBG error");
+                    0 as usize
+                }
+            };
+            nelem
+        };
+
+        let trigger_alert = RT.handle().block_on(results);
+        // println!("DBG {:?} elements triggered alert\n", trigger_alert);
+        let alert_data = format!("DBG {:?} elements triggered alert", trigger_alert);
+        println!("\t-> {} elements triggered alert", trigger_alert);
+        let alert = Alert::new(None, Some(alert_data));
+        alerts.push(alert);
+        // results = results.map(|x| { println!("{:?}", x); x});
+
+        println!("\n\n");
+    }
+
+    alerts
+
 }
 
 impl Frontend {
@@ -433,204 +576,288 @@ impl Frontend {
             },
             */
 
+            SubCommand::Trigger(t) => {
+
+                // fetch get_all triggers flag
+                let get_all_triggers = t.all;
+
+                // fetch create_trigger flag
+                let mut input_to_fetch = String::new();
+                let create_trigger = match &t.input {
+                    Some(itf) => {
+                        input_to_fetch = itf.to_owned();
+                        true
+                    },
+                    None => false
+                };
+
+                // fetch publish flag
+                let publish_to_api = t.clone().publish;
+
+                // fetch get trigger id
+                let mut data_id = String::new();
+                let get_single_data_triggers = match t.clone().data {
+                    Some(did) => {
+                        data_id = did;
+                        true
+                    },
+                    None => false
+                };
+
+                // fetch delete flag
+                let delete_trigger = t.delete;
+
+                // println!("DBG Create trigger: {:?} from {:?}", create_trigger, input_to_fetch);
+                // println!("DBG Get all triggers: {:?} ", get_all_triggers);
+                // println!("DBG Get single trigger: {:?} data_id: {:?} ", get_single_data_triggers, data_id);
+                // println!("DBG publish_to_api: {:?} ", publish_to_api);
+
+                // if no subcommand, exit with message
+                if !(create_trigger || get_all_triggers || get_single_data_triggers) {
+                    println!("Define at least one command (input, id, all)");
+                    process::exit(-1);
+                }
+
+                let mut res: HashMap<String, String> = HashMap::new();
+
+                // Implement GET /triggers endpoint
+                if get_all_triggers {
+                    let endpoint = format!("{}/triggers", url);
+                    res = self.get_helper(endpoint, token.clone())?;
+
+                    if !res.contains_key("status") {
+                        println!("Error establishing connection.\nServer can be down.");
+                        process::exit(1);
+                    }
+
+                    match &res["status"][..] {
+                        "success" => {
+                            // // TODO serde_json deserialize with Option<fields>
+                            // // println!("res[message] {:?}", &res["message"]);
+                            // let data_assets = serde_json::from_str::<Vec<HashMap<String, String>>>(res["message"].as_str()).unwrap();
+                            // for (i, asset) in data_assets.iter().enumerate() {
+                            //     println!("\n********** DATA ASSET {}", i);
+                            //     println!("id: {}", asset["id"]);
+                            //     println!("type: {}", asset["type"]);
+                            //     println!("filename: {}", asset["filename"]);
+                            //     println!("submitted_on: {}", asset["_submitted_on"]);
+                            //     println!("datastore: {}", asset["datastore"]);
+                            //     if delete_data {
+                            //         let endpoint = format!("{}/data/{}", url, asset["id"]);
+                            //         let _res = self.del_helper(endpoint, token.clone());
+                            //     }
+                            // }
+
+                            // println!("DBG show all triggers here");
+                            let all_triggers = serde_json::from_str::<Vec<TriggerResponse>>(res["message"].as_str()).unwrap();
+
+                            if all_triggers.len() ==  0 {
+                                println!("No triggers found.")
+                            }
+                            else {
+                                for (i, trigger) in all_triggers.iter().enumerate() {
+                                    println!("\n********** TRIGGER {} ********** ", i);
+                                    println!("trigger_id: {}", trigger.id);
+                                    println!("created_on: {}", trigger._submitted_on);
+
+                                    let trigger_type = match &trigger.r#type {
+                                        Some(t) => t.to_owned(),
+                                        None=> "undefined".to_string()
+                                    };
+
+                                    println!("type: {}", trigger_type);
+                                    let rules = &trigger.rules;
+
+                                    for (_j, rule) in rules.iter().enumerate() {
+                                        println!("rulename: {}", &rule.rulename);
+                                        let conds = &rule.conditions;
+                                        let any = &conds.any;
+                                        let all = &conds.all;
+                                        let _not = &conds.not;
+
+                                        if any.len() > 0 {
+                                            println!("\n\t ANY condition applies \n");
+                                            for (_j, cond) in any.iter().enumerate() {
+                                                println!("\t\t{}", cond);
+                                            }
+
+                                        }
+
+                                        if all.len() > 0 {
+                                            println!("\n\t ALL conditions apply \n");
+                                            for (_j, cond) in all.iter().enumerate() {
+                                                println!("\t\t{}", cond);
+                                            }
+                                        }
+                                    }
+
+                                    if delete_trigger {
+                                        let endpoint = format!("{}/triggers/{}", url, trigger.id);
+                                        let _res = self.del_helper(endpoint, token.clone());
+                                    }
+                                }
+                            }
+
+
+
+                        },
+                        _ => println!("Status not OK"),
+                    }
+                }
+
+                // Implement GET /data/:id/triggers endpoint
+                else if get_single_data_triggers {
+                    let endpoint = format!("{}/data/{}/triggers", url, data_id);
+                    res = self.get_helper(endpoint, token.clone())?;
+                    if !res.contains_key("status") {
+                        println!("Error establishing connection.\nServer can be down.");
+                        process::exit(1);
+                    }
+
+                    match &res["status"][..] {
+                        "success" => {
+                            println!("DBG show all data triggers here");
+                        },
+                        _ => println!("Status not OK"),
+                    }
+                }
+
+                // Implement POST /triggers from input file endpoint
+                else if create_trigger {
+                    let mut rulesfile = File::open(input_to_fetch.clone()).expect("could not read file");
+                    // Read the input file to string.
+                    // let mut rulesfile = File::open("./data/user_defined_rules.json")?;
+                    let mut rulescontents = String::new();
+                    rulesfile.read_to_string(&mut rulescontents)?;
+                    // println!("DBG rulescontents:{:?}", &rulescontents);
+                    let rules: Value = serde_json::from_str(&rulescontents)?;
+                    // println!("DBG rules: {:?}", &rules["rules"]);
+                    // let rules = &rules["rules"];
+                    // println!("DBG rules from file: {:?}", rules);
+
+                    if publish_to_api {
+                        // post profile to new url
+                        let post_data_endpoint = format!("{}/triggers/", url);
+                        // let data_body = json!(rules);
+
+                        let res: HashMap<String, String> = self
+                            .post_helper(post_data_endpoint, token.clone(), rules)
+                            .unwrap();
+
+                            let status = res.get("status").unwrap();
+
+                            match res.get("trigger_id") {
+                                Some(tid) => {
+                                    // println!("DBG in match did: {}", tid);
+                                    println!("status: {}", status);
+                                    println!("message: Trigger created successfully.");
+                                    println!("trigger_id: {}", tid);
+                                },
+
+                                None => {
+                                    println!("No trigger_id returned from server. Please login or contact an administrator at hello@ncode.ai");
+                                    process::exit(1);
+                                }
+                            }
+                    }
+                }
+
+                Ok(())
+            },
+
             SubCommand::Profile(t) => {
                 let input_to_fetch = &t.input;
                 let publish_to_api = t.clone().publish;
                 println!("Publish after profile: {:?}", publish_to_api);
 
-                // TODO get sql from file and validate
-                // let sqlquery = t.clone().sql.unwrap_or_default();
-                // let sqlquery = "
-                //             SELECT a \
-                //             WHERE b = 2 AND c = 3 \
-                //             ";
-                // let dialect = GenericDialect {}; // or AnsiDialect, or your own dialect ...
-                // let ast = Parser::parse_sql(&dialect, &sqlquery[..]).unwrap();
-                // println!("DBG ast len: {:?}", ast.len());
-                // for stm in ast.iter() {
-                //     println!("DBG statement: {:?}", stm);
-                // }
+                // Read the input file to string.
+                let mut rulesfile = File::open("./data/user_defined_rules.json")?;
+                let mut rulescontents = String::new();
+                rulesfile.read_to_string(&mut rulescontents)?;
+                // println!("DBG rulescontents:{:?}", &rulescontents);
+                let filerules: Value = serde_json::from_str(&rulescontents)?;
+                // println!("DBG filerules: {:?}", &filerules["rules"]);
+                let rules = &filerules["rules"];
 
-
-                // TODO parse rules into struct
-                let raw_rules = json!({
-                    "rules": [
-                        {
-                            "rulename": "my_and_rule",
-                            "conditions": { "all": ["b>2", "c=\'3\'"] }
-                        },
-
-                        {
-                            "rulename": "my_or_rule",
-                            "conditions": { "any": ["b=1", "c=\'3\'"] }
-                        }
-                    ]
-                });
-
-                // let rule_str = "
-                // {
-                //     \"rules\": {
-                //
-                //         \"my_and_rule\": {
-                //             \"all\": [\"b>2\", \"c=3\"]
-                //         },
-                //         \"my_or_rule\": {
-                //             \"any\": [\"b=1\", \"c=3\"]
-                //         }
-                //     }
-                // }
-                // ";
-
-                let rules = &raw_rules["rules"];
-                let rules: Vec<Rule> = serde_json::from_value(rules.to_owned()).unwrap();
-                dbg!("rules: ", &rules);
-
-                // create local execution context
-                let mut ctx = ExecutionContext::new();
-                // register csv file with the execution context
-                ctx.register_csv(
-                    "virtual_table",
-                    &input_to_fetch,
-                    CsvReadOptions::new(),)
-                    .unwrap();
-
-                for rule in rules.iter() {
-                    println!("DBG processing rule {}", &rule.rulename);
-                    let any = &rule.conditions.any;
-                    let all = &rule.conditions.all;
-                    let not = &rule.conditions.not;
-
-                    // if zero conditions, move to next rule
-                    if any.len() + all.len() + not.len() == 0 {
-                        break;
-                    }
-
-                    // generate sql code from rules
-                    let mut sql_select_from = format!("SELECT * FROM virtual_table ");
-                    let mut sql_where = format!("WHERE ");
-
-                    // generate from ANY rules
-                    for (i, cond) in any.iter().enumerate() {
-                        sql_where.push_str(&cond[..]);
-                        if i < any.len()-1 {
-                            sql_where.push_str(" OR ");
-                        }
-                    }
-
-                    // generate from ALL rules
-                    for (i, cond) in all.iter().enumerate() {
-                        sql_where.push_str(&cond[..]);
-                        if i < all.len()-1 {
-                            sql_where.push_str(" AND ");
-                        }
-                    }
-
-                    // TODO generate from NOT rules
-                    for (i, cond) in not.iter().enumerate() {
-                        sql_where.push_str(&cond[..]);
-                        if i < not.len()-1 {
-                            sql_where.push_str(" NOT ");
-                        }
-                    }
-
-                    sql_select_from.push_str(&sql_where[..]);
-                    println!("DBG query: {:?}", sql_select_from);
-
-
-                    // execute this rule
-                    let df = ctx.sql(&sql_select_from[..]).unwrap();
-                    let results = async {
-                        let res = df.collect().await;
-                        let nelem = match res {
-                            Ok(s) => {
-                                let cols = s[0].columns();
-                                let sa = &cols[0];
-                                let s = sa.data().len();
-                                s
-                            },
-
-                            Err(_) => {
-                                println!("DBG error");
-                                0 as usize
-                            }
-                        };
-                        nelem
-                    };
-
-                    let trigger_alert = RT.handle().block_on(results);
-                    // println!("DBG {:?} elements triggered alert\n", trigger_alert);
-                    let mut alerts: Vec<Alert> = vec![];
-                    let alert_data = format!("DBG {:?} elements triggered alert", trigger_alert);
-                    let alert = Alert::new(None, Some(alert_data));
-                    alerts.push(alert);
-                    println!("DBG alerts: {:?}", alerts);
-                    // results = results.map(|x| { println!("{:?}", x); x});
-
-                }
-
-
-                // execute the query
-                // let df = ctx.sql(
-                //     "SELECT * \
-                //     FROM virtual_table \
-                //     WHERE b > 2 \
-                //     ",
-                // )?;
-                // let results = async {
-                //     let res = df.collect().await;
-                //     let nelem = match res {
-                //         Ok(s) => {
-                //             let cols = s[0].columns();
-                //             let sa = &cols[0];
-                //             let s = sa.data().len();
-                //             s
-                //         },
-                //         Err(_) => {
-                //             println!("DBG error");
-                //             0 as usize
-                //         }
-                //     };
-                //     nelem
-                // };
-                // let trigger_alert = RT.handle().block_on(results);
-                // // println!("DBG {:?} elements triggered alert\n", trigger_alert);
-                // let mut alerts: Vec<Alert> = vec![];
-                // let alert_data = format!("DBG {:?} elements triggered alert", trigger_alert);
-                // let alert = Alert::new(None, Some(alert_data));
-                // alerts.push(alert);
-                // println!("DBG alerts: {:?}", alerts);
-                // // results = results.map(|x| { println!("{:?}", x); x});
+                // let rules = &raw_rules["rules"];
+                // println!("DBG rules: {:?}", &rules);
 
                 let input_location: String = input_to_fetch.chars().skip(0).take(5).collect();
                 match input_location.as_ref() {
                     // try s3 bucket
                     "s3://" => {
-                        // TODO integrate DataFrame
-                        let filename: String = input_to_fetch.chars().skip(5).collect();
-                        println!("filename input_to_fetch: {}", filename);
-                        let storage = Storage::new();
-                        // TODO get this from input_to_fetch
-                        // let filename = String::from("synthetic_demo_data.csv");
-                        let df = self.csv_reader_helper(storage, filename);
-                        let _profile = df.profile();
-                        // println!("Dataset profile: {}", profile);
+                        unimplemented!();
+                        // // TODO integrate DataFrame
+                        // let filename: String = input_to_fetch.chars().skip(5).collect();
+                        // println!("filename input_to_fetch: {}", filename);
+                        // let storage = Storage::new();
+                        // // TODO get this from input_to_fetch
+                        // // let filename = String::from("synthetic_demo_data.csv");
+                        // let df = self.csv_reader_helper(storage, filename);
+                        // let _profile = df.profile();
+                        // // println!("Dataset profile: {}", profile);
                     }
 
                     // try local file
                     _ => {
+                        let mut file = File::open(&input_to_fetch.clone()[..]).unwrap();
+                        let mut src = Vec::new();
+                        let read = file.read_to_end(&mut src).unwrap();
+                        let size: usize = src.len();
+                        // let mut buf: Vec<u8> = Vec::with_capacity(100 * 1024 * 1024);
+
+                        let (src, encoding) =
+                            if let Some((encoding, skip)) =
+                                encoding_rs::Encoding::for_bom(&src) {
+                                    (&src[skip..], encoding)
+                            } else {
+                                let mut detector = chardetng::EncodingDetector::new();
+                                detector.feed(&src, true);
+                                (&*src, detector.guess(None, true))
+                        };
+
+                        // println!("DBG src:{:?} enc: {:?}", &src, &encoding);
+                        let mut decoder = encoding.new_decoder_without_bom_handling();
+                        let mut string = String::with_capacity(decoder.max_utf8_buffer_length(src.len()).unwrap());
+                        let (res, read, _replaced) = decoder.decode_to_string(&src, &mut string, true);
+                        // println!("DBG string:{:?}", &string);
+
+                        // TODO load columns into Series
+                        // TODO load Series into DataFrame
+                        // TODO then get rid of CsvReader below as you will already have the dataframe
+
                         // input_to_fetch is a local file
                         let file = File::open(input_to_fetch.clone()).expect("could not read file");
-
                         let df = CsvReader::new(file)
                             .infer_schema(None)
                             .has_header(true)
-                            .finish()
-                            .unwrap();
+                            .with_encoding(CsvEncoding::LossyUtf8)
+                            .finish();
 
-                        // dbg!(&df);
+                        let df = match df {
+                            Ok(d) => d,
+
+                            Err(e) => {
+                                println!("Could not load dataframe. Only UTF-8 is supported.");
+                                println!("Error {:?}", e);
+                                process::exit(-1);
+                            }
+                        };
+
                         let dataframe = NcodeDataFrame {
                             dataframe: Arc::new(df),
                         };
+
+                        let columns = dataframe.columns();
+                        // TODO validate rules with colnames
+
+                        let alerts = alerts_from_custom_rules(input_to_fetch, rules, columns);
+
+                        // print alerts
+                        println!("----- User Defined Alerts -----");
+                        for (i,alert) in alerts.iter().enumerate() {
+                            println!("UDA-{}: {:?}\n", i, &alert);
+                        }
 
                         // TODO Result(profile)
                         let mut profile = dataframe.profile();
