@@ -121,14 +121,15 @@ pub struct Frontend {
     args: Args,
 }
 
-#[cfg(feature = "async_await")]
-
+// #[cfg(feature = "async_await")]
 #[derive(Serialize, Deserialize, Debug)]
 struct DataResponse {
     id: String,
     r#type: String,
     datastore: String,
     filename: String,
+    submitted_by: String,
+    trigger_id: Option<String>,
     _is_published: Option<String>,
     _submitted_on: String,
     _id: Option<String>,
@@ -432,22 +433,27 @@ impl Frontend {
 
                 match &res["status"][..] {
                     "success" => {
-                        // TODO serde_json deserialize with Option<fields>
-                        // println!("res[message] {:?}", &res["message"]);
-                        let data_assets = serde_json::from_str::<Vec<HashMap<String, String>>>(res["message"].as_str()).unwrap();
+                        let data_assets = serde_json::from_str::<Vec<DataResponse>>(res["message"].as_str()).unwrap();
                         for (i, asset) in data_assets.iter().enumerate() {
-                            println!("\n********** DATA ASSET {}", i);
-                            println!("id: {}", asset["id"]);
-                            println!("type: {}", asset["type"]);
-                            println!("filename: {}", asset["filename"]);
-                            println!("submitted_on: {}", asset["_submitted_on"]);
-                            println!("datastore: {}", asset["datastore"]);
+                            println!("\n********** DATA ASSET {} **********", i);
+                            println!("id: {}", asset.id);
+                            println!("type: {}", asset.r#type);
+                            println!("filename: {}", asset.filename);
+                            println!("submitted_on: {}", asset._submitted_on);
+                            println!("datastore: {}", asset.datastore);
+
+                            // print trigger_id if available
+                            let trigger_id = match &asset.trigger_id {
+                                Some(tid) => tid.to_owned(),
+                                None => String::from("NA")
+                            };
+                            println!("trigger_id: {}", trigger_id);
+
 
                             if delete_data {
-                                let endpoint = format!("{}/data/{}", url, asset["id"]);
+                                let endpoint = format!("{}/data/{}", url, asset.id);
                                 let _res = self.del_helper(endpoint, token.clone());
                             }
-
                         }
                     },
                     _ => println!("Status not OK"),
@@ -498,10 +504,7 @@ impl Frontend {
                 }
                 match &res["status"][..] {
                     "success" => {
-                        // let alerts = serde_json::from_str::<Vec<HashMap<String, String>>>(res["message"].as_str()).unwrap();
                         let alerts = serde_json::from_str::<Vec<AlertResponse>>(res["message"].as_str()).unwrap();
-                        // println!("DBG DBG {:?} len={}", alerts, alerts.len());
-
                         if alerts.len() ==  0 {
                             println!("No alerts for this data asset.")
                         }
