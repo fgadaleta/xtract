@@ -31,6 +31,11 @@ use clap::Clap;
 
 // Create triggers from user defined rule file
 // xtract trigger --input data/user_defined_rules.json
+// xtract trigger create --input data/user_defined_rules.json
+
+
+// Set trigger to data
+// xtract trigger set --data-id 0xABC --trigger-id 0x123
 
 // Search data by criteria
 // xtract search --cols "3,10" --rows "1000,3000" --tags "finance money transactions"
@@ -49,6 +54,9 @@ pub struct Data {
 
 #[derive(Clap, Clone)]
 pub struct Trigger {
+    #[clap(subcommand)]
+    pub subcmd: TriggerSubCommand,
+
     #[clap(long)]
     pub data: Option<String>,
 
@@ -64,6 +72,61 @@ pub struct Trigger {
     #[clap(long, takes_value = false)]
     pub delete: bool,
 }
+
+
+#[derive(Clap, Clone, Debug)]
+pub enum TriggerSubCommand {
+    /// A help message for the Test subcommand
+    #[clap(name = "create", version = "0.1", author = "ncode")]
+    CreateTrigger(CreateTrigger),
+
+    #[clap(name = "set", version = "0.1", author = "ncode")]
+    SetTrigger(SetTrigger),
+
+    #[clap(name = "get", version = "0.1", author = "ncode")]
+    GetTrigger(GetTrigger),
+
+}
+
+/// A subcommand for controlling testing
+#[derive(Clap, Clone, Debug)]
+pub struct CreateTrigger {
+    #[clap(short, long)]
+    pub input: String,
+
+    #[clap(long, takes_value = false)]
+    pub publish: bool,
+
+    // /// Print debug info
+    // #[clap(short = 'd')]
+    // debug: bool
+}
+
+#[derive(Clap, Clone, Debug)]
+pub struct SetTrigger {
+    #[clap(short, long)]
+    pub data_id: String,
+
+    #[clap(short, long)]
+    pub trigger_id: String,
+}
+
+#[derive(Clap, Clone, Debug)]
+pub struct GetTrigger {
+    #[clap(short, long)]
+    pub id: Option<String>,
+
+    #[clap(long)]
+    pub data: Option<String>,
+
+    #[clap(long, conflicts_with = "data", takes_value = false)]
+    pub all: bool,
+
+    #[clap(long, takes_value = false)]
+    pub delete: bool,
+
+}
+
 
 
 #[derive(Clap, Clone, Debug)]
