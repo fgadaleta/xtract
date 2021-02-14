@@ -817,7 +817,8 @@ impl Frontend {
                         let columns = dataframe.columns();
                         // TODO validate rules with colnames
 
-                        let alerts = alerts_from_custom_rules(input_to_fetch, rules, columns);
+                        println!("DBG rules (working): {:?} ", &rules);
+                        let alerts = alerts_from_custom_rules(input_to_fetch, rules, columns.clone());
 
                         // print alerts
                         println!("----- User Defined Alerts -----");
@@ -853,6 +854,81 @@ impl Frontend {
                             match res.get("data_id") {
                                 Some(did) => {
                                     // println!("DBG in match did: {}", did);
+
+                                    // TODO fetch data_info of data asset with data_id=<did> GET /data/<data_id>
+                                    let endpoint = format!("{}/data/{}", url, did);
+                                    let data_info_res = self.get_helper(endpoint, token.clone())?;
+                                    if !data_info_res.contains_key("status") {
+                                        println!("Error establishing connection.\nServer can be down.");
+                                        process::exit(1);
+                                    }
+
+                                    let mut num_triggers: usize = 0;
+                                    match &data_info_res["status"][..] {
+                                        "success" => {
+                                            let data_assets = serde_json::from_str::<Vec<DataResponse>>(data_info_res["message"].as_str()).unwrap();
+
+                                            for (_i, asset) in data_assets.iter().enumerate() {
+                                                match &asset.trigger_id {
+                                                    Some(tid) => {
+                                                        // if there is an active trigger, fetch trigger with trigger_id GET /trigger/<trigger_id>
+                                                        let endpoint = format!("{}/triggers/{}", url, tid);
+                                                        let trigger_info_res = self.get_helper(endpoint, token.clone())?;
+                                                        if !trigger_info_res.contains_key("status") {
+                                                            println!("Error establishing connection.\nServer can be down.");
+                                                            process::exit(1);
+                                                        }
+
+                                                        match &trigger_info_res["status"][..] {
+                                                            "success" => {
+                                                                let single_trigger = serde_json::from_str::<Vec<TriggerResponse>>(trigger_info_res["message"].as_str()).unwrap();
+                                                                println!("DBG single_trigger {:?} ", &single_trigger);
+
+                                                                if single_trigger.len() ==  0 {
+                                                                    println!("No triggers found.")
+                                                                }
+                                                                else {
+                                                                    for (i, trigger) in single_trigger.iter().enumerate() {
+                                                                        println!("\n********** TRIGGER {} ********** ", i);
+                                                                        println!("trigger_id: {}", trigger.id);
+                                                                        println!("created_on: {}", trigger._submitted_on);
+
+                                                                        let rules = &trigger.rules;
+                                                                        let some_rules = serde_json::to_value(rules).unwrap();
+
+
+                                                                        // apply rules locally and POST alerts
+                                                                        let alerts = alerts_from_custom_rules(input_to_fetch,
+                                                                                &some_rules,
+                                                                                columns.clone());
+
+                                                                        println!("DBG alerts: {:?}", alerts);
+
+                                                                        // TODO post alerts to cloud
+
+
+                                                                    }
+                                                                }
+
+                                                                num_triggers += 1;
+                                                            },
+
+                                                            _ => {
+                                                                println!("Beep Bop. Trigger could not be fetched. Something wrong happened! :(( ");
+                                                            },
+                                                        }
+                                                        true
+                                                    },
+
+                                                    None => false
+                                                };
+
+                                                println!("Number of triggers fetched: {}", num_triggers);
+                                            }
+                                        },
+
+                                        _ => println!("Getting data assets info. Status not OK. Is server up?"),
+                                    }
 
                                     let post_profile_endpoint = format!("{}/data/{}/profile", url, did);
                                     let profile_res = self
