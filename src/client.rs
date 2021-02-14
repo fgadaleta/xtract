@@ -582,7 +582,6 @@ impl Frontend {
             SubCommand::Trigger(t) => {
                  // fetch and execute subcommand
                  let subcommand = t.clone().subcmd;
-                //  println!("DBG subcommand {:?} ", &subcommand);
 
                  match subcommand {
                     TriggerSubCommand::CreateTrigger(t) => {
