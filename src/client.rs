@@ -756,13 +756,10 @@ impl Frontend {
                         }
                     },
 
+                    // POST /data/<data_id>/triggers and payload = { trigger_id: 0x123 }
                     TriggerSubCommand::SetTrigger(t) => {
-                        // POST /data/<data_id>/triggers and payload = { trigger_id: 0x123 }
                         let post_data_endpoint = format!("{}/data/{}/triggers", url, t.data_id);
                         let payload = serde_json::json!({"trigger_id": t.trigger_id});
-                        // println!("DBG payload {} ", &payload);
-                        // println!("DBG endpoint {} ", &post_data_endpoint);
-
                         let res: HashMap<String, String> = self
                             .post_helper(post_data_endpoint, token.clone(), payload)
                             .unwrap();
