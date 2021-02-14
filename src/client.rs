@@ -535,50 +535,6 @@ impl Frontend {
                 Ok(())
             },
 
-            /*
-            SubCommand::Set => unimplemented!(),
-
-            SubCommand::Search(t) => {
-                // TODO
-                let mut at_least_one_flag: bool = false;
-
-                let cols = match t.cols.as_ref() {
-                    Some(c) => {
-                        at_least_one_flag = true;
-                        String::from(c)
-                    },
-                    None => "".to_string()
-                };
-
-                let rows = match t.rows.as_ref() {
-                    Some(r) => {
-                        at_least_one_flag = true;
-                        String::from(r)
-                    },
-                    None => "".to_string()
-                };
-
-                let tags = match t.tags.as_ref() {
-                    Some(x) => {
-                        at_least_one_flag = true;
-                        String::from(x)
-                    },
-                    None => "".to_string()
-                };
-
-                if !at_least_one_flag {
-                    println!("You must provide at least one parameter.");
-                    process::exit(-1);
-                }
-
-                println!("Search criteria\ncols: {}, rows: {}, tags: {}", cols, rows, tags);
-                // TODO parse arguments into ranges or numbers
-
-
-                Ok(())
-            },
-            */
-
             SubCommand::Trigger(t) => {
                  // fetch and execute subcommand
                  let subcommand = t.clone().subcmd;
