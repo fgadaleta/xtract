@@ -580,11 +580,9 @@ impl Frontend {
             */
 
             SubCommand::Trigger(t) => {
-
-
                  // fetch and execute subcommand
                  let subcommand = t.clone().subcmd;
-                 println!("DBG subcommand {:?} ", &subcommand);
+                //  println!("DBG subcommand {:?} ", &subcommand);
 
                  match subcommand {
                     TriggerSubCommand::CreateTrigger(t) => {
@@ -642,7 +640,6 @@ impl Frontend {
                         // fetch delete flag
                         let delete_trigger = t.delete;
                         let mut res: HashMap<String, String> = HashMap::new();
-
                         if get_all_triggers {
                             let endpoint = format!("{}/triggers", url);
                             res = self.get_helper(endpoint, token.clone())?;
@@ -694,9 +691,6 @@ impl Frontend {
                                             }
                                         }
                                     }
-
-
-
                                 },
                                 _ => println!("Status not OK"),
                             }
@@ -762,44 +756,56 @@ impl Frontend {
                         }
                     },
 
-                    TriggerSubCommand::SetTrigger(t) => unimplemented!()
+                    TriggerSubCommand::SetTrigger(t) => {
+                        // POST /data/<data_id>/triggers and payload = { trigger_id: 0x123 }
+                        let post_data_endpoint = format!("{}/data/{}/triggers", url, t.data_id);
+                        let payload = serde_json::json!({"trigger_id": t.trigger_id});
+                        // println!("DBG payload {} ", &payload);
+                        // println!("DBG endpoint {} ", &post_data_endpoint);
+
+                        let res: HashMap<String, String> = self
+                            .post_helper(post_data_endpoint, token.clone(), payload)
+                            .unwrap();
+                        let status = res.get("status").unwrap();
+                        let message = res.get("message").unwrap();
+                        let message: HashMap<String, String> = serde_json::from_str(message).unwrap();
+                        let message = message.get("message").unwrap();
+
+                        println!("\nstatus: {}", status);
+                        println!("message: {}\n", message);
+
+                    }
                  }
 
                 // fetch get_all triggers flag
-                let get_all_triggers = t.all;
-
-                // fetch create_trigger flag
-                let mut input_to_fetch = String::new();
-                let create_trigger = match &t.input {
-                    Some(itf) => {
-                        input_to_fetch = itf.to_owned();
-                        true
-                    },
-                    None => false
-                };
-
+                // let get_all_triggers = t.all;
+                // // fetch create_trigger flag
+                // let mut input_to_fetch = String::new();
+                // let create_trigger = match &t.input {
+                //     Some(itf) => {
+                //         input_to_fetch = itf.to_owned();
+                //         true
+                //     },
+                //     None => false
+                // };
                 // fetch publish flag
-                let publish_to_api = t.clone().publish;
-
-                // fetch get trigger id
-                let mut data_id = String::new();
-                let get_single_data_triggers = match t.clone().data {
-                    Some(did) => {
-                        data_id = did;
-                        true
-                    },
-                    None => false
-                };
-
+                // let publish_to_api = t.clone().publish;
+                // // fetch get trigger id
+                // let mut data_id = String::new();
+                // let get_single_data_triggers = match t.clone().data {
+                //     Some(did) => {
+                //         data_id = did;
+                //         true
+                //     },
+                //     None => false
+                // };
                 // fetch delete flag
-                let delete_trigger = t.delete;
-
+                // let delete_trigger = t.delete;
                 // if no subcommand, exit with message
                 // if !(create_trigger || get_all_triggers || get_single_data_triggers) {
                 //     println!("Define at least one command (input, id, all)");
                 //     process::exit(-1);
                 // }
-
                 // let mut res: HashMap<String, String> = HashMap::new();
                 // Implement GET /triggers endpoint
                 // if get_all_triggers {
@@ -1267,8 +1273,6 @@ impl Frontend {
                 if res.status() == reqwest::StatusCode::OK {
                     // let response: String = res.json()?;
                     let response: String = res.text()?;
-                    // println!("response: {}", response);
-                    // let assets: String = res.text()?;
                     result.insert("status".to_string(), "success".to_string());
                     result.insert("message".to_string(), response.clone());
 
@@ -1277,7 +1281,13 @@ impl Frontend {
 
                 } else if res.status() == reqwest::StatusCode::CREATED {
                     result = res.json()?;
+
+                } else if res.status() == reqwest::StatusCode::NOT_FOUND {
+                    let response: String = res.text()?;
+                    result.insert("status".to_string(), "failed".to_string());
+                    result.insert("message".to_string(), response.clone());
                 }
+
             }
 
             Err(e) => {
