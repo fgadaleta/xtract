@@ -1,19 +1,19 @@
 use super::cli::{Args, SubCommand, Alert, TriggerSubCommand };
 use anyhow::Result;
 use arrow::record_batch::RecordBatch;
-use arrow::util::pretty;
+// use arrow::util::pretty;
 use once_cell::sync::Lazy;
 use serde_json::{json, Value};
 use serde::{Serialize, Deserialize};
-use jsonwebtoken::{decode, decode_header, DecodingKey, Validation, Algorithm};
-use encoding_rs::*;
+// use jsonwebtoken::{decode, decode_header, DecodingKey, Validation, Algorithm};
+// use encoding_rs::*;
 
 // use serde::de::{
 //     DeserializeSeed, EnumAccess, IntoDeserializer, MapAccess, SeqAccess,
 //     VariantAccess, Visitor,
 // };
 // use home_dir;
-use std::{collections::HashMap, fmt::format};
+use std::collections::HashMap;
 use std::time::{SystemTime, UNIX_EPOCH};
 // use std::fs;
 // use std::path::Path;
@@ -28,7 +28,7 @@ use std::process;
 use tokio::runtime::Runtime;
 
 // from https://edgarluque.com/blog/wrapping-errors-in-rust
-use thiserror::Error;
+// use thiserror::Error;
 
 use xtract::configuration::{get_configuration_from_file, get_content_from_file};
 use xtract::loaders::s3_connector::Storage;
@@ -40,11 +40,11 @@ use xtract::loaders::csv_format::CsvReader as csvr;
 use polars::prelude::*;
 use polars::frame::ser::csv::CsvEncoding;
 
-use sqlparser::dialect::{GenericDialect, keywords::SQL};
+use sqlparser::dialect::GenericDialect;
 use sqlparser::parser::Parser;
-use sqlparser::ast::{Statement};
+use sqlparser::ast::Statement;
 use sqlparser::tokenizer::Tokenizer;
-use futures::FutureExt;
+// use futures::FutureExt;
 
 use datafusion::prelude::*;
 // use datafusion::error::Result;
@@ -86,9 +86,9 @@ struct Claims {
 }
 
 impl Claims {
-    pub fn expire(&self) -> usize {
-        self.exp
-    }
+    // pub fn expire(&self) -> usize {
+    //     self.exp
+    // }
 }
 
 
