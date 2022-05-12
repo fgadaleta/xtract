@@ -1,0 +1,1343 @@
+untitled,user_id,first_name,last_name,container_type,category_name,date,amount,transaction_base_type
+0,8796,skye,lowry,bank,ATM/Cash Withdrawals,2016-12-25,2.0,debit
+1,7807,Boris,Tsibelman,bank,Transfers,2016-08-23,100.0,debit
+2,2662,Keef,,bank,Uncategorized,2018-10-04,0.11,credit
+3,2098,Andy,Roy,bank,Entertainment,2016-08-24,7.0,debit
+4,7807,Boris,Tsibelman,bank,Transfers,2016-09-08,1200.0,credit
+5,7807,Boris,Tsibelman,bank,Transfers,2018-10-11,1000.0,credit
+6,7807,Boris,Tsibelman,bank,Transfers,2016-10-14,1000.0,debit
+7,1158,,,bank,Uncategorized,2017-02-09,28.0,debit
+8,7807,Boris,Tsibelman,bank,Transfers,2016-10-14,1200.0,credit
+9,2360,,,bank,Online Services,2016-12-23,0.32,debit
+10,7807,Boris,Tsibelman,bank,Transfers,2016-10-17,1000.0,credit
+11,7807,Boris,Tsibelman,bank,Transfers,2016-10-17,10000.0,debit
+12,7586,Carla,Saavedra,creditCard,Clothing/Shoes,2016-11-11,353.44,debit
+13,458,Jared,Alexander,creditCard,Uncategorized,2017-03-16,30.0,debit
+14,458,Jared,Alexander,creditCard,Restaurants,2017-03-17,25.0,debit
+15,458,Jared,Alexander,creditCard,Uncategorized,2017-03-13,28.34,debit
+16,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-10-27,3.0,debit
+17,458,Jared,Alexander,creditCard,Automotive/Fuel,2017-03-13,19.0,debit
+18,127,Nicole,Barth,bank,ATM/Cash Withdrawals,2016-11-10,2.5,debit
+19,7807,Boris,Tsibelman,bank,Transfers,2016-10-17,1000.0,credit
+20,8338,Victor,Lacayoz,bank,ATM/Cash Withdrawals,2016-10-27,3.0,debit
+21,7807,Boris,Tsibelman,bank,Transfers,2016-10-24,1000.0,debit
+22,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-10-24,3.0,debit
+23,127,Nicole,Barth,bank,Uncategorized,2017-01-23,15.0,credit
+24,7807,Boris,Tsibelman,bank,Transfers,2016-10-24,1000.0,credit
+25,7807,Boris,Tsibelman,bank,Transfers,2016-10-31,1000.0,debit
+26,7807,Boris,Tsibelman,bank,Transfers,2016-11-29,1000.0,credit
+27,7807,Boris,Tsibelman,bank,Transfers,2016-11-29,1000.0,debit
+28,7807,Boris,Tsibelman,bank,Transfers,2016-12-20,1000.0,credit
+29,7807,Boris,Tsibelman,bank,Transfers,2016-12-23,1000.0,debit
+30,8338,Victor,Lacayo,bank,Other Expenses,2016-11-17,7.88,debit
+31,2098,Andy,Roy,bank,Credit Card Payments,2017-01-09,200.0,debit
+32,7807,Boris,Tsibelman,bank,Transfers,2017-01-03,1000.0,debit
+33,7807,Boris,Tsibelman,bank,Transfers,2017-02-21,1000.0,credit
+34,7807,Boris,Tsibelman,bank,Transfers,2017-02-21,1000.0,debit
+35,7807,Boris,Tsibelman,bank,Transfers,2016-10-20,1000.0,debit
+36,1158,,,bank,Groceries,2017-01-20,1.25,debit
+37,7807,Boris,Tsibelman,bank,Transfers,2017-01-17,1000.0,credit
+38,7807,Boris,Tsibelman,bank,Transfers,2017-01-11,1000.0,debit
+39,2662,Keef,,bank,Automotive/Fuel,2017-03-04,4.43,debit
+40,2662,Keef,,bank,Automotive/Fuel,2017-03-04,80.71,debit
+41,7807,Boris,Tsibelman,bank,Transfers,2016-12-14,1000.0,credit
+42,8257,Robert,Miles,creditCard,Restaurants/Dining,2016-12-12,63.47,debit
+43,7807,Boris,Tsibelman,bank,Travel,2016-12-14,1000.0,debit
+44,7807,Boris,Tsibelman,bank,Transfers,2016-10-20,1000.0,credit
+45,1158,,,bank,Home Improvement,2017-02-13,1.9,debit
+46,7807,Boris,Tsibelman,bank,Credit Card Payments,2016-10-13,1000.0,debit
+47,7807,Boris,Tsibelman,bank,Transfers,2016-10-24,1000.0,credit
+48,7807,Boris,Tsibelman,bank,Credit Card Payments,2016-10-21,1000.0,debit
+49,7807,Boris,Tsibelman,bank,Transfers,2016-10-25,1000.0,credit
+50,7807,Boris,Tsibelman,bank,Credit Card Payments,2016-11-01,1000.0,debit
+51,7807,Boris,Tsibelman,bank,Transfers,2016-12-09,1000.0,credit
+52,7807,Boris,Tsibelman,bank,Taxes,2016-12-02,1000.0,debit
+53,7807,Boris,Tsibelman,bank,Transfers,2016-12-23,1000.0,credit
+54,7807,Boris,Tsibelman,bank,Travel,2016-12-20,1000.0,debit
+55,7807,Boris,Tsibelman,bank,Transfers,2016-08-02,409.15,credit
+56,8590,Eli,Martinez,bank,Uncategorized,2017-01-13,11.0,credit
+57,7807,Boris,Tsibelman,bank,Transfers,2016-08-02,409.15,debit
+58,8796,skye,lowry,bank,Groceries,2017-02-27,26.78,debit
+59,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-11-15,220.24,debit
+60,8338,Victor,Lacayo,bank,Transfers,2016-11-15,400.0,credit
+61,2579,Hayden,Lanham,creditCard,Gasoline/Fuel,2016-07-21,4.47,debit
+62,7807,Boris,Tsibelman,bank,Transfers,2016-09-21,6000.0,debit
+63,7807,Boris,Tsibelman,bank,Transfers,2016-09-26,6000.0,credit
+64,7807,Boris,Tsibelman,bank,Transfers,2016-09-26,6000.0,debit
+65,632,,,bank,General Merchandise,2016-07-15,29.75,debit
+66,7807,Boris,Tsibelman,bank,Transfers,2016-10-05,6000.0,credit
+67,7807,Boris,Tsibelman,bank,Transfers,2016-10-05,6000.0,debit
+68,458,Jared,Alexander,creditCard,Personal/Family,2017-03-11,29.0,debit
+69,458,Jared,Alexander,creditCard,Restaurants,2017-03-12,4.25,debit
+70,127,Nicole,Barth,bank,Uncategorized,2016-12-16,250.0,credit
+71,458,Jared,Alexander,creditCard,Restaurants,2017-03-12,11.14,debit
+72,458,Jared,Alexander,creditCard,Credit Card Payments,2017-03-13,4234.97,credit
+73,70,Zachary,Schrimsher,creditCard,Groceries,2017-01-30,32.03,debit
+74,7807,Boris,Tsibelman,bank,Transfers,2016-10-06,6000.0,credit
+75,7807,Boris,Tsibelman,bank,Transfers,2016-10-06,6000.0,debit
+76,7807,Boris,Tsibelman,bank,Transfers,2016-11-17,6000.0,credit
+77,7586,Carla,Saavedra,creditCard,Groceries,2016-09-03,19.59,debit
+78,7807,Boris,Tsibelman,bank,Transfers,2016-11-17,6000.0,debit
+79,7807,Boris,Tsibelman,bank,Transfers,2016-12-08,6000.0,credit
+80,632,,,bank,General Merchandise,2016-07-15,225.99,debit
+81,7807,Boris,Tsibelman,bank,Transfers,2016-12-12,6000.0,credit
+82,7807,Boris,Tsibelman,bank,Transfers,2016-12-12,6000.0,debit
+83,7807,Boris,Tsibelman,bank,Transfers,2016-12-12,6000.0,debit
+84,7807,Boris,Tsibelman,bank,Transfers,2017-01-19,6000.0,debit
+85,7807,Boris,Tsibelman,bank,Transfers,2016-10-12,150.0,credit
+86,7807,Boris,Tsibelman,bank,Transfers,2016-10-17,150.0,debit
+87,260,Claire,Lefevre,bank,Interest Income,2017-03-20,0.92,credit
+88,7807,Boris,Tsibelman,bank,Transfers,2016-10-26,150.0,credit
+89,7807,Boris,Tsibelman,bank,Transfers,2016-11-02,150.0,debit
+90,7807,Boris,Tsibelman,bank,Transfers,2016-11-25,150.0,credit
+91,632,,,bank,General Merchandise,2016-07-15,10.94,debit
+92,108,Cassie,Herd,bank,Credit Card Payments,2017-03-02,126.0,debit
+93,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-11-15,167.38,debit
+94,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-11-14,2.0,debit
+95,8338,Victor,Lacayo,bank,Online Services,2016-11-14,14.99,debit
+96,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-11-07,223.65,debit
+97,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-11-07,223.65,debit
+98,632,,,bank,General Merchandise,2016-07-15,3.99,credit
+99,108,Cassie,Herd,bank,Electronics/General Merchandise,2017-03-02,13.88,debit
+100,2579,Hayden,Lanham,bank,Restaurants/Dining,2016-11-03,7.45,debit
+101,6,Rob,Guilfoyle,bank,Entertainment,2016-08-17,6.0,debit
+102,7807,Boris,Tsibelman,bank,Transfers,2016-11-25,150.0,debit
+103,7807,Boris,Tsibelman,bank,Transfers,2016-11-28,150.0,credit
+104,458,Jared,Alexander,creditCard,Travel,2017-03-10,20.45,debit
+105,458,Jared,Alexander,creditCard,Restaurants,2017-03-11,14.51,debit
+106,458,Jared,Alexander,creditCard,Groceries,2017-03-11,12.37,debit
+107,458,Jared,Alexander,creditCard,Restaurants,2017-03-10,22.22,debit
+108,458,Jared,Alexander,creditCard,Cable/Satellite/Telecom,2017-03-10,35.0,debit
+109,7634,Danny,Freed,creditCard,Online Services,2016-12-30,49.0,debit
+110,6,Rob,Guilfoyle,bank,Checks,2016-10-03,1000.0,debit
+111,458,Jared,Alexander,creditCard,Uncategorized,2017-03-09,16.65,debit
+112,458,Jared,Alexander,creditCard,Restaurants,2017-03-10,11.39,debit
+113,6,Rob,Guilfoyle,bank,Transfers,2016-06-20,2.13,debit
+114,7807,Boris,Tsibelman,bank,Transfers,2016-11-25,150.0,debit
+115,7807,Boris,Tsibelman,bank,Transfers,2016-11-29,150.0,credit
+116,1158,,,bank,Deposits,2016-11-22,1.48,credit
+117,7807,Boris,Tsibelman,bank,Transfers,2016-11-29,150.0,debit
+118,7807,Boris,Tsibelman,bank,Transfers,2016-11-30,150.0,credit
+119,7807,Boris,Tsibelman,bank,Transfers,2016-12-01,150.0,debit
+120,2662,Keef,,bank,Automotive/Fuel,2017-03-09,31.72,debit
+121,7807,Boris,Tsibelman,bank,Transfers,2016-12-08,150.0,debit
+122,7807,Boris,Tsibelman,bank,Transfers,2017-02-28,150.0,credit
+123,70,Zachary,Schrimsher,creditCard,Hobbies,2016-12-03,4.07,debit
+124,7807,Boris,Tsibelman,bank,Transfers,2016-09-21,150.0,credit
+125,7807,Boris,Tsibelman,bank,Transfers,2016-09-21,150.0,debit
+126,7807,Boris,Tsibelman,bank,Transfers,2016-10-17,150.0,credit
+127,7586,Carla,Saavedra,creditCard,General Merchandise,2017-01-25,57.01,debit
+128,7807,Boris,Tsibelman,bank,Transfers,2016-10-18,150.0,debit
+129,7807,Boris,Tsibelman,bank,Transfers,2016-11-16,150.0,credit
+130,7807,Boris,Tsibelman,bank,Transfers,2016-11-10,150.0,debit
+131,458,Jared,Alexander,creditCard,Restaurants,2017-03-07,8.16,debit
+132,458,Jared,Alexander,creditCard,Restaurants,2017-03-08,2.23,debit
+133,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-11-07,223.65,debit
+134,7807,Boris,Tsibelman,bank,Transfers,2016-12-28,150.0,credit
+135,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-11-07,223.65,debit
+136,7807,Boris,Tsibelman,bank,Transfers,2017-01-03,150.0,debit
+137,8796,skye,lowry,bank,Transfers,2017-02-04,200.0,credit
+138,7807,Boris,Tsibelman,bank,Transfers,2017-01-05,150.0,debit
+139,2360,,,bank,Healthcare/Medical,2016-11-21,18.97,debit
+140,7807,Boris,Tsibelman,bank,Transfers,2016-10-05,150.0,credit
+141,7807,Boris,Tsibelman,creditCard,Telephone Services,2016-10-05,150.0,debit
+142,493,Kevan,Emmott,creditCard,Credit Card Payments,2016-09-20,435.81,credit
+143,7807,Boris,Tsibelman,bank,Transfers,2016-12-21,150.0,credit
+144,7807,Boris,Tsibelman,bank,Transfers,2016-08-15,100.0,credit
+145,632,,,bank,Restaurants/Dining,2016-07-14,6.0,debit
+146,7807,Boris,Tsibelman,bank,Transfers,2016-08-22,100.0,debit
+147,70,Zachary,Schrimsher,creditCard,Restaurants/Dining,2016-06-05,40.82,debit
+148,2098,Andy,Roy,bank,General Merchandise,2016-11-15,14.12,debit
+149,7807,Boris,Tsibelman,bank,Transfers,2016-08-24,100.0,credit
+150,7807,Boris,Tsibelman,bank,Transfers,2016-08-24,100.0,debit
+151,2098,Andy,Roy,bank,Transfers,2016-09-01,200.0,credit
+152,2662,Keef,,bank,Travel,2016-07-28,2.0,debit
+153,108,Cassie,Herd,bank,Home Improvement,2017-03-16,67.98,debit
+154,1158,,,bank,Savings,2017-01-18,0.75,credit
+155,2579,Hayden,Lanham,bank,Paychecks/Salary,2016-08-12,1277.49,credit
+156,7807,Boris,Tsibelman,bank,Transfers,2016-09-02,100.0,credit
+157,7807,Boris,Tsibelman,bank,Transfers,2016-10-24,100.0,credit
+158,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-11-07,223.65,debit
+159,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-11-07,223.65,debit
+160,632,,,bank,General Merchandise,2016-07-14,32.94,debit
+161,632,,,bank,Restaurants/Dining,2016-07-14,11.15,debit
+162,7807,Boris,Tsibelman,bank,Transfers,2016-10-24,100.0,debit
+163,632,,,creditCard,General Merchandise,2016-07-13,131.39,debit
+164,7807,Boris,Tsibelman,bank,Transfers,2016-10-27,100.0,debit
+165,2360,,,creditCard,Restaurants/Dining,2017-01-12,11.29,debit
+166,7807,Boris,Tsibelman,bank,Transfers,2016-10-31,100.0,credit
+167,8796,skye,lowry,bank,Restaurants,2017-01-29,42.0,debit
+168,70,Zachary,Schrimsher,creditCard,Restaurants/Dining,2016-07-21,6.17,debit
+169,530,Pam,Jue,creditCard,Electronics/General Merchandise,2017-02-23,740.0,debit
+170,530,Pam,Jue,creditCard,Travel,2017-02-21,11.84,debit
+171,7807,Boris,Tsibelman,bank,Transfers,2016-10-31,100.0,debit
+172,7807,Boris,Tsibelman,bank,Transfers,2016-11-02,100.0,credit
+173,7807,Boris,Tsibelman,bank,Transfers,2016-11-07,100.0,credit
+174,7807,Boris,Tsibelman,bank,Transfers,2016-12-02,100.0,credit
+175,7586,Carla,Saavedra,creditCard,Uncategorized,2017-03-02,132.5,debit
+176,7807,Boris,Tsibelman,bank,Transfers,2016-12-05,100.0,debit
+177,7807,Boris,Tsibelman,bank,Transfers,2016-12-15,100.0,debit
+178,7807,Boris,Tsibelman,bank,Transfers,2016-12-29,100.0,credit
+179,7807,Boris,Tsibelman,bank,Transfers,2017-02-27,100.0,credit
+180,7807,Boris,Tsibelman,bank,Transfers,2016-09-07,100.0,debit
+181,7807,Boris,Tsibelman,bank,Transfers,2016-08-15,50.0,credit
+182,106,Roger,Ehrenberg,creditCard,Healthcare/Medical,2016-11-30,162.2,debit
+183,7807,Boris,Tsibelman,bank,Transfers,2016-08-15,50.0,debit
+184,2242,,,bank,Transfers,2016-08-15,500.0,debit
+185,7807,Boris,Tsibelman,bank,Transfers,2016-12-16,50.0,credit
+186,7807,Boris,Tsibelman,bank,Transfers,2017-01-04,50.0,credit
+187,1158,,,bank,Savings,2017-02-14,0.8,credit
+188,7807,Boris,Tsibelman,bank,Transfers,2017-01-04,50.0,credit
+189,7807,Boris,Tsibelman,bank,Transfers,2017-03-20,38.0,debit
+190,7807,Boris,Tsibelman,bank,Transfers,2016-10-21,20.0,credit
+191,7807,Boris,Tsibelman,bank,Transfers,2016-10-21,20.0,debit
+192,7807,Boris,Tsibelman,bank,Transfers,2017-01-03,20.0,credit
+193,1158,,,bank,General Merchandise,2017-02-14,3.61,debit
+194,7807,Boris,Tsibelman,bank,Transfers,2017-01-04,20.0,credit
+195,8796,skye,lowry,bank,Groceries,2017-01-19,75.58,debit
+196,70,Zachary,Schrimsher,bank,Credit Card Payments,2016-11-01,95.0,debit
+197,1158,,,bank,ATM/Cash Withdrawals,2017-02-14,20.0,debit
+198,7807,Boris,Tsibelman,bank,Transfers,2017-01-04,20.0,debit
+199,2579,Hayden,Lanham,creditCard,Groceries,2017-03-08,5.49,debit
+200,1158,,,bank,Transfers,2016-07-05,0.01,debit
+201,7857,Soumeya,Benghanem,creditCard,Restaurants/Dining,2016-12-03,6.36,debit
+202,7807,Boris,Tsibelman,bank,Transfers,2017-01-13,20.0,credit
+203,7807,Boris,Tsibelman,bank,Transfers,2017-01-13,20.0,debit
+204,7807,Boris,Tsibelman,bank,Transfers,2016-08-17,400.0,credit
+205,7586,Carla,Saavedra,creditCard,Uncategorized,2016-09-23,81.87,debit
+206,7807,Boris,Tsibelman,bank,Transfers,2016-08-24,400.0,debit
+207,7807,Boris,Tsibelman,bank,Transfers,2016-08-24,400.0,credit
+208,7807,Boris,Tsibelman,bank,Transfers,2016-08-26,400.0,debit
+209,2242,,,bank,Groceries,2016-08-08,11.69,debit
+210,7807,Boris,Tsibelman,bank,Transfers,2016-10-12,400.0,credit
+211,7807,Boris,Tsibelman,bank,Transfers,2016-10-17,400.0,debit
+212,7807,Boris,Tsibelman,bank,Transfers,2016-10-17,400.0,credit
+213,32,Tom,Ryan,creditCard,Uncategorized,2016-05-15,85.81,debit
+214,7807,Boris,Tsibelman,bank,Transfers,2016-11-07,400.0,debit
+215,8338,Victor,Lacayo,bank,Other Expenses,2016-10-28,11.68,debit
+216,8338,Victor,Lacayo,bank,Service Charges/Fees,2016-10-28,0.12,debit
+217,8061,Megan,Killion,creditCard,Online Services,2016-12-02,26.56,debit
+218,7807,Boris,Tsibelman,bank,Transfers,2016-12-20,400.0,debit
+219,7807,Boris,Tsibelman,bank,Transfers,2016-12-20,400.0,credit
+220,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-10-27,224.25,debit
+221,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-10-27,224.25,debit
+222,7807,Boris,Tsibelman,bank,Transfers,2016-12-27,400.0,debit
+223,2662,Keef,,bank,Groceries,2016-12-18,14.42,debit
+224,2098,Andy,Roy,bank,Groceries,2017-01-17,147.38,debit
+225,7807,Boris,Tsibelman,bank,Transfers,2017-01-04,400.0,credit
+226,7807,Boris,Tsibelman,bank,Transfers,2017-01-10,400.0,debit
+227,106,Roger,Ehrenberg,creditCard,Uncategorized,2016-11-29,20.0,debit
+228,206,Daniel,McAuley,bank,Uncategorized,2017-01-10,73.19,credit
+229,1245,,,bank,Gasoline/Fuel,2016-06-09,32.77,debit
+230,7807,Boris,Tsibelman,bank,Transfers,2017-03-20,400.0,debit
+231,8796,skye,lowry,bank,Utilities,2017-01-11,73.49,debit
+232,7807,Boris,Tsibelman,bank,Transfers,2016-08-03,400.0,credit
+233,7807,Boris,Tsibelman,bank,Transfers,2016-08-04,400.0,debit
+234,7807,Boris,Tsibelman,bank,Transfers,2016-08-24,400.0,credit
+235,7807,Boris,Tsibelman,bank,Transfers,2016-11-07,400.0,credit
+236,1944,Jon,Phillips,bank,Groceries,2016-08-15,5.16,debit
+237,32,Tom,Ryan,creditCard,Groceries,2016-05-09,152.48,debit
+238,7586,Carla,Saavedra,creditCard,Groceries,2016-08-10,70.47,debit
+239,8257,Robert,Miles,bank,Online Services,2016-10-31,3.06,debit
+240,7807,Boris,Tsibelman,bank,Transfers,2016-11-10,400.0,debit
+241,7807,Boris,Tsibelman,bank,Transfers,2016-11-09,400.0,credit
+242,7807,Boris,Tsibelman,bank,Transfers,2016-11-10,400.0,debit
+243,7807,Boris,Tsibelman,bank,Transfers,2017-01-10,400.0,credit
+244,7807,Boris,Tsibelman,bank,Transfers,2017-01-11,400.0,credit
+245,106,Roger,Ehrenberg,creditCard,Groceries,2016-11-28,170.98,debit
+246,108,Cassie,Herd,bank,Loans,2017-03-16,88.52,debit
+247,108,Cassie,Herd,bank,Utilities,2017-03-16,36.43,debit
+248,108,Cassie,Herd,bank,Salary/Regular Income,2017-03-15,1572.2,credit
+249,530,Pam,Jue,creditCard,Travel,2017-02-24,5.07,debit
+250,7807,Boris,Tsibelman,bank,Credit Card Payments,2016-11-10,1.6,debit
+251,7807,Boris,Tsibelman,bank,Transfers,2017-01-10,400.0,debit
+252,8796,skye,lowry,bank,Transfers,2017-01-07,200.0,credit
+253,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2017-01-03,217.48,debit
+254,2230,Jeremy,Anderson-Berg,bank,Transfers,2016-08-22,1000.0,debit
+255,106,Roger,Ehrenberg,creditCard,Online Services,2016-11-27,75.57,debit
+256,458,Jared,Alexander,creditCard,Restaurants,2017-03-09,19.22,debit
+257,458,Jared,Alexander,creditCard,Uncategorized,2017-03-07,30.0,debit
+258,458,Jared,Alexander,creditCard,Groceries,2017-03-07,5.29,debit
+259,2098,Andy,Roy,bank,General Merchandise,2017-01-23,24.46,debit
+260,2360,,,bank,Uncategorized,2017-01-03,5.0,debit
+261,7807,Boris,Tsibelman,bank,Transfers,2017-01-18,400.0,credit
+262,2098,Andy,Roy,bank,General Merchandise,2017-01-23,4.49,debit
+263,7586,Carla,Saavedra,creditCard,Personal Care,2016-10-29,120.42,debit
+264,7807,Boris,Tsibelman,bank,Transfers,2017-01-17,400.0,debit
+265,7807,Boris,Tsibelman,bank,Transfers,2016-08-10,400.0,credit
+266,7807,Boris,Tsibelman,bank,Credit Card Payments,2016-08-04,400.0,debit
+267,7807,Boris,Tsibelman,bank,Transfers,2016-09-28,400.0,credit
+268,8796,skye,lowry,bank,Transfers,2017-01-01,500.0,credit
+269,7807,Boris,Tsibelman,creditCard,Home Maintenance,2016-10-03,400.0,debit
+270,8688,P,vantonder,creditCard,Clothing/Shoes,2017-02-03,51.5,debit
+271,7807,Boris,Tsibelman,bank,Transfers,2017-03-08,400.0,credit
+272,2662,Keef,,bank,Restaurants/Dining,2017-01-18,11.23,debit
+273,8796,skye,lowry,bank,Uncategorized,2016-12-31,0.52,debit
+274,7807,Boris,Tsibelman,bank,Transfers,2016-08-04,2000.0,credit
+275,6,Rob,Guilfoyle,creditCard,Uncategorized,2016-11-21,10.0,debit
+276,7807,Boris,Tsibelman,bank,Transfers,2016-08-04,2000.0,debit
+277,7807,Boris,Tsibelman,bank,Transfers,2016-08-08,2000.0,credit
+278,7807,Boris,Tsibelman,bank,Transfers,2016-08-11,2000.0,debit
+279,106,Roger,Ehrenberg,creditCard,Restaurants/Dining,2016-11-26,92.4,debit
+280,7807,Boris,Tsibelman,bank,Transfers,2016-08-15,2000.0,credit
+281,7807,Boris,Tsibelman,bank,Transfers,2016-08-15,2000.0,debit
+282,7807,Boris,Tsibelman,bank,Transfers,2016-09-26,2000.0,credit
+283,7807,Boris,Tsibelman,bank,Transfers,2016-10-03,2000.0,credit
+284,7807,Boris,Tsibelman,bank,Transfers,2016-10-17,2000.0,credit
+285,7807,Boris,Tsibelman,bank,Transfers,2016-12-02,2000.0,credit
+286,7807,Boris,Tsibelman,bank,Transfers,2016-11-15,2000.0,credit
+287,32,Tom,Ryan,creditCard,Restaurants/Dining,2016-04-29,6.75,debit
+288,108,Cassie,Herd,bank,Transfers,2017-03-14,1.99,debit
+289,108,Cassie,Herd,bank,Automotive/Fuel,2017-03-13,7.36,debit
+290,108,Cassie,Herd,bank,Deposits,2017-03-13,580.0,credit
+291,458,Jared,Alexander,creditCard,Restaurants,2017-03-08,19.86,debit
+292,6,Rob,Guilfoyle,bank,Uncategorized,2017-02-14,3293.65,debit
+293,458,Jared,Alexander,creditCard,Restaurants,2017-03-06,2.0,debit
+294,108,Cassie,Herd,bank,Restaurants,2017-03-13,9.61,debit
+295,2242,,,bank,Transfers,2016-07-11,1435.0,debit
+296,7807,Boris,Tsibelman,bank,Transfers,2016-08-04,5000.0,credit
+297,7807,Boris,Tsibelman,bank,Transfers,2016-08-15,5000.0,credit
+298,7807,Boris,Tsibelman,bank,Transfers,2016-08-11,5000.0,debit
+299,2662,Keef,,bank,Education,2016-12-17,9.8,debit
+300,206,Daniel,McAuley,creditCard,Service Charges/Fees,2016-07-26,5.0,debit
+301,8338,Victor,Lacayo,bank,Transfers,2016-10-26,1000.0,credit
+302,108,Cassie,Herd,bank,Automotive/Fuel,2017-03-11,11.13,debit
+303,2579,Hayden,Lanham,creditCard,Service Charges/Fees,2016-11-06,69.23,debit
+304,7807,Boris,Tsibelman,bank,Transfers,2016-08-18,5000.0,credit
+305,7586,Carla,Saavedra,bank,Online Services,2016-08-22,25.0,debit
+306,7807,Boris,Tsibelman,bank,Transfers,2016-08-15,5000.0,debit
+307,7807,Boris,Tsibelman,bank,Transfers,2016-08-24,5000.0,credit
+308,108,Cassie,Herd,bank,Uncategorized,2017-03-11,18.42,debit
+309,458,Jared,Alexander,creditCard,Restaurants,2017-02-23,20.53,debit
+310,108,Cassie,Herd,bank,Insurance,2017-03-01,110.15,debit
+311,458,Jared,Alexander,creditCard,Services/Supplies,2017-02-23,313.95,debit
+312,108,Cassie,Herd,bank,Transfers,2017-03-01,9.99,debit
+313,8688,P,vantonder,creditCard,Travel,2017-01-29,18.0,debit
+314,7807,Boris,Tsibelman,bank,Transfers,2016-08-18,5000.0,debit
+315,7807,Boris,Tsibelman,bank,Transfers,2016-09-02,5000.0,credit
+316,7807,Boris,Tsibelman,bank,Transfers,2016-09-02,5000.0,debit
+317,8796,skye,lowry,bank,Interest Income,2017-03-10,229.31,credit
+318,106,Roger,Ehrenberg,creditCard,Travel,2016-11-24,175.01,debit
+319,2662,Keef,,bank,Uncategorized,2016-09-14,11.43,debit
+320,8796,skye,lowry,creditCard,Restaurants,2017-01-24,5.5,debit
+321,7807,Boris,Tsibelman,bank,Transfers,2016-09-02,5000.0,credit
+322,2098,Andy,Roy,bank,Groceries,2017-01-23,134.28,debit
+323,7807,Boris,Tsibelman,bank,Transfers,2016-09-08,5000.0,credit
+324,7807,Boris,Tsibelman,bank,Transfers,2016-09-06,5000.0,debit
+325,7807,Boris,Tsibelman,bank,Transfers,2016-09-13,5000.0,credit
+326,2579,Hayden,Lanham,creditCard,Gasoline/Fuel,2016-09-22,15.0,debit
+327,7807,Boris,Tsibelman,bank,Transfers,2016-09-29,5000.0,credit
+328,8061,Megan,Killion,investment,Investment Income,2016-12-07,59.87,credit
+329,7807,Boris,Tsibelman,bank,Transfers,2016-09-29,5000.0,debit
+330,1158,,,bank,Deposits,2016-07-01,0.01,credit
+331,7807,Boris,Tsibelman,bank,Transfers,2016-10-03,5000.0,credit
+332,7807,Boris,Tsibelman,bank,Transfers,2016-10-21,5000.0,credit
+333,7586,Carla,Saavedra,creditCard,Uncategorized,2016-12-12,3.0,debit
+334,7807,Boris,Tsibelman,bank,Transfers,2016-10-17,5000.0,debit
+335,32,Tom,Ryan,creditCard,Automotive Expenses,2016-04-10,610.34,debit
+336,7807,Boris,Tsibelman,bank,Transfers,2016-10-21,5000.0,credit
+337,2360,,,bank,Interest,2017-01-24,0.61,credit
+338,632,,,creditCard,Travel,2016-07-13,6.55,debit
+339,1944,Jon,Phillips,creditCard,Entertainment,2016-08-14,9.99,debit
+340,1995,Eda,Rodriguez,bank,Groceries,2016-09-19,6.99,debit
+341,2579,Hayden,Lanham,creditCard,Travel,2016-08-14,1.0,debit
+342,7807,Boris,Tsibelman,bank,Transfers,2016-10-21,5000.0,debit
+343,7807,Boris,Tsibelman,bank,Transfers,2016-11-09,5000.0,credit
+344,7586,Carla,Saavedra,creditCard,Uncategorized,2016-12-16,3.0,debit
+345,7807,Boris,Tsibelman,bank,Transfers,2016-11-09,5000.0,debit
+346,7668,Matt,Krueger,creditCard,General Merchandise,2016-10-09,15.0,debit
+347,7807,Boris,Tsibelman,bank,Transfers,2016-11-14,5000.0,debit
+348,2662,Keef,,bank,Interest,2016-10-31,0.03,credit
+349,7807,Boris,Tsibelman,bank,Transfers,2016-11-17,5000.0,credit
+350,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-10-04,224.57,debit
+351,7807,Boris,Tsibelman,bank,Transfers,2016-11-17,5000.0,debit
+352,7807,Boris,Tsibelman,bank,Transfers,2016-11-18,5000.0,credit
+353,458,Jared,Alexander,creditCard,Uncategorized,2017-02-22,5.5,debit
+354,458,Jared,Alexander,creditCard,Restaurants,2017-02-23,20.42,debit
+355,7807,Boris,Tsibelman,bank,Transfers,2016-11-21,5000.0,credit
+356,7807,Boris,Tsibelman,bank,Transfers,2016-11-21,5000.0,debit
+357,458,Jared,Alexander,creditCard,Restaurants,2017-03-04,7.63,debit
+358,7807,Boris,Tsibelman,bank,Transfers,2016-12-01,5000.0,credit
+359,8338,Victor,Lacayo,bank,General Merchandise,2016-12-27,12.49,debit
+360,7807,Boris,Tsibelman,bank,Transfers,2016-12-05,5000.0,credit
+361,7807,Boris,Tsibelman,bank,Transfers,2016-12-14,5000.0,debit
+362,7807,Boris,Tsibelman,bank,Transfers,2016-12-15,5000.0,debit
+363,8338,Victor,Lacayo,bank,Investment Income,2016-12-30,0.01,credit
+364,2662,Keef,,bank,Travel,2017-01-17,3.75,debit
+365,7807,Boris,Tsibelman,bank,Transfers,2016-11-25,5000.0,credit
+366,8338,Victor,Lacayo,bank,General Merchandise,2016-12-27,5.22,debit
+367,8338,Victor,Lacayo,bank,Service Charges/Fees,2016-12-27,0.13,debit
+368,7807,Boris,Tsibelman,bank,Transfers,2016-12-19,5000.0,credit
+369,641,Sara,Macclary,bank,Electronics,2016-09-07,20.0,debit
+370,108,Cassie,Herd,bank,Cable/Satellite/Telecom,2017-03-09,18.07,debit
+371,2579,Hayden,Lanham,creditCard,Restaurants/Dining,2016-07-20,16.36,debit
+372,7807,Boris,Tsibelman,bank,Deposits,2016-08-23,5000.0,credit
+373,7807,Boris,Tsibelman,bank,Transfers,2016-08-24,5000.0,debit
+374,7807,Boris,Tsibelman,bank,Transfers,2016-09-28,5000.0,credit
+375,7807,Boris,Tsibelman,bank,Deposits,2016-10-14,5000.0,credit
+376,8607,Michael,Greene,creditCard,Restaurants/Dining,2016-12-22,66.0,debit
+377,108,Cassie,Herd,bank,Check Payment,2017-03-08,10.0,debit
+378,108,Cassie,Herd,bank,Restaurants,2017-03-08,8.51,debit
+379,7807,Boris,Tsibelman,bank,Transfers,2016-12-16,5000.0,credit
+380,7807,Boris,Tsibelman,bank,Transfers,2016-12-21,5000.0,credit
+381,2242,,,bank,Transfers,2016-07-11,1435.0,credit
+382,7807,Boris,Tsibelman,bank,Credit Card Payments,2016-12-14,5000.0,debit
+383,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-10-04,202.38,debit
+384,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2017-01-03,218.33,debit
+385,8338,Victor,Lacayo,bank,Transfers,2017-01-04,60.0,debit
+386,8338,Victor,Lacayo,bank,Loans,2017-01-03,4.45,debit
+387,8338,Victor,Lacayo,bank,Transfers,2017-01-03,260.0,credit
+388,458,Jared,Alexander,creditCard,Travel,2017-03-02,22.0,debit
+389,458,Jared,Alexander,creditCard,Travel,2017-02-28,41.2,debit
+390,458,Jared,Alexander,creditCard,Uncategorized,2017-02-28,176.2,debit
+391,7807,Boris,Tsibelman,bank,Transfers,2016-08-18,200.0,debit
+392,7807,Boris,Tsibelman,bank,Transfers,2016-10-20,200.0,credit
+393,7807,Boris,Tsibelman,bank,Transfers,2016-10-20,200.0,debit
+394,8688,P,vantonder,creditCard,Telephone Services,2016-12-13,50.0,debit
+395,1158,,,bank,Transfers,2016-06-28,0.37,debit
+396,7807,Boris,Tsibelman,bank,Transfers,2016-11-17,200.0,credit
+397,7807,Boris,Tsibelman,bank,Transfers,2016-11-17,200.0,debit
+398,2098,Andy,Roy,bank,Groceries,2017-01-09,112.3,debit
+399,2662,Keef,,bank,Online Services,2016-08-07,6.42,debit
+400,106,Roger,Ehrenberg,creditCard,Travel,2016-11-23,9.86,debit
+401,7807,Boris,Tsibelman,bank,Transfers,2016-12-05,200.0,credit
+402,7807,Boris,Tsibelman,bank,Transfers,2016-12-05,200.0,debit
+403,7807,Boris,Tsibelman,bank,Transfers,2016-12-07,200.0,credit
+404,7807,Boris,Tsibelman,bank,Transfers,2016-12-12,200.0,credit
+405,7807,Boris,Tsibelman,bank,Transfers,2016-12-28,200.0,debit
+406,2242,,,bank,Transfers,2016-07-11,80.27,debit
+407,2242,,,bank,Restaurants/Dining,2016-07-08,15.13,debit
+408,7807,Boris,Tsibelman,bank,Transfers,2017-03-20,200.0,credit
+409,2098,Andy,Roy,bank,Groceries,2017-01-09,61.34,debit
+410,2098,Andy,Roy,bank,Travel,2017-01-09,25.0,debit
+411,7807,Boris,Tsibelman,bank,Transfers,2017-03-20,200.0,debit
+412,7807,Boris,Tsibelman,bank,Transfers,2017-01-05,200.0,debit
+413,7807,Boris,Tsibelman,bank,Transfers,2016-08-15,3000.0,credit
+414,7807,Boris,Tsibelman,bank,Transfers,2016-08-15,3000.0,debit
+415,7807,Boris,Tsibelman,bank,Transfers,2016-08-24,3000.0,credit
+416,7807,Boris,Tsibelman,bank,Transfers,2016-08-24,3000.0,debit
+417,8796,skye,lowry,creditCard,Credit Card Payments,2017-02-07,171.2,credit
+418,7807,Boris,Tsibelman,bank,Transfers,2016-11-04,3000.0,credit
+419,1158,,,bank,Transfers,2016-06-21,12.0,debit
+420,7807,Boris,Tsibelman,bank,Transfers,2016-11-10,3000.0,debit
+421,2662,Keef,,bank,Groceries,2017-01-01,7.67,debit
+422,7807,Boris,Tsibelman,bank,Transfers,2016-11-10,3000.0,credit
+423,2098,Andy,Roy,bank,Utilities,2016-11-01,227.33,debit
+424,7807,Boris,Tsibelman,bank,Transfers,2016-11-10,3000.0,debit
+425,7807,Boris,Tsibelman,bank,Transfers,2017-01-03,3000.0,credit
+426,7807,Boris,Tsibelman,bank,Transfers,2016-12-30,3000.0,debit
+427,7807,Boris,Tsibelman,bank,Transfers,2017-01-04,3000.0,credit
+428,7807,Boris,Tsibelman,bank,Transfers,2017-01-03,3000.0,debit
+429,7807,Boris,Tsibelman,bank,Online Services,2016-10-03,15.0,debit
+430,7807,Boris,Tsibelman,bank,Transfers,2016-08-18,4000.0,credit
+431,7807,Boris,Tsibelman,bank,Transfers,2016-08-24,4000.0,credit
+432,7807,Boris,Tsibelman,bank,Transfers,2016-08-24,4000.0,debit
+433,632,,,creditCard,Travel,2016-07-13,9.23,debit
+434,7807,Boris,Tsibelman,bank,Transfers,2016-10-11,4000.0,credit
+435,32,Tom,Ryan,creditCard,Groceries,2016-10-03,5.49,debit
+436,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-12-16,216.0,debit
+437,7807,Boris,Tsibelman,bank,Transfers,2016-11-10,4000.0,debit
+438,7807,Boris,Tsibelman,bank,Transfers,2016-11-10,4000.0,credit
+439,7807,Boris,Tsibelman,bank,Transfers,2016-11-10,4000.0,debit
+440,7807,Boris,Tsibelman,bank,Transfers,2016-11-14,4000.0,credit
+441,32,Tom,Ryan,creditCard,Restaurants/Dining,2016-10-10,56.0,debit
+442,7807,Boris,Tsibelman,bank,Transfers,2016-11-14,4000.0,debit
+443,7807,Boris,Tsibelman,bank,Transfers,2016-11-17,4000.0,debit
+444,7807,Boris,Tsibelman,bank,Transfers,2016-12-16,4000.0,credit
+445,9058,Ravel,Antunes,creditCard,Services/Supplies,2017-03-09,10.0,debit
+446,106,Roger,Ehrenberg,creditCard,Entertainment,2016-11-20,300.0,debit
+447,7586,Carla,Saavedra,creditCard,Groceries,2016-07-30,64.0,debit
+448,7807,Boris,Tsibelman,bank,Transfers,2016-12-16,4000.0,debit
+449,7807,Boris,Tsibelman,bank,Transfers,2016-09-21,4000.0,debit
+450,7807,Boris,Tsibelman,creditCard,Credit Card Payments,2016-12-02,4000.0,credit
+451,7807,Boris,Tsibelman,bank,Credit Card Payments,2016-12-02,4000.0,debit
+452,7807,Boris,Tsibelman,bank,Transfers,2016-12-16,4000.0,credit
+453,7807,Boris,Tsibelman,bank,Transfers,2016-12-23,4000.0,debit
+454,2098,Andy,Roy,bank,Groceries,2017-01-09,35.14,debit
+455,8338,Victor,Lacayo,bank,Transfers,2016-12-15,500.0,credit
+456,8338,Victor,Lacayo,bank,Other Expenses,2016-12-08,0.43,debit
+457,7807,Boris,Tsibelman,creditCard,Credit Card Payments,2017-01-09,4000.0,credit
+458,108,Cassie,Herd,bank,Entertainment/Recreation,2017-03-08,8.99,debit
+459,2098,Andy,Roy,bank,Transfers,2017-01-19,200.0,debit
+460,7807,Boris,Tsibelman,bank,Transfers,2017-01-11,3447.64,debit
+461,32,Tom,Ryan,bank,Credit Card Payments,2016-12-05,3335.9,debit
+462,2579,Hayden,Lanham,creditCard,Groceries,2017-03-12,3.5,debit
+463,2098,Andy,Roy,bank,General Merchandise,2016-10-21,57.0,debit
+464,7807,Boris,Tsibelman,bank,Credit Card Payments,2017-01-09,4000.0,debit
+465,9058,Ravel,Antunes,creditCard,Restaurants,2017-03-15,25.0,debit
+466,9058,Ravel,Antunes,creditCard,Restaurants,2017-03-15,14.4,debit
+467,7807,Boris,Tsibelman,bank,Transfers,2016-11-17,4000.0,credit
+468,7807,Boris,Tsibelman,bank,Credit Card Payments,2016-11-21,4000.0,debit
+469,7807,Boris,Tsibelman,bank,Transfers,2016-10-13,1500.0,credit
+470,1158,,,bank,Service Charges/Fees,2016-06-20,22.38,debit
+471,9058,Ravel,Antunes,bank,Deposits,2017-03-09,600.0,credit
+472,456,Jacquelyn,Brioux,creditCard,Travel,2017-03-11,47.62,debit
+473,108,Cassie,Herd,bank,Restaurants,2017-03-07,10.91,debit
+474,458,Jared,Alexander,creditCard,Restaurants,2017-03-01,10.28,debit
+475,106,Roger,Ehrenberg,creditCard,Entertainment,2016-11-21,19.04,debit
+476,6,Rob,Guilfoyle,creditCard,Restaurants/Dining,2016-12-08,20.15,debit
+477,458,Jared,Alexander,creditCard,Restaurants,2017-03-01,9.69,debit
+478,458,Jared,Alexander,creditCard,Restaurants,2017-03-01,10.01,debit
+479,458,Jared,Alexander,creditCard,Restaurants,2017-03-01,1.69,debit
+480,9058,Ravel,Antunes,creditCard,Home Improvement,2017-03-13,37.28,debit
+481,108,Cassie,Herd,bank,Salary/Regular Income,2017-02-28,1572.2,credit
+482,458,Jared,Alexander,creditCard,Cable/Satellite/Telecom,2017-02-28,11.0,debit
+483,458,Jared,Alexander,creditCard,Personal/Family,2017-02-28,11.72,debit
+484,458,Jared,Alexander,creditCard,Restaurants,2017-02-28,2.0,debit
+485,8688,P,vantonder,creditCard,Restaurants/Dining,2017-01-20,8.4,debit
+486,458,Jared,Alexander,creditCard,Groceries,2017-02-28,18.0,debit
+487,2579,Hayden,Lanham,creditCard,Entertainment,2016-09-02,4.99,debit
+488,7807,Boris,Tsibelman,bank,Transfers,2016-10-17,1500.0,debit
+489,7807,Boris,Tsibelman,bank,Transfers,2016-10-31,1500.0,credit
+490,7807,Boris,Tsibelman,bank,Transfers,2016-11-15,1500.0,debit
+491,7807,Boris,Tsibelman,bank,Transfers,2016-12-16,1500.0,credit
+492,106,Roger,Ehrenberg,creditCard,Telephone Services,2016-11-21,103.69,debit
+493,32,Tom,Ryan,creditCard,Service Charges/Fees,2017-01-13,1.62,debit
+494,108,Cassie,Herd,bank,Healthcare/Medical,2017-02-25,50.0,debit
+495,458,Jared,Alexander,creditCard,Uncategorized,2017-02-28,9.54,debit
+496,108,Cassie,Herd,bank,Loans,2017-03-06,118.52,debit
+497,458,Jared,Alexander,creditCard,Restaurants,2017-02-28,4.24,debit
+498,458,Jared,Alexander,creditCard,Restaurants,2017-02-28,11.39,debit
+499,458,Jared,Alexander,creditCard,Postage/Shipping,2017-02-27,7.6,debit
+500,8257,Robert,Miles,creditCard,Child/Dependent Expenses,2016-12-15,20.0,debit
+501,108,Cassie,Herd,bank,General Merchandise,2016-05-02,4.68,debit
+502,458,Jared,Alexander,creditCard,Restaurants,2017-02-27,6.24,debit
+503,106,Roger,Ehrenberg,creditCard,Travel,2016-11-20,14.2,debit
+504,458,Jared,Alexander,creditCard,Cable/Satellite/Telecom,2017-02-26,300.95,debit
+505,108,Cassie,Herd,bank,General Merchandise,2016-08-01,78.94,debit
+506,8796,skye,lowry,bank,Transfers,2017-03-17,1.5,debit
+507,108,Cassie,Herd,bank,General Merchandise,2017-02-03,4.39,debit
+508,458,Jared,Alexander,creditCard,Restaurants,2017-02-26,78.09,debit
+509,458,Jared,Alexander,creditCard,Home Improvement,2017-02-26,3.15,debit
+510,1944,Jon,Phillips,creditCard,Restaurants/Dining,2016-08-12,32.4,debit
+511,1944,Jon,Phillips,creditCard,Uncategorized,2016-08-11,93.09,debit
+512,458,Jared,Alexander,creditCard,Uncategorized,2017-02-26,52.97,credit
+513,9058,Ravel,Antunes,creditCard,Personal/Family,2017-03-09,22.0,debit
+514,458,Jared,Alexander,creditCard,Groceries,2017-02-25,30.02,debit
+515,108,Cassie,Herd,creditCard,Uncategorized,2016-12-19,11.05,debit
+516,2098,Andy,Roy,bank,Restaurants/Dining,2016-11-01,36.0,debit
+517,108,Cassie,Herd,bank,Home Maintenance,2016-10-29,8.51,debit
+518,32,Tom,Ryan,creditCard,Travel,2016-07-20,346.0,debit
+519,8796,skye,lowry,bank,Uncategorized,2017-03-10,8.07,debit
+520,458,Jared,Alexander,creditCard,Restaurants,2017-02-24,9.37,debit
+521,1158,,,bank,Transfers,2016-06-03,0.31,debit
+522,108,Cassie,Herd,bank,General Merchandise,2016-07-25,4.73,debit
+523,1158,,,bank,Deposits,2016-05-25,0.21,credit
+524,1158,,,bank,Transfers,2016-05-24,0.21,debit
+525,108,Cassie,Herd,bank,Restaurants/Dining,2016-08-31,10.49,debit
+526,108,Cassie,Herd,bank,Loans,2016-06-30,279.16,debit
+527,458,Jared,Alexander,creditCard,Restaurants,2017-02-24,7.69,debit
+528,7807,Boris,Tsibelman,bank,Transfers,2017-02-28,1500.0,credit
+529,108,Cassie,Herd,bank,Restaurants/Dining,2016-06-04,10.87,debit
+530,108,Cassie,Herd,bank,General Merchandise,2017-01-23,8.01,debit
+531,458,Jared,Alexander,bank,Credit Card Payments,2016-06-17,455.07,debit
+532,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-08-31,5.77,debit
+533,108,Cassie,Herd,bank,Automotive Expenses,2016-06-17,10.77,debit
+534,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-07-01,2.0,debit
+535,458,Jared,Alexander,bank,Online Services,2016-06-20,68.5,debit
+536,8796,skye,lowry,bank,Automotive/Fuel,2017-03-06,2.6,debit
+537,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-08-25,2.0,debit
+538,108,Cassie,Herd,bank,General Merchandise,2016-11-10,112.25,debit
+539,458,Jared,Alexander,creditCard,Uncategorized,2016-07-22,11.36,debit
+540,458,Jared,Alexander,creditCard,Restaurants/Dining,2017-02-13,14.1,debit
+541,2579,Hayden,Lanham,creditCard,Travel,2016-11-22,1.0,debit
+542,106,Roger,Ehrenberg,creditCard,Automotive Expenses,2016-11-19,21.78,debit
+543,70,Zachary,Schrimsher,creditCard,Groceries,2017-02-27,125.94,debit
+544,32,Tom,Ryan,creditCard,Restaurants/Dining,2016-08-25,47.28,debit
+545,1158,,,bank,Deposits,2016-05-18,0.17,credit
+546,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-09-12,12.47,debit
+547,1158,,,bank,Uncategorized,2016-05-04,1.83,debit
+548,1158,,,bank,Deposits,2016-05-05,0.17,credit
+549,1158,,,bank,Transfers,2016-05-04,0.17,debit
+550,108,Cassie,Herd,bank,Checks,2016-09-30,189.0,debit
+551,32,Tom,Ryan,creditCard,Gasoline/Fuel,2016-08-08,34.92,debit
+552,108,Cassie,Herd,bank,Entertainment,2016-09-30,7.99,debit
+553,2579,Hayden,Lanham,creditCard,Gasoline/Fuel,2016-09-04,1.8,debit
+554,458,Jared,Alexander,creditCard,Credit Card Payments,2016-09-14,686.04,credit
+555,8796,skye,lowry,bank,Uncategorized,2017-02-21,9.59,debit
+556,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-05-27,16.96,debit
+557,2098,Andy,Roy,bank,Gasoline/Fuel,2016-12-05,26.01,debit
+558,206,Daniel,McAuley,creditCard,Entertainment,2016-12-04,4.99,debit
+559,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-12-21,11.66,debit
+560,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-08-28,20.18,debit
+561,8796,skye,lowry,bank,Transfers,2017-02-18,200.0,debit
+562,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-08-05,8.15,debit
+563,108,Cassie,Herd,bank,Transfers,2017-02-21,49.25,debit
+564,1245,,,bank,Transfers,2016-05-06,0.75,debit
+565,9058,Ravel,Antunes,bank,Uncategorized,2017-03-07,80.86,credit
+566,1245,,,creditCard,Travel,2016-05-03,7.55,debit
+567,632,,,bank,Loans,2016-07-13,162.88,debit
+568,1245,,,creditCard,Entertainment,2016-08-13,48.0,debit
+569,108,Cassie,Herd,bank,Home Improvement,2017-03-05,12.99,debit
+570,108,Cassie,Herd,bank,Uncategorized,2017-02-21,50.0,debit
+571,108,Cassie,Herd,bank,Transfers,2017-02-22,101.0,debit
+572,70,Zachary,Schrimsher,creditCard,Healthcare/Medical,2017-02-04,38.11,debit
+573,32,Tom,Ryan,creditCard,Restaurants/Dining,2017-01-22,0.95,debit
+574,2579,Hayden,Lanham,bank,Paychecks/Salary,2016-07-15,1117.19,credit
+575,7807,Boris,Tsibelman,bank,Transfers,2017-02-28,1500.0,debit
+576,9058,Ravel,Antunes,bank,Check Payment,2017-03-06,170.0,debit
+577,9058,Ravel,Antunes,bank,Interest Income,2017-02-24,0.04,credit
+578,108,Cassie,Herd,bank,Cable/Satellite/Telecom,2017-02-21,17.08,debit
+579,2579,Hayden,Lanham,creditCard,Entertainment,2016-11-17,3.99,debit
+580,7807,Boris,Tsibelman,bank,Transfers,2016-10-17,1500.0,credit
+581,7807,Boris,Tsibelman,bank,Credit Card Payments,2016-10-12,1500.0,debit
+582,7807,Boris,Tsibelman,bank,Transfers,2016-11-02,2900.0,debit
+583,108,Cassie,Herd,bank,Electronics/General Merchandise,2017-02-21,53.82,debit
+584,108,Cassie,Herd,bank,Electronics/General Merchandise,2017-02-21,8.01,debit
+585,7807,Boris,Tsibelman,bank,Online Services,2016-10-13,130.0,debit
+586,32,Tom,Ryan,creditCard,Travel,2016-07-28,26.16,debit
+587,108,Cassie,Herd,bank,General Merchandise,2016-07-24,19.99,debit
+588,108,Cassie,Herd,bank,Personal/Family,2017-03-13,26.56,debit
+589,458,Jared,Alexander,creditCard,Refunds/Adjustments,2016-10-28,7.15,credit
+590,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-12-20,11.39,debit
+591,108,Cassie,Herd,bank,Gasoline/Fuel,2016-06-20,15.59,debit
+592,2579,Hayden,Lanham,bank,Online Services,2016-09-06,8.0,debit
+593,32,Tom,Ryan,creditCard,Travel,2016-11-01,20.0,debit
+594,108,Cassie,Herd,bank,Healthcare/Medical,2016-05-17,29.14,debit
+595,108,Cassie,Herd,bank,Transfers,2016-12-09,36.43,debit
+596,8796,skye,lowry,bank,Uncategorized,2017-03-01,35.03,debit
+597,458,Jared,Alexander,creditCard,Uncategorized,2016-09-01,4.51,debit
+598,7807,Boris,Tsibelman,bank,Travel,2016-08-05,1.25,debit
+599,70,Zachary,Schrimsher,creditCard,Travel,2017-02-08,10.0,debit
+600,108,Cassie,Herd,bank,Uncategorized,2017-01-29,200.0,credit
+601,641,Sara,Macclary,bank,Travel,2016-09-15,50.23,debit
+602,2098,Andy,Roy,bank,Groceries,2016-08-16,41.8,debit
+603,108,Cassie,Herd,bank,Restaurants/Dining,2016-05-25,44.8,debit
+604,2098,Andy,Roy,bank,Gasoline/Fuel,2016-08-16,35.86,debit
+605,108,Cassie,Herd,bank,Entertainment,2016-09-14,0.99,debit
+606,108,Cassie,Herd,bank,Paychecks/Salary,2016-09-30,1616.08,credit
+607,32,Tom,Ryan,creditCard,Uncategorized,2016-08-15,60.0,debit
+608,108,Cassie,Herd,bank,Restaurants/Dining,2016-06-01,16.1,debit
+609,2579,Hayden,Lanham,bank,Gasoline/Fuel,2016-10-17,4.26,debit
+610,108,Cassie,Herd,bank,Restaurants/Dining,2016-07-12,7.63,debit
+611,9058,Ravel,Antunes,creditCard,Restaurants,2017-03-06,17.93,debit
+612,8338,Victor,Lacayo,bank,Transfers,2016-11-09,60.0,credit
+613,9058,Ravel,Antunes,creditCard,Travel,2017-03-06,177.2,debit
+614,9058,Ravel,Antunes,creditCard,Uncategorized,2017-03-05,11.58,debit
+615,108,Cassie,Herd,bank,General Merchandise,2016-07-25,4.68,debit
+616,108,Cassie,Herd,bank,Investment Income,2016-03-31,4.87,credit
+617,108,Cassie,Herd,bank,Clothing/Shoes,2016-07-04,147.89,debit
+618,458,Jared,Alexander,creditCard,Groceries,2016-09-01,29.75,debit
+619,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-05-04,5.83,debit
+620,108,Cassie,Herd,bank,General Merchandise,2016-11-07,27.12,debit
+621,108,Cassie,Herd,bank,Restaurants/Dining,2017-02-08,2.37,debit
+622,70,Zachary,Schrimsher,creditCard,Healthcare/Medical,2016-11-29,18.95,debit
+623,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-11-03,11.01,debit
+624,458,Jared,Alexander,creditCard,Credit Card Payments,2016-07-17,18.76,debit
+625,2242,,,creditCard,Entertainment,2016-07-20,36.0,debit
+626,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-05-18,2.0,debit
+627,458,Jared,Alexander,creditCard,Uncategorized,2016-12-27,649.0,debit
+628,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-11-22,2.0,debit
+629,8796,skye,lowry,bank,Uncategorized,2017-02-24,6.88,debit
+630,7807,Boris,Tsibelman,bank,Deposits,2016-08-05,2900.0,credit
+631,7807,Boris,Tsibelman,bank,Wages Paid,2016-08-05,2900.0,debit
+632,7586,Carla,Saavedra,creditCard,Travel,2016-09-29,13.16,debit
+633,7807,Boris,Tsibelman,bank,Transfers,2016-08-05,14500.0,credit
+634,7807,Boris,Tsibelman,bank,Transfers,2016-08-05,14500.0,debit
+635,2098,Andy,Roy,bank,Restaurants/Dining,2016-11-21,13.37,debit
+636,7807,Boris,Tsibelman,bank,Transfers,2016-12-30,1100.0,debit
+637,7807,Boris,Tsibelman,bank,Transfers,2017-02-21,1100.0,credit
+638,7807,Boris,Tsibelman,bank,Transfers,2016-09-01,1100.0,credit
+639,7807,Boris,Tsibelman,bank,Transfers,2016-09-06,1100.0,debit
+640,7807,Boris,Tsibelman,bank,Transfers,2016-10-03,1100.0,debit
+641,7807,Boris,Tsibelman,bank,Transfers,2016-12-29,75000.0,debit
+642,7807,Boris,Tsibelman,bank,Transfers,2016-12-22,3506.67,credit
+643,7807,Boris,Tsibelman,bank,Transfers,2016-12-22,3506.67,debit
+644,7807,Boris,Tsibelman,bank,Transfers,2016-08-08,22000.0,debit
+645,7807,Boris,Tsibelman,bank,Transfers,2016-10-12,300.0,credit
+646,2662,Keef,,bank,Charitable Giving,2016-08-22,15.0,debit
+647,7807,Boris,Tsibelman,bank,Transfers,2016-10-18,300.0,debit
+648,7807,Boris,Tsibelman,bank,Transfers,2016-10-18,300.0,credit
+649,7807,Boris,Tsibelman,bank,Transfers,2016-10-24,300.0,debit
+650,7807,Boris,Tsibelman,bank,Transfers,2016-10-24,300.0,credit
+651,7807,Boris,Tsibelman,bank,Transfers,2016-10-31,300.0,debit
+652,7807,Boris,Tsibelman,bank,Transfers,2016-10-31,300.0,credit
+653,7807,Boris,Tsibelman,bank,Transfers,2016-11-03,300.0,debit
+654,530,Pam,Jue,creditCard,Electronics/General Merchandise,2017-02-23,13.01,debit
+655,32,Tom,Ryan,creditCard,Groceries,2017-01-15,107.97,debit
+656,32,Tom,Ryan,creditCard,Groceries,2016-09-04,6.19,debit
+657,7634,Danny,Freed,creditCard,Automotive/Fuel,2017-03-11,33.62,debit
+658,458,Jared,Alexander,creditCard,General Merchandise,2016-11-22,19.63,debit
+659,8796,skye,lowry,bank,Transfers,2017-02-17,307.0,credit
+660,458,Jared,Alexander,creditCard,Credit Card Payments,2016-06-07,18.76,debit
+661,1158,,,bank,Groceries,2017-01-03,5.1,debit
+662,7807,Boris,Tsibelman,bank,Transfers,2016-11-03,300.0,credit
+663,106,Roger,Ehrenberg,creditCard,Uncategorized,2016-11-14,40.75,credit
+664,458,Jared,Alexander,creditCard,Restaurants/Dining,2017-02-02,2.0,debit
+665,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-06-01,175.78,debit
+666,9058,Ravel,Antunes,creditCard,Restaurants,2017-03-05,8.31,debit
+667,2098,Andy,Roy,bank,General Merchandise,2016-07-27,16.9,debit
+668,6,Rob,Guilfoyle,bank,Uncategorized,2016-09-30,1971.08,debit
+669,106,Roger,Ehrenberg,creditCard,Uncategorized,2016-11-13,40.75,debit
+670,2662,Keef,,bank,Clothing/Shoes,2016-12-26,22.65,debit
+671,9058,Ravel,Antunes,creditCard,Restaurants,2017-03-02,14.0,debit
+672,2579,Hayden,Lanham,creditCard,General Merchandise,2016-12-25,49.31,debit
+673,7807,Boris,Tsibelman,bank,Transfers,2016-11-07,300.0,debit
+674,2662,Keef,,bank,Groceries,2016-12-16,23.5,debit
+675,9058,Ravel,Antunes,creditCard,Restaurants,2017-03-01,17.0,debit
+676,106,Roger,Ehrenberg,creditCard,Groceries,2016-11-12,252.79,debit
+677,9058,Ravel,Antunes,creditCard,Electronics/General Merchandise,2017-02-28,27.67,debit
+678,8338,Victor,Lacayo,bank,Transfers,2016-11-07,1360.0,credit
+679,9058,Ravel,Antunes,creditCard,Restaurants,2017-02-26,8.31,debit
+680,2242,,,bank,Deposits,2016-08-29,365.0,credit
+681,1158,,,bank,Transfers,2017-01-24,9.0,credit
+682,7807,Boris,Tsibelman,bank,Transfers,2016-11-15,300.0,credit
+683,8592,Vanessa,Luis,creditCard,Groceries,2017-01-19,24.28,debit
+684,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-11-20,10.76,debit
+685,9058,Ravel,Antunes,creditCard,Restaurants,2017-02-26,25.0,debit
+686,2266,Carol,Guilfoyle,bank,Clothing/Shoes,2016-12-27,83.07,debit
+687,2266,Carol,Guilfoyle,bank,Restaurants/Dining,2016-10-07,17.57,debit
+688,108,Cassie,Herd,bank,Gasoline/Fuel,2016-07-08,11.19,debit
+689,108,Cassie,Herd,bank,General Merchandise,2016-07-23,23.84,debit
+690,2098,Andy,Roy,bank,Credit Card Payments,2016-12-23,50.0,debit
+691,108,Cassie,Herd,bank,Entertainment,2017-01-22,6.0,debit
+692,108,Cassie,Herd,bank,General Merchandise,2016-09-06,12.0,debit
+693,108,Cassie,Herd,bank,Cable/Satellite Services,2017-02-17,59.99,debit
+694,108,Cassie,Herd,bank,Credit Card Payments,2016-04-04,1336.43,debit
+695,106,Roger,Ehrenberg,creditCard,Uncategorized,2016-11-13,40.75,debit
+696,108,Cassie,Herd,bank,General Merchandise,2016-06-14,16.02,debit
+697,106,Roger,Ehrenberg,creditCard,Travel,2016-11-12,20.9,debit
+698,7807,Boris,Tsibelman,bank,Transfers,2016-11-15,300.0,debit
+699,7807,Boris,Tsibelman,bank,Transfers,2016-12-13,300.0,credit
+700,7807,Boris,Tsibelman,bank,Transfers,2016-12-13,300.0,debit
+701,32,Tom,Ryan,creditCard,Automotive Expenses,2016-06-27,2.34,debit
+702,8796,skye,lowry,bank,Salary/Regular Income,2017-02-03,1888.14,credit
+703,32,Tom,Ryan,creditCard,Groceries,2016-06-28,27.82,debit
+704,9058,Ravel,Antunes,creditCard,Uncategorized,2017-02-26,40.0,debit
+705,7807,Boris,Tsibelman,bank,Transfers,2017-01-17,300.0,credit
+706,2662,Keef,,bank,Restaurants/Dining,2017-01-05,26.1,debit
+707,7807,Boris,Tsibelman,bank,Transfers,2017-01-17,300.0,debit
+708,7807,Boris,Tsibelman,bank,Transfers,2017-01-17,300.0,credit
+709,7807,Boris,Tsibelman,bank,Transfers,2017-01-17,300.0,debit
+710,7586,Carla,Saavedra,creditCard,General Merchandise,2016-11-05,137.79,debit
+711,2266,Carol,Guilfoyle,bank,Restaurants/Dining,2016-10-07,2.13,debit
+712,108,Cassie,Herd,bank,General Merchandise,2016-04-28,19.2,debit
+713,106,Roger,Ehrenberg,creditCard,Telephone Services,2016-11-11,30.0,debit
+714,32,Tom,Ryan,creditCard,Groceries,2016-07-27,22.28,debit
+715,9058,Ravel,Antunes,creditCard,Uncategorized,2017-02-22,41.29,debit
+716,9058,Ravel,Antunes,bank,Electronics,2017-01-09,50.0,debit
+717,7807,Boris,Tsibelman,bank,Transfers,2017-02-23,300.0,credit
+718,7807,Boris,Tsibelman,bank,Transfers,2017-02-23,300.0,debit
+719,8688,P,vantonder,creditCard,Restaurants/Dining,2017-02-12,5.39,debit
+720,7807,Boris,Tsibelman,bank,Transfers,2017-03-02,300.0,credit
+721,1155,Yunsheng,Bai,bank,Rent,2017-02-28,768.18,debit
+722,2098,Andy,Roy,bank,Personal Care,2017-01-19,49.99,debit
+723,108,Cassie,Herd,bank,General Merchandise,2017-02-17,45.49,debit
+724,9093,Richard,Buchanan,bank,Other Expenses,2017-02-09,2.25,debit
+725,108,Cassie,Herd,bank,General Merchandise,2016-09-01,66.55,debit
+726,108,Cassie,Herd,bank,Utilities,2016-06-13,56.25,debit
+727,2613,,,creditCard,Gasoline/Fuel,2017-01-24,12.19,debit
+728,632,,,bank,Healthcare/Medical,2016-07-13,3.27,credit
+729,108,Cassie,Herd,bank,Healthcare/Medical,2017-02-12,100.0,debit
+730,458,Jared,Alexander,creditCard,Travel,2016-11-13,26.68,debit
+731,108,Cassie,Herd,bank,Cable/Satellite Services,2016-10-17,59.99,debit
+732,8338,Victor,Lacayo,bank,Other Expenses,2016-11-04,1.87,debit
+733,8338,Victor,Lacayo,bank,Service Charges/Fees,2016-11-04,0.02,debit
+734,108,Cassie,Herd,bank,Restaurants/Dining,2016-07-16,9.08,debit
+735,108,Cassie,Herd,bank,Uncategorized,2016-11-23,10.0,debit
+736,108,Cassie,Herd,bank,Utilities,2016-12-19,31.95,debit
+737,108,Cassie,Herd,bank,General Merchandise,2016-11-30,5.35,debit
+738,108,Cassie,Herd,bank,Transfers,2016-07-25,9.99,debit
+739,108,Cassie,Herd,bank,Electronics/General Merchandise,2017-02-21,9.41,debit
+740,108,Cassie,Herd,bank,Gasoline/Fuel,2016-11-10,15.91,debit
+741,108,Cassie,Herd,bank,General Merchandise,2016-10-05,11.31,debit
+742,8796,skye,lowry,bank,Transfers,2017-01-28,75.0,credit
+743,108,Cassie,Herd,bank,General Merchandise,2016-05-09,223.31,debit
+744,2242,,,creditCard,General Merchandise,2016-08-29,56.29,debit
+745,108,Cassie,Herd,bank,General Merchandise,2017-01-05,17.58,debit
+746,108,Cassie,Herd,bank,General Merchandise,2016-07-06,44.19,debit
+747,108,Cassie,Herd,bank,Restaurants/Dining,2016-10-09,17.29,debit
+748,106,Roger,Ehrenberg,creditCard,Entertainment,2016-11-12,14.99,debit
+749,7807,Boris,Tsibelman,bank,Transfers,2017-03-20,300.0,debit
+750,108,Cassie,Herd,bank,Paychecks/Salary,2016-05-31,1407.58,credit
+751,108,Cassie,Herd,bank,Entertainment,2017-02-05,12.97,debit
+752,108,Cassie,Herd,bank,Restaurants/Dining,2016-09-20,4.64,debit
+753,108,Cassie,Herd,bank,Loans,2016-10-17,88.52,debit
+754,2242,,,bank,Transfers,2016-07-06,250.0,debit
+755,2242,,,bank,Service Charges/Fees,2016-07-06,5.0,debit
+756,2242,,,creditCard,Credit Card Payments,2016-07-06,462.63,credit
+757,108,Cassie,Herd,bank,Healthcare/Medical,2017-01-03,8.99,debit
+758,108,Cassie,Herd,bank,Utilities,2016-07-13,95.42,debit
+759,530,Pam,Jue,creditCard,Groceries,2016-12-05,14.64,debit
+760,108,Cassie,Herd,bank,Utilities,2016-12-13,39.11,debit
+761,1158,,,bank,Savings,2016-12-28,0.02,credit
+762,108,Cassie,Herd,bank,Healthcare/Medical,2017-01-21,71.88,debit
+763,108,Cassie,Herd,bank,Loans,2016-12-16,42.7,debit
+764,108,Cassie,Herd,bank,Online Services,2016-06-04,32.97,debit
+765,108,Cassie,Herd,bank,Loans,2017-01-17,88.52,debit
+766,108,Cassie,Herd,bank,Restaurants/Dining,2016-07-09,3.78,debit
+767,108,Cassie,Herd,bank,Transfers,2016-09-23,9.99,debit
+768,108,Cassie,Herd,bank,Transfers,2016-04-19,162.51,debit
+769,108,Cassie,Herd,bank,General Merchandise,2016-07-22,9.42,debit
+770,32,Tom,Ryan,bank,Interest,2016-11-08,0.01,credit
+771,7807,Boris,Tsibelman,bank,Transfers,2017-03-21,300.0,credit
+772,1944,Jon,Phillips,bank,Restaurants/Dining,2016-08-08,11.0,debit
+773,2098,Andy,Roy,bank,Transfers,2017-01-19,200.0,credit
+774,7807,Boris,Tsibelman,bank,Transfers,2017-03-21,300.0,debit
+775,2098,Andy,Roy,bank,General Merchandise,2016-09-01,29.89,debit
+776,108,Cassie,Herd,bank,Restaurants/Dining,2016-12-23,17.58,debit
+777,108,Cassie,Herd,bank,Restaurants/Dining,2016-08-16,11.92,debit
+778,108,Cassie,Herd,bank,Insurance,2016-06-29,97.53,debit
+779,108,Cassie,Herd,bank,Restaurants/Dining,2016-04-06,7.56,debit
+780,632,,,creditCard,Travel,2016-07-11,197.6,debit
+781,632,,,creditCard,Travel,2016-07-11,197.6,debit
+782,108,Cassie,Herd,bank,Restaurants/Dining,2016-07-09,58.42,debit
+783,1245,,,creditCard,Uncategorized,2016-04-27,40.08,debit
+784,106,Roger,Ehrenberg,creditCard,Online Services,2016-11-08,98.96,debit
+785,458,Jared,Alexander,creditCard,General Merchandise,2016-07-03,74.16,debit
+786,106,Roger,Ehrenberg,creditCard,Travel,2016-11-09,81.26,debit
+787,1155,Yunsheng,Bai,bank,Restaurants,2017-02-27,36.41,debit
+788,108,Cassie,Herd,bank,Credit Card Payments,2017-01-03,115.0,debit
+789,108,Cassie,Herd,bank,Healthcare/Medical,2016-11-22,19.38,debit
+790,2266,Carol,Guilfoyle,bank,Restaurants/Dining,2016-12-09,13.73,debit
+791,108,Cassie,Herd,bank,Automotive Expenses,2016-12-01,202.52,debit
+792,108,Cassie,Herd,bank,Cable/Satellite Services,2017-01-17,59.99,debit
+793,108,Cassie,Herd,bank,Utilities,2017-01-20,94.79,debit
+794,108,Cassie,Herd,bank,General Merchandise,2016-05-02,4.73,debit
+795,108,Cassie,Herd,bank,Transfers,2016-05-11,41.39,debit
+796,108,Cassie,Herd,bank,Groceries,2016-05-19,29.17,debit
+797,108,Cassie,Herd,bank,Cable/Satellite Services,2016-12-16,59.99,debit
+798,108,Cassie,Herd,bank,General Merchandise,2016-09-28,32.0,debit
+799,108,Cassie,Herd,bank,General Merchandise,2016-06-30,5.09,debit
+800,632,,,creditCard,Uncategorized,2016-07-11,189.1,debit
+801,108,Cassie,Herd,bank,Hobbies,2017-02-08,15.98,debit
+802,108,Cassie,Herd,bank,Loans,2017-01-05,118.52,debit
+803,458,Jared,Alexander,creditCard,Restaurants/Dining,2017-01-31,7.69,debit
+804,32,Tom,Ryan,creditCard,Groceries,2016-07-04,10.69,debit
+805,108,Cassie,Herd,bank,General Merchandise,2016-12-22,3.9,debit
+806,108,Cassie,Herd,bank,Entertainment,2016-11-20,3.99,debit
+807,108,Cassie,Herd,bank,Entertainment,2016-09-19,4.95,debit
+808,108,Cassie,Herd,bank,Loans,2016-07-28,279.16,debit
+809,108,Cassie,Herd,bank,Restaurants/Dining,2016-08-22,26.18,debit
+810,108,Cassie,Herd,bank,Automotive Expenses,2016-11-01,202.52,debit
+811,2242,,,bank,Entertainment,2016-07-06,11.99,debit
+812,108,Cassie,Herd,bank,General Merchandise,2016-10-14,21.94,debit
+813,108,Cassie,Herd,bank,Groceries,2016-04-03,13.51,debit
+814,108,Cassie,Herd,bank,Transfers,2017-02-06,18.51,credit
+815,108,Cassie,Herd,bank,Restaurants/Dining,2016-05-04,12.14,debit
+816,108,Cassie,Herd,bank,Credit Card Payments,2017-02-08,1000.0,debit
+817,108,Cassie,Herd,bank,Investment Income,2016-11-30,2.96,credit
+818,108,Cassie,Herd,bank,Paychecks/Salary,2016-08-31,1407.59,credit
+819,108,Cassie,Herd,bank,General Merchandise,2016-06-05,34.28,debit
+820,2098,Andy,Roy,bank,Restaurants/Dining,2016-05-31,43.0,debit
+821,108,Cassie,Herd,bank,Insurance,2016-11-29,110.15,debit
+822,108,Cassie,Herd,bank,Online Services,2016-06-26,98.94,debit
+823,108,Cassie,Herd,bank,Loans,2017-01-17,42.7,debit
+824,458,Jared,Alexander,creditCard,Restaurants/Dining,2017-01-26,10.29,debit
+825,65, 🦁 Josh,Pagley,bank,Uncategorized,2016-08-19,1412.32,credit
+826,458,Jared,Alexander,creditCard,Restaurants/Dining,2017-01-31,44.5,debit
+827,8796,skye,lowry,bank,ATM/Cash Withdrawals,2017-01-17,60.0,debit
+828,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-10-27,224.15,debit
+829,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-10-24,226.36,debit
+830,108,Cassie,Herd,bank,General Merchandise,2016-12-26,18.95,debit
+831,108,Cassie,Herd,bank,Uncategorized,2016-08-23,10.0,debit
+832,32,Tom,Ryan,creditCard,Gasoline/Fuel,2016-11-14,22.14,debit
+833,106,Roger,Ehrenberg,creditCard,Travel,2016-11-08,9.41,debit
+834,8796,skye,lowry,bank,Uncategorized,2017-01-15,3.66,debit
+835,32,Tom,Ryan,creditCard,Travel,2016-11-01,325.5,debit
+836,412,Christine,Berglund,bank,Uncategorized,2016-07-14,17.05,debit
+837,8688,P,vantonder,creditCard,Gasoline/Fuel,2016-12-25,29.73,debit
+838,458,Jared,Alexander,creditCard,Restaurants/Dining,2016-08-20,20.56,debit
+839,106,Roger,Ehrenberg,creditCard,Restaurants/Dining,2016-11-06,223.64,debit
+840,108,Cassie,Herd,bank,Loans,2016-11-16,88.52,debit
+841,2579,Hayden,Lanham,creditCard,Restaurants/Dining,2016-09-15,15.86,debit
+842,7807,Boris,Tsibelman,bank,Transfers,2016-09-28,300.0,credit
+843,7807,Boris,Tsibelman,bank,Transfers,2016-09-21,300.0,debit
+844,7807,Boris,Tsibelman,bank,Transfers,2016-11-07,300.0,credit
+845,7807,Boris,Tsibelman,bank,Transfers,2016-11-03,300.0,debit
+846,7807,Boris,Tsibelman,bank,Deposits,2016-09-23,300.0,credit
+847,1944,Jon,Phillips,investment,Deposits,2016-08-08,7284.8,credit
+848,7807,Boris,Tsibelman,bank,Transfers,2016-09-19,300.0,debit
+849,108,Cassie,Herd,bank,Gasoline/Fuel,2016-06-25,16.19,debit
+850,108,Cassie,Herd,bank,General Merchandise,2016-09-28,44.89,debit
+851,108,Cassie,Herd,bank,Checks,2017-02-08,766.13,debit
+852,108,Cassie,Herd,bank,Insurance,2016-10-11,17.0,debit
+853,2579,Hayden,Lanham,creditCard,Travel,2016-07-22,2.0,debit
+854,108,Cassie,Herd,bank,General Merchandise,2016-11-22,12.99,debit
+855,108,Cassie,Herd,bank,Transfers,2016-07-27,69.99,debit
+856,108,Cassie,Herd,bank,Insurance,2016-10-31,97.53,debit
+857,108,Cassie,Herd,bank,Restaurants/Dining,2016-07-02,5.69,debit
+858,32,Tom,Ryan,creditCard,Uncategorized,2017-01-23,33.16,debit
+859,32,Tom,Ryan,creditCard,Service Charges/Fees,2016-09-26,12.5,debit
+860,108,Cassie,Herd,bank,Restaurants/Dining,2016-07-21,10.09,debit
+861,108,Cassie,Herd,bank,Restaurants/Dining,2017-01-05,18.09,debit
+862,108,Cassie,Herd,bank,Restaurants/Dining,2016-10-28,4.32,debit
+863,108,Cassie,Herd,bank,Healthcare/Medical,2016-06-03,94.3,debit
+864,108,Cassie,Herd,bank,Restaurants/Dining,2016-07-28,13.09,debit
+865,32,Tom,Ryan,creditCard,Travel,2016-04-21,117.5,debit
+866,2579,Hayden,Lanham,creditCard,Uncategorized,2016-10-17,5.5,debit
+867,458,Jared,Alexander,creditCard,General Merchandise,2016-07-07,31.79,credit
+868,108,Cassie,Herd,bank,Restaurants/Dining,2017-02-04,14.26,debit
+869,8036,Kyle,Morris,bank,Interest,2016-09-30,0.03,credit
+870,458,Jared,Alexander,bank,Uncategorized,2016-05-06,140.06,credit
+871,108,Cassie,Herd,bank,Healthcare/Medical,2016-12-17,41.59,debit
+872,1245,,,bank,Transfers,2016-08-03,2500.0,credit
+873,106,Roger,Ehrenberg,creditCard,Restaurants/Dining,2016-11-06,3.02,debit
+874,1245,,,bank,Credit Card Payments,2017-01-12,1338.76,debit
+875,108,Cassie,Herd,bank,Gasoline/Fuel,2016-06-11,15.78,debit
+876,1289,Mitchell,Gray,bank,Restaurants/Dining,2016-12-12,5.88,debit
+877,108,Cassie,Herd,bank,Restaurants/Dining,2016-06-10,4.33,debit
+878,108,Cassie,Herd,bank,General Merchandise,2016-08-05,23.36,debit
+879,106,Roger,Ehrenberg,creditCard,Uncategorized,2016-11-06,106.0,debit
+880,8688,P,vantonder,creditCard,Travel,2017-02-19,13.01,debit
+881,458,Jared,Alexander,creditCard,Gifts,2016-09-02,3.27,debit
+882,7634,Danny,Freed,bank,Uncategorized,2016-09-21,0.2,debit
+883,1158,,,bank,ATM/Cash Withdrawals,2016-08-03,20.0,debit
+884,1158,,,bank,Deposits,2017-02-22,28.0,credit
+885,458,Jared,Alexander,creditCard,Personal Care,2016-06-19,30.0,debit
+886,2579,Hayden,Lanham,creditCard,General Merchandise,2016-11-16,34.07,debit
+887,7807,Boris,Tsibelman,bank,Transfers,2016-08-10,500.0,credit
+888,106,Roger,Ehrenberg,creditCard,Credit Card Payments,2016-11-07,57270.47,credit
+889,7807,Boris,Tsibelman,bank,Transfers,2016-09-16,500.0,credit
+890,596,Rob,Miles,bank,Online Services,2016-10-31,3.06,debit
+891,32,Tom,Ryan,creditCard,Uncategorized,2016-09-11,235.0,debit
+892,108,Cassie,Herd,bank,Groceries,2017-02-01,13.41,debit
+893,108,Cassie,Herd,bank,Checks,2017-01-18,10.0,debit
+894,32,Tom,Ryan,creditCard,Travel,2016-09-14,40.0,debit
+895,1158,,,bank,Groceries,2017-02-14,1.25,debit
+896,8688,P,vantonder,creditCard,Restaurants/Dining,2017-02-15,53.95,debit
+897,8796,skye,lowry,bank,Uncategorized,2017-01-01,248.98,debit
+898,7634,Danny,Freed,creditCard,Online Services,2016-11-22,46.93,debit
+899,108,Cassie,Herd,bank,Restaurants/Dining,2016-12-03,9.73,debit
+900,2579,Hayden,Lanham,creditCard,Gasoline/Fuel,2016-12-27,7.66,debit
+901,108,Cassie,Herd,bank,General Merchandise,2016-08-05,8.49,debit
+902,864,Andrew,Breckenridge,creditCard,Healthcare/Medical,2016-12-08,7.6,debit
+903,70,Zachary,Schrimsher,creditCard,Entertainment,2016-12-19,14.33,debit
+904,108,Cassie,Herd,bank,Healthcare/Medical,2017-01-12,8.9,debit
+905,2242,,,creditCard,Online Services,2016-07-06,29.69,debit
+906,458,Jared,Alexander,creditCard,Travel,2016-09-02,8.0,debit
+907,2242,,,bank,Transfers,2016-07-05,200.0,debit
+908,108,Cassie,Herd,bank,Home Maintenance,2016-05-17,67.98,debit
+909,7807,Boris,Tsibelman,bank,Transfers,2016-09-16,500.0,debit
+910,7586,Carla,Saavedra,creditCard,Restaurants/Dining,2016-09-21,2.0,debit
+911,7807,Boris,Tsibelman,bank,Transfers,2016-09-22,500.0,credit
+912,7807,Boris,Tsibelman,bank,Transfers,2016-09-16,500.0,debit
+913,458,Jared,Alexander,creditCard,Restaurants/Dining,2017-01-08,20.09,debit
+914,108,Cassie,Herd,bank,General Merchandise,2017-01-05,0.01,debit
+915,108,Cassie,Herd,bank,Insurance,2016-12-29,110.15,debit
+916,32,Tom,Ryan,creditCard,Restaurants/Dining,2016-08-21,43.59,debit
+917,70,Zachary,Schrimsher,creditCard,Restaurants/Dining,2017-02-09,22.32,debit
+918,632,,,creditCard,Uncategorized,2016-07-11,189.1,debit
+919,7807,Boris,Tsibelman,bank,Transfers,2016-10-04,500.0,credit
+920,7807,Boris,Tsibelman,bank,Transfers,2016-10-17,500.0,credit
+921,7807,Boris,Tsibelman,bank,Transfers,2016-10-17,500.0,debit
+922,2662,Keef,,bank,Uncategorized,2016-12-22,10.0,debit
+923,32,Tom,Ryan,creditCard,Service Charges/Fees,2016-12-21,25.0,debit
+924,1245,,,creditCard,Restaurants/Dining,2016-12-08,2.34,debit
+925,70,Zachary,Schrimsher,creditCard,Healthcare/Medical,2017-02-04,38.11,debit
+926,2098,Andy,Roy,bank,Groceries,2016-08-29,147.09,debit
+927,2098,Andy,Roy,bank,Entertainment,2016-11-28,4.51,debit
+928,108,Cassie,Herd,bank,Gasoline/Fuel,2016-11-02,13.75,debit
+929,108,Cassie,Herd,bank,Groceries,2016-05-26,77.7,debit
+930,1158,,,bank,Restaurants/Dining,2017-02-06,6.88,debit
+931,8338,Victor,Lacayo,bank,Transfers,2016-10-24,800.0,credit
+932,8338,Victor,Lacayo,bank,ATM/Cash Withdrawals,2016-10-24,3.0,debit
+933,2098,Andy,Roy,bank,Groceries,2016-06-13,10.0,debit
+934,108,Cassie,Herd,bank,Restaurants/Dining,2016-08-25,8.32,debit
+935,108,Cassie,Herd,bank,Entertainment,2017-02-09,1.99,debit
+936,106,Roger,Ehrenberg,creditCard,Travel,2016-11-07,139.34,debit
+937,108,Cassie,Herd,bank,Loans,2016-12-16,88.52,debit
+938,108,Cassie,Herd,bank,General Merchandise,2016-12-19,13.37,debit
+939,108,Cassie,Herd,bank,Restaurants/Dining,2016-08-07,22.82,debit
+940,643,Amy,Slacker,loan,Credit Card Payments,2016-07-11,850.93,credit
+941,643,Amy,Slacker,loan,Other Expenses,2016-07-11,-104.59,debit
+942,643,Amy,Slacker,loan,Credit Card Payments,2016-06-10,850.93,credit
+943,643,Amy,Slacker,loan,Other Expenses,2016-06-10,-104.59,debit
+944,643,Amy,Slacker,loan,Credit Card Payments,2016-05-10,850.93,credit
+945,643,Amy,Slacker,loan,Other Expenses,2016-05-10,-104.59,debit
+946,643,Amy,Slacker,creditCard,Credit Card Payments,2017-01-17,159.0,credit
+947,643,Amy,Slacker,creditCard,Online Services,2017-01-02,159.0,debit
+948,643,Amy,Slacker,creditCard,Credit Card Payments,2016-10-31,647.18,credit
+949,643,Amy,Slacker,creditCard,Credit Card Payments,2016-10-27,500.0,credit
+950,643,Amy,Slacker,creditCard,Credit Card Payments,2016-10-20,600.0,credit
+951,643,Amy,Slacker,creditCard,Credit Card Payments,2016-10-11,900.0,credit
+952,643,Amy,Slacker,creditCard,Credit Card Payments,2016-09-21,2000.0,credit
+953,643,Amy,Slacker,creditCard,Credit Card Payments,2016-09-13,1100.0,credit
+954,643,Amy,Slacker,creditCard,Credit Card Payments,2016-09-04,200.0,credit
+955,643,Amy,Slacker,creditCard,Credit Card Payments,2016-08-29,400.0,credit
+956,643,Amy,Slacker,creditCard,Credit Card Payments,2016-08-01,350.0,credit
+957,643,Amy,Slacker,creditCard,Credit Card Payments,2016-07-05,150.0,credit
+958,643,Amy,Slacker,creditCard,Interest,2016-09-24,12.61,debit
+959,643,Amy,Slacker,creditCard,Credit Card Payments,2016-06-17,139.0,credit
+960,643,Amy,Slacker,creditCard,Credit Card Payments,2016-05-19,141.0,credit
+961,643,Amy,Slacker,creditCard,Credit Card Payments,2016-04-18,145.0,credit
+962,643,Amy,Slacker,creditCard,Credit Card Payments,2016-03-11,200.0,credit
+963,643,Amy,Slacker,creditCard,Credit Card Payments,2016-02-03,160.0,credit
+964,643,Amy,Slacker,creditCard,Interest,2016-10-23,0.5,debit
+965,643,Amy,Slacker,creditCard,Interest,2016-05-24,22.54,debit
+966,643,Amy,Slacker,creditCard,Interest,2016-08-24,22.47,debit
+967,643,Amy,Slacker,creditCard,Interest,2016-07-24,22.94,debit
+968,8796,skye,lowry,bank,Uncategorized,2017-03-12,13.36,debit
+969,643,Amy,Slacker,creditCard,Interest,2016-06-24,23.55,debit
+970,32,Tom,Ryan,creditCard,Travel,2016-10-07,169.86,debit
+971,643,Amy,Slacker,creditCard,Interest,2016-04-24,23.06,debit
+972,643,Amy,Slacker,creditCard,Interest,2016-03-24,23.13,debit
+973,643,Amy,Slacker,creditCard,Interest,2016-02-22,22.43,debit
+974,643,Amy,Slacker,creditCard,Insurance,2016-11-30,22.75,debit
+975,643,Amy,Slacker,creditCard,Uncategorized,2016-12-09,1.5,debit
+976,643,Amy,Slacker,creditCard,Travel,2016-11-30,26.0,debit
+977,643,Amy,Slacker,creditCard,Travel,2016-11-30,244.1,debit
+978,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-03-07,7.44,debit
+979,643,Amy,Slacker,creditCard,Pets/Pet Care,2017-02-16,11.35,debit
+980,643,Amy,Slacker,creditCard,Pets/Pet Care,2017-02-14,75.03,debit
+981,643,Amy,Slacker,creditCard,Travel,2017-02-14,21.86,debit
+982,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-02-13,67.1,debit
+983,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-02-13,34.99,debit
+984,643,Amy,Slacker,creditCard,Travel,2017-02-13,25.0,debit
+985,643,Amy,Slacker,creditCard,Travel,2017-02-13,11.99,debit
+986,643,Amy,Slacker,creditCard,Healthcare/Medical,2017-02-13,27.53,debit
+987,632,,,creditCard,Travel,2016-07-12,4.04,debit
+988,643,Amy,Slacker,creditCard,Pets/Pet Care,2017-02-12,84.0,debit
+989,643,Amy,Slacker,creditCard,Travel,2017-02-05,25.0,debit
+990,643,Amy,Slacker,creditCard,Uncategorized,2017-01-26,250.0,credit
+991,643,Amy,Slacker,creditCard,Travel,2016-11-30,25.0,debit
+992,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-01-20,20.58,debit
+993,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-01-19,45.52,debit
+994,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-01-18,25.33,debit
+995,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-02-13,20.0,debit
+996,643,Amy,Slacker,creditCard,Uncategorized,2016-11-28,45.0,debit
+997,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-11-27,15.61,debit
+998,643,Amy,Slacker,creditCard,Uncategorized,2017-01-22,1.25,debit
+999,643,Amy,Slacker,creditCard,Uncategorized,2017-01-17,100.0,debit
+1000,643,Amy,Slacker,creditCard,Credit Card Payments,2017-01-16,250.0,credit
+1001,643,Amy,Slacker,creditCard,Uncategorized,2016-11-27,278.44,debit
+1002,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-01-09,30.3,debit
+1003,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-03-08,7.97,debit
+1004,643,Amy,Slacker,creditCard,Insurance,2017-01-08,180.21,debit
+1005,643,Amy,Slacker,creditCard,Online Services,2017-01-06,12.4,debit
+1006,643,Amy,Slacker,creditCard,Travel,2017-01-05,25.0,debit
+1007,643,Amy,Slacker,creditCard,Online Services,2017-03-08,116.7,debit
+1008,643,Amy,Slacker,creditCard,Groceries,2017-01-02,7.14,debit
+1009,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-01-01,7.1,debit
+1010,643,Amy,Slacker,creditCard,Healthcare/Medical,2016-12-29,11.5,debit
+1011,643,Amy,Slacker,creditCard,Online Services,2017-03-08,20.0,debit
+1012,643,Amy,Slacker,creditCard,Clothing/Shoes,2016-12-27,90.37,debit
+1013,643,Amy,Slacker,creditCard,Uncategorized,2016-12-26,67.45,debit
+1014,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-25,2.12,debit
+1015,643,Amy,Slacker,creditCard,Clothing/Shoes,2016-12-25,85.14,debit
+1016,108,Cassie,Herd,bank,Entertainment,2016-12-06,5.99,debit
+1017,643,Amy,Slacker,creditCard,Travel,2016-12-25,25.0,debit
+1018,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-21,16.99,debit
+1019,643,Amy,Slacker,creditCard,Gasoline/Fuel,2016-12-21,31.76,debit
+1020,643,Amy,Slacker,creditCard,Online Services,2016-12-21,125.0,debit
+1021,643,Amy,Slacker,creditCard,Healthcare/Medical,2017-03-08,10.75,debit
+1022,643,Amy,Slacker,creditCard,Other Expenses,2016-12-19,9.5,debit
+1023,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-18,11.74,debit
+1024,643,Amy,Slacker,creditCard,Credit Card Payments,2016-12-16,1000.0,credit
+1025,643,Amy,Slacker,creditCard,Interest,2016-12-16,91.58,debit
+1026,643,Amy,Slacker,creditCard,General Merchandise,2017-03-08,84.29,debit
+1027,643,Amy,Slacker,creditCard,Groceries,2016-12-11,27.14,debit
+1028,643,Amy,Slacker,creditCard,Uncategorized,2016-12-11,250.0,debit
+1029,643,Amy,Slacker,creditCard,Personal Care,2016-12-11,42.59,debit
+1030,643,Amy,Slacker,creditCard,Uncategorized,2016-12-08,2.5,debit
+1031,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-08,34.86,debit
+1032,643,Amy,Slacker,creditCard,Gasoline/Fuel,2016-12-11,34.18,debit
+1033,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-11,5.13,debit
+1034,643,Amy,Slacker,creditCard,Gasoline/Fuel,2016-12-06,41.25,debit
+1035,643,Amy,Slacker,creditCard,Online Services,2016-12-06,20.0,debit
+1036,643,Amy,Slacker,creditCard,Online Services,2016-12-06,13.55,debit
+1037,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-04,107.28,debit
+1038,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-04,28.23,debit
+1039,643,Amy,Slacker,creditCard,Pets/Pet Care,2016-11-27,120.0,debit
+1040,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-11-24,12.01,debit
+1041,643,Amy,Slacker,creditCard,Healthcare/Medical,2016-11-23,7.98,debit
+1042,643,Amy,Slacker,creditCard,Gasoline/Fuel,2016-11-22,29.31,debit
+1043,108,Cassie,Herd,bank,Credit Card Payments,2016-08-01,153.0,debit
+1044,643,Amy,Slacker,creditCard,Other Expenses,2016-12-19,41.54,debit
+1045,643,Amy,Slacker,creditCard,Personal Care,2017-01-10,42.59,debit
+1046,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-11-18,10.37,debit
+1047,1158,,,bank,Transfers,2016-11-21,1.48,debit
+1048,643,Amy,Slacker,creditCard,Rent,2016-11-16,42.0,debit
+1049,643,Amy,Slacker,creditCard,Travel,2016-11-15,195.55,debit
+1050,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-11-13,21.94,debit
+1051,643,Amy,Slacker,creditCard,Online Services,2016-11-07,20.0,debit
+1052,643,Amy,Slacker,creditCard,Uncategorized,2016-11-06,70.38,debit
+1053,643,Amy,Slacker,creditCard,Uncategorized,2016-10-28,7.39,debit
+1054,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-01-15,32.41,debit
+1055,643,Amy,Slacker,creditCard,Travel,2017-01-13,419.35,debit
+1056,643,Amy,Slacker,creditCard,Personal Care,2017-03-02,7.0,debit
+1057,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-02-15,9.41,debit
+1058,643,Amy,Slacker,creditCard,Entertainment,2016-11-27,20.72,debit
+1059,643,Amy,Slacker,creditCard,Groceries,2016-11-27,108.62,debit
+1060,643,Amy,Slacker,creditCard,Travel,2016-11-25,140.05,debit
+1061,643,Amy,Slacker,creditCard,Education,2016-11-25,50.07,debit
+1062,643,Amy,Slacker,creditCard,Travel,2016-11-25,140.05,debit
+1063,643,Amy,Slacker,creditCard,Uncategorized,2016-12-02,36.0,debit
+1064,643,Amy,Slacker,creditCard,Groceries,2016-11-25,37.78,debit
+1065,643,Amy,Slacker,creditCard,Groceries,2017-02-12,22.46,debit
+1066,643,Amy,Slacker,creditCard,Gasoline/Fuel,2017-01-23,33.76,debit
+1067,643,Amy,Slacker,creditCard,Uncategorized,2016-11-30,50.0,debit
+1068,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-02-28,21.0,debit
+1069,643,Amy,Slacker,creditCard,Credit Card Payments,2017-02-16,700.0,credit
+1070,643,Amy,Slacker,creditCard,Insurance,2017-02-22,180.21,debit
+1071,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-13,39.48,debit
+1072,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-08,10.81,debit
+1073,643,Amy,Slacker,creditCard,Travel,2016-12-04,10.0,debit
+1074,643,Amy,Slacker,creditCard,Pets/Pet Care,2016-11-29,38.1,debit
+1075,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-11-29,16.93,debit
+1076,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-08,3.9,debit
+1077,7807,Boris,Tsibelman,bank,Transfers,2016-10-18,500.0,credit
+1078,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-08,8.26,debit
+1079,2098,Andy,Roy,bank,Restaurants/Dining,2016-11-28,33.03,debit
+1080,643,Amy,Slacker,creditCard,Uncategorized,2016-12-07,4.0,debit
+1081,643,Amy,Slacker,creditCard,Online Services,2016-12-07,18.0,debit
+1082,643,Amy,Slacker,creditCard,Automotive Expenses,2016-11-23,21.0,debit
+1083,643,Amy,Slacker,creditCard,Uncategorized,2016-11-22,52.68,debit
+1084,643,Amy,Slacker,creditCard,Gifts,2016-12-04,54.0,debit
+1085,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-04,87.0,debit
+1086,643,Amy,Slacker,creditCard,Travel,2016-12-04,10.0,debit
+1087,643,Amy,Slacker,creditCard,Travel,2016-12-02,10.0,debit
+1088,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-02,15.02,debit
+1089,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-01,10.33,debit
+1090,643,Amy,Slacker,creditCard,Uncategorized,2016-11-30,39.0,debit
+1091,643,Amy,Slacker,creditCard,Healthcare/Medical,2017-03-07,10.68,debit
+1092,643,Amy,Slacker,creditCard,Gasoline/Fuel,2017-03-07,11.16,debit
+1093,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-03-07,14.89,debit
+1094,643,Amy,Slacker,creditCard,General Merchandise,2017-03-07,59.63,debit
+1095,643,Amy,Slacker,creditCard,Groceries,2017-03-05,10.1,debit
+1096,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-03-05,17.79,debit
+1097,643,Amy,Slacker,creditCard,Groceries,2017-03-02,4.47,debit
+1098,9058,Ravel,Antunes,creditCard,Restaurants/Dining,2017-01-22,10.47,debit
+1099,106,Roger,Ehrenberg,creditCard,Restaurants/Dining,2016-11-05,371.46,debit
+1100,643,Amy,Slacker,creditCard,Travel,2017-02-22,25.0,debit
+1101,643,Amy,Slacker,creditCard,Travel,2017-02-20,25.0,debit
+1102,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-02-15,4.56,debit
+1103,643,Amy,Slacker,creditCard,Interest,2017-02-15,113.47,debit
+1104,643,Amy,Slacker,creditCard,Travel,2017-02-14,64.31,debit
+1105,643,Amy,Slacker,creditCard,Postage and Shipping,2017-02-14,22.95,debit
+1106,643,Amy,Slacker,creditCard,Travel,2017-02-14,114.27,debit
+1107,643,Amy,Slacker,creditCard,Entertainment,2017-02-14,1.6,debit
+1108,643,Amy,Slacker,creditCard,Healthcare/Medical,2017-02-12,7.63,debit
+1109,643,Amy,Slacker,creditCard,Uncategorized,2017-02-09,45.0,debit
+1110,643,Amy,Slacker,creditCard,Entertainment,2017-02-09,59.94,debit
+1111,643,Amy,Slacker,creditCard,Personal Care,2017-02-09,42.59,debit
+1112,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-02-08,15.66,debit
+1113,643,Amy,Slacker,creditCard,Uncategorized,2017-02-08,4.86,debit
+1114,643,Amy,Slacker,creditCard,General Merchandise,2017-02-06,19.0,debit
+1115,9058,Ravel,Antunes,bank,Other Income,2017-03-02,1856.54,credit
+1116,643,Amy,Slacker,creditCard,Credit Card Payments,2017-02-06,800.0,credit
+1117,643,Amy,Slacker,creditCard,Entertainment,2017-02-06,37.06,debit
+1118,643,Amy,Slacker,creditCard,Travel,2017-02-06,25.0,debit
+1119,643,Amy,Slacker,creditCard,Online Services,2017-02-05,10.98,debit
+1120,643,Amy,Slacker,creditCard,Travel,2017-02-05,25.0,debit
+1121,643,Amy,Slacker,creditCard,Online Services,2017-02-05,20.0,debit
+1122,643,Amy,Slacker,creditCard,Travel,2017-02-05,18.14,debit
+1123,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-02-02,29.43,debit
+1124,643,Amy,Slacker,creditCard,Healthcare/Medical,2017-01-31,13.71,debit
+1125,643,Amy,Slacker,creditCard,Uncategorized,2017-01-30,131.44,debit
+1126,643,Amy,Slacker,creditCard,Travel,2017-01-29,25.0,debit
+1127,643,Amy,Slacker,creditCard,Uncategorized,2017-01-24,45.0,debit
+1128,643,Amy,Slacker,creditCard,Insurance,2017-01-23,180.21,debit
+1129,643,Amy,Slacker,creditCard,Uncategorized,2017-01-22,2.5,debit
+1130,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-01-22,17.91,debit
+1131,643,Amy,Slacker,creditCard,Credit Card Payments,2017-01-22,500.0,credit
+1132,643,Amy,Slacker,creditCard,Uncategorized,2017-01-22,99.07,debit
+1133,643,Amy,Slacker,creditCard,General Merchandise,2017-01-17,128.48,debit
+1134,643,Amy,Slacker,creditCard,Rent,2017-01-16,42.0,debit
+1135,643,Amy,Slacker,creditCard,Interest,2017-01-16,107.13,debit
+1136,643,Amy,Slacker,creditCard,Gasoline/Fuel,2017-01-16,36.52,debit
+1137,643,Amy,Slacker,creditCard,Personal Care,2017-01-15,29.99,debit
+1138,643,Amy,Slacker,creditCard,Credit Card Payments,2017-01-11,400.0,credit
+1139,643,Amy,Slacker,creditCard,Travel,2017-01-10,25.0,debit
+1140,643,Amy,Slacker,creditCard,Healthcare/Medical,2017-01-10,3.5,debit
+1141,643,Amy,Slacker,creditCard,Uncategorized,2017-01-10,250.0,debit
+1142,2266,Carol,Guilfoyle,bank,General Merchandise,2016-11-21,68.9,debit
+1143,643,Amy,Slacker,creditCard,Uncategorized,2017-01-09,48.47,debit
+1144,643,Amy,Slacker,creditCard,Gasoline/Fuel,2017-01-08,41.45,debit
+1145,643,Amy,Slacker,creditCard,Gasoline/Fuel,2017-01-08,4.03,debit
+1146,643,Amy,Slacker,creditCard,Online Services,2017-01-06,20.0,debit
+1147,643,Amy,Slacker,creditCard,Gasoline/Fuel,2017-01-05,34.12,debit
+1148,643,Amy,Slacker,creditCard,Pets/Pet Care,2017-01-04,128.41,debit
+1149,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-01-03,10.21,debit
+1150,643,Amy,Slacker,creditCard,Restaurants/Dining,2017-01-03,38.62,debit
+1151,643,Amy,Slacker,creditCard,Travel,2017-01-01,34.94,debit
+1152,643,Amy,Slacker,creditCard,Uncategorized,2017-01-01,25.0,debit
+1153,643,Amy,Slacker,creditCard,Uncategorized,2016-12-30,39.0,debit
+1154,643,Amy,Slacker,creditCard,Groceries,2016-12-28,5.24,debit
+1155,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-27,7.25,debit
+1156,643,Amy,Slacker,creditCard,Automotive Expenses,2016-12-26,21.0,debit
+1157,643,Amy,Slacker,creditCard,Personal Care,2016-12-26,56.6,debit
+1158,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-25,6.66,debit
+1159,643,Amy,Slacker,creditCard,Uncategorized,2016-12-25,70.26,debit
+1160,643,Amy,Slacker,creditCard,Entertainment,2016-12-25,30.89,debit
+1161,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-25,32.0,debit
+1162,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-12-20,20.91,debit
+1163,643,Amy,Slacker,creditCard,Uncategorized,2016-12-18,64.32,debit
+1164,643,Amy,Slacker,creditCard,Travel,2016-11-29,72.24,debit
+1165,643,Amy,Slacker,creditCard,Uncategorized,2016-11-29,81.02,debit
+1166,1245,,,bank,Transfers,2016-12-16,12.0,debit
+1167,643,Amy,Slacker,creditCard,Gasoline/Fuel,2016-11-29,31.6,debit
+1168,643,Amy,Slacker,creditCard,Credit Card Payments,2016-11-22,1000.0,credit
+1169,643,Amy,Slacker,creditCard,Entertainment,2016-11-20,18.0,debit
+1170,643,Amy,Slacker,creditCard,Travel,2016-11-20,25.0,debit
+1171,643,Amy,Slacker,creditCard,Uncategorized,2016-11-20,22.5,debit
+1172,643,Amy,Slacker,creditCard,Uncategorized,2016-11-18,2.75,debit
+1173,643,Amy,Slacker,creditCard,Interest,2016-11-16,78.42,debit
+1174,643,Amy,Slacker,creditCard,Uncategorized,2016-11-15,10.13,debit
+1175,643,Amy,Slacker,creditCard,Gasoline/Fuel,2016-11-13,30.21,debit
+1176,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-11-13,8.43,debit
+1177,643,Amy,Slacker,creditCard,Credit Card Payments,2016-11-13,137.0,credit
+1178,643,Amy,Slacker,creditCard,Personal Care,2016-11-10,42.59,debit
+1179,643,Amy,Slacker,creditCard,Uncategorized,2016-11-10,250.0,debit
+1180,643,Amy,Slacker,creditCard,Entertainment,2016-11-06,73.6,debit
+1181,643,Amy,Slacker,creditCard,Online Services,2016-11-06,0.96,debit
+1182,643,Amy,Slacker,creditCard,Uncategorized,2016-10-30,6.0,debit
+1183,643,Amy,Slacker,creditCard,Uncategorized,2016-10-30,39.0,debit
+1184,643,Amy,Slacker,creditCard,General Merchandise,2016-10-30,21.99,debit
+1185,643,Amy,Slacker,creditCard,Gasoline/Fuel,2016-10-30,31.47,debit
+1186,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-10-30,10.87,debit
+1187,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-10-30,18.51,debit
+1188,643,Amy,Slacker,creditCard,Restaurants/Dining,2016-10-26,26.71,debit
+1189,643,Amy,Slacker,bank,Credit Card Payments,2017-02-06,400.0,debit
+1190,643,Amy,Slacker,bank,Restaurants/Dining,2017-03-06,13.18,debit
+1191,643,Amy,Slacker,bank,Uncategorized,2017-03-06,178.75,debit
+1192,643,Amy,Slacker,bank,Restaurants/Dining,2017-03-06,10.0,debit
+1193,643,Amy,Slacker,bank,Rent,2017-02-15,1144.21,debit
+1194,643,Amy,Slacker,bank,Deposits,2016-11-21,40.0,credit
+1195,643,Amy,Slacker,bank,Deposits,2016-11-21,40.0,credit
+1196,643,Amy,Slacker,bank,Restaurants/Dining,2017-03-03,21.65,debit
+1197,643,Amy,Slacker,bank,Credit Card Payments,2017-03-03,200.0,debit
+1198,643,Amy,Slacker,bank,Restaurants/Dining,2017-03-03,10.55,debit
+1199,643,Amy,Slacker,bank,Groceries,2017-03-04,6.5,debit
+1200,643,Amy,Slacker,bank,Restaurants/Dining,2017-03-04,16.51,debit
+1201,1158,,,bank,Office Maintenance,2017-01-12,16.94,debit
+1202,643,Amy,Slacker,bank,Groceries,2017-03-04,87.07,debit
+1203,643,Amy,Slacker,bank,Groceries,2017-03-04,60.92,debit
+1204,643,Amy,Slacker,bank,General Merchandise,2017-03-04,39.99,debit
+1205,643,Amy,Slacker,bank,Transfers,2017-03-04,500.0,debit
+1206,643,Amy,Slacker,bank,Cable/Satellite Services,2017-03-04,140.4,debit
+1207,643,Amy,Slacker,bank,Uncategorized,2017-03-04,9.52,debit
+1208,643,Amy,Slacker,bank,Home Maintenance,2017-03-07,5.95,credit
+1209,643,Amy,Slacker,bank,Securities Trades,2016-11-21,250.93,debit
+1210,643,Amy,Slacker,bank,Restaurants/Dining,2017-03-10,25.0,debit
+1211,643,Amy,Slacker,bank,Restaurants/Dining,2017-03-06,9.82,debit
+1212,643,Amy,Slacker,bank,Transfers,2017-01-10,148.0,debit
+1213,643,Amy,Slacker,bank,Restaurants/Dining,2016-12-02,15.0,debit
+1214,643,Amy,Slacker,bank,Transfers,2016-11-14,60.0,debit
+1215,643,Amy,Slacker,bank,Transfers,2017-02-27,22.84,debit
+1216,643,Amy,Slacker,bank,Transfers,2017-02-21,19.95,debit
+1217,643,Amy,Slacker,bank,Transfers,2017-02-02,47.06,debit
+1218,643,Amy,Slacker,bank,Transfers,2017-01-31,5.34,debit
+1219,643,Amy,Slacker,bank,Online Services,2017-03-05,290.0,debit
+1220,643,Amy,Slacker,bank,Entertainment,2017-02-14,63.5,debit
+1221,643,Amy,Slacker,bank,Restaurants/Dining,2016-11-21,10.0,debit
+1222,643,Amy,Slacker,bank,Other Income,2017-01-11,71.09,credit
+1223,643,Amy,Slacker,bank,Credit Card Payments,2016-11-07,400.0,debit
+1224,643,Amy,Slacker,bank,Credit Card Payments,2016-11-07,677.0,debit
+1225,643,Amy,Slacker,bank,Restaurants/Dining,2017-01-16,25.0,debit
+1226,643,Amy,Slacker,bank,Home Maintenance,2017-03-07,80.0,credit
+1227,643,Amy,Slacker,bank,Home Maintenance,2017-03-07,20.0,credit
+1228,643,Amy,Slacker,bank,Transfers,2017-03-07,9.99,debit
+1229,643,Amy,Slacker,bank,Transfers,2017-03-07,5.34,debit
+1230,643,Amy,Slacker,bank,Business Miscellaneous,2017-03-07,7.0,debit
+1231,643,Amy,Slacker,bank,Gasoline/Fuel,2017-03-07,47.32,debit
+1232,643,Amy,Slacker,bank,Gasoline/Fuel,2017-03-07,16.45,debit
+1233,643,Amy,Slacker,bank,Restaurants/Dining,2017-03-07,12.76,debit
+1234,643,Amy,Slacker,bank,Restaurants/Dining,2017-03-10,40.08,debit
+1235,643,Amy,Slacker,bank,Paychecks/Salary,2017-03-10,2500.0,credit
+1236,643,Amy,Slacker,bank,Automotive Expenses,2017-03-10,135.21,debit
+1237,643,Amy,Slacker,bank,Gasoline/Fuel,2017-03-10,5.32,debit
+1238,643,Amy,Slacker,bank,Uncategorized,2017-03-09,24.5,debit
+1239,643,Amy,Slacker,bank,Restaurants/Dining,2017-03-09,9.86,debit
+1240,643,Amy,Slacker,bank,Uncategorized,2017-03-08,1.25,debit
+1241,643,Amy,Slacker,bank,Gasoline/Fuel,2017-03-07,31.72,debit
+1242,643,Amy,Slacker,bank,Entertainment,2017-03-07,9.99,debit
+1243,643,Amy,Slacker,bank,Credit Card Payments,2017-03-06,677.0,debit
+1244,643,Amy,Slacker,bank,Uncategorized,2017-03-06,6.0,debit
+1245,643,Amy,Slacker,bank,Uncategorized,2017-03-06,36.82,debit
+1246,643,Amy,Slacker,bank,Gasoline/Fuel,2017-03-06,28.83,debit
+1247,643,Amy,Slacker,bank,Restaurants/Dining,2017-03-03,11.87,debit
+1248,643,Amy,Slacker,bank,Groceries,2017-03-01,59.0,debit
+1249,8036,Kyle,Morris,bank,Paychecks/Salary,2016-12-16,444.05,credit
+1250,2098,Andy,Roy,bank,Groceries,2016-11-28,63.09,debit
+1251,32,Tom,Ryan,creditCard,Restaurants/Dining,2016-09-27,4.0,debit
+1252,643,Amy,Slacker,bank,Restaurants/Dining,2017-02-28,77.71,debit
+1253,643,Amy,Slacker,bank,Travel,2017-02-28,2.0,debit
+1254,643,Amy,Slacker,bank,Restaurants/Dining,2017-02-28,52.0,debit
+1255,643,Amy,Slacker,bank,Gasoline/Fuel,2017-02-28,33.0,debit
+1256,643,Amy,Slacker,bank,Gasoline/Fuel,2017-02-28,1.8,debit
+1257,643,Amy,Slacker,bank,Uncategorized,2017-02-27,68.37,debit
+1258,643,Amy,Slacker,bank,Uncategorized,2017-02-27,37.4,credit
+1259,1245,,,creditCard,Online Services,2016-05-04,1500.0,debit
+1260,643,Amy,Slacker,bank,Travel,2017-02-27,166.89,debit
+1261,643,Amy,Slacker,bank,Restaurants/Dining,2017-02-27,7.4,debit
+1262,643,Amy,Slacker,bank,Travel,2017-02-27,4.13,debit
+1263,7807,Boris,Tsibelman,bank,Transfers,2016-10-18,500.0,debit
+1264,106,Roger,Ehrenberg,creditCard,Education,2016-11-04,24.14,debit
+1265,7807,Boris,Tsibelman,bank,Transfers,2016-10-31,500.0,credit
+1266,643,Amy,Slacker,bank,Entertainment,2017-02-27,42.99,debit
+1267,8257,Robert,Miles,bank,Entertainment,2017-01-31,3.17,debit
+1268,643,Amy,Slacker,bank,Restaurants/Dining,2017-02-27,23.69,debit
+1269,643,Amy,Slacker,bank,Restaurants/Dining,2017-02-27,10.43,debit
+1270,643,Amy,Slacker,bank,Paychecks/Salary,2017-02-24,2500.0,credit
+1271,643,Amy,Slacker,bank,Transfers,2017-02-24,34.22,debit
+1272,643,Amy,Slacker,bank,Insurance,2017-02-24,9.08,debit
+1273,643,Amy,Slacker,bank,Travel,2017-02-22,179.0,debit
+1274,643,Amy,Slacker,bank,Credit Card Payments,2017-02-23,700.0,debit
+1275,643,Amy,Slacker,bank,Travel,2017-02-22,11.2,debit
+1276,643,Amy,Slacker,bank,Restaurants/Dining,2017-02-20,10.58,debit
+1277,643,Amy,Slacker,bank,Uncategorized,2017-02-20,90.1,debit
+1278,643,Amy,Slacker,bank,Transfers,2017-02-20,650.0,credit
+1279,643,Amy,Slacker,bank,Gasoline/Fuel,2017-02-20,35.0,debit
+1280,643,Amy,Slacker,bank,Restaurants/Dining,2017-02-16,11.4,debit
+1281,643,Amy,Slacker,bank,Credit Card Payments,2017-02-16,9.99,debit
+1282,643,Amy,Slacker,bank,Paychecks/Salary,2017-02-09,2500.0,credit
+1283,643,Amy,Slacker,bank,Utilities,2017-02-07,127.76,debit
+1284,643,Amy,Slacker,bank,Cable/Satellite Services,2017-02-14,100.0,debit
+1285,643,Amy,Slacker,bank,Groceries,2017-02-14,13.1,debit
+1286,643,Amy,Slacker,bank,Restaurants/Dining,2017-02-14,8.04,debit
+1287,643,Amy,Slacker,bank,Gasoline/Fuel,2017-02-14,40.04,debit
+1288,643,Amy,Slacker,bank,Restaurants/Dining,2017-02-14,51.56,debit
+1289,643,Amy,Slacker,bank,Groceries,2017-02-10,14.75,debit
+1290,643,Amy,Slacker,bank,Business Miscellaneous,2017-02-10,7.0,debit
+1291,643,Amy,Slacker,bank,Transfers,2017-02-10,9.99,debit
+1292,643,Amy,Slacker,bank,Credit Card Payments,2017-02-06,677.0,debit
+1293,643,Amy,Slacker,bank,Online Services,2017-02-06,19.99,debit
+1294,643,Amy,Slacker,bank,Credit Card Payments,2017-01-30,500.0,debit
+1295,643,Amy,Slacker,bank,Uncategorized,2017-01-30,12.24,debit
+1296,643,Amy,Slacker,bank,Deposits,2017-01-30,2500.0,credit
+1297,643,Amy,Slacker,bank,Transfers,2017-01-30,650.0,credit
+1298,643,Amy,Slacker,bank,Transfers,2017-01-30,7.18,debit
+1299,643,Amy,Slacker,bank,Transfers,2017-01-30,2.13,debit
+1300,643,Amy,Slacker,bank,Restaurants/Dining,2017-01-30,25.0,debit
+1301,643,Amy,Slacker,bank,Transfers,2017-01-30,8.95,debit
+1302,643,Amy,Slacker,bank,Transfers,2017-01-23,250.0,credit
+1303,643,Amy,Slacker,bank,Credit Card Payments,2017-01-23,250.0,debit
+1304,1245,,,bank,Credit Card Payments,2016-12-12,820.31,debit
+1305,643,Amy,Slacker,bank,Securities Trades,2017-01-20,250.93,debit
+1306,643,Amy,Slacker,bank,Transfers,2017-01-20,8.68,debit
+1307,643,Amy,Slacker,bank,Transfers,2017-01-20,204.0,debit
+1308,643,Amy,Slacker,bank,Transfers,2017-01-18,650.0,credit
+1309,643,Amy,Slacker,bank,Uncategorized,2017-01-17,415.0,debit
+1310,643,Amy,Slacker,bank,Credit Card Payments,2017-01-18,400.0,debit
+1311,643,Amy,Slacker,bank,Credit Card Payments,2017-01-17,7.99,debit
+1312,643,Amy,Slacker,bank,Uncategorized,2017-01-16,11.18,debit
+1313,643,Amy,Slacker,bank,Clothing/Shoes,2017-01-16,17.3,debit
+1314,643,Amy,Slacker,bank,Transfers,2017-01-16,0.5,debit
+1315,643,Amy,Slacker,bank,Groceries,2017-01-16,54.46,debit
+1316,643,Amy,Slacker,bank,Deposits,2017-01-12,2500.0,credit
+1317,643,Amy,Slacker,bank,Automotive Expenses,2017-01-11,118.0,debit
+1318,643,Amy,Slacker,bank,Business Miscellaneous,2017-01-11,7.0,debit
+1319,643,Amy,Slacker,bank,Transfers,2017-01-11,9.99,debit
+1320,643,Amy,Slacker,bank,Credit Card Payments,2017-01-10,400.0,debit
+1321,643,Amy,Slacker,bank,Credit Card Payments,2017-01-10,677.0,debit
+1322,643,Amy,Slacker,bank,Utilities,2017-01-10,242.56,debit
+1323,643,Amy,Slacker,bank,Transfers,2017-01-03,36.37,debit
+1324,643,Amy,Slacker,bank,Entertainment,2017-01-02,6.75,debit
+1325,643,Amy,Slacker,bank,Insurance,2017-01-06,9.08,debit
+1326,643,Amy,Slacker,bank,Entertainment,2017-01-05,9.99,debit
+1327,643,Amy,Slacker,bank,Transfers,2017-01-03,500.0,credit
+1328,643,Amy,Slacker,bank,Transfers,2017-01-02,5.34,debit
+1329,643,Amy,Slacker,bank,Transfers,2017-01-02,10.17,debit
+1330,643,Amy,Slacker,bank,Transfers,2016-12-26,9.0,debit
+1331,643,Amy,Slacker,bank,Transfers,2016-12-26,8.83,debit
+1332,643,Amy,Slacker,bank,Credit Card Payments,2016-12-23,1000.0,debit
+1333,643,Amy,Slacker,bank,Transfers,2016-12-23,2.13,debit
+1334,643,Amy,Slacker,bank,Interest,2016-12-22,0.02,credit
+1335,643,Amy,Slacker,bank,Transfers,2016-12-21,250.0,credit
+1336,643,Amy,Slacker,bank,Securities Trades,2016-12-20,250.93,debit
+1337,643,Amy,Slacker,bank,Credit Card Payments,2016-12-19,8.14,debit
+1338,643,Amy,Slacker,bank,Transfers,2016-12-15,19.24,debit
+1339,643,Amy,Slacker,bank,Rent,2016-12-15,1151.0,debit
+1340,643,Amy,Slacker,bank,Rent,2016-12-15,1151.42,debit
+
